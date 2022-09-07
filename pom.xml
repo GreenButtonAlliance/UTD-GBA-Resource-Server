@@ -22,14 +22,17 @@
 		<url>https://greenbuttonalliance.org</url>
 	</organization>
 
-	<licenses>
-		<license>Apache License 2.0</license>
-	</licenses>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
 
 	<developers></developers>
 
 	<scm>
-		<connection>scmLgitLgitL//github.com/greenbuttonalliance/gba-resource-server</connection>
+		<connection>scm:git:https//github.com/greenbuttonalliance/gba-resource-server</connection>
 		<developerConnection>scm:git:ssh://git@github.com/greenbuttonalliance/gba-resource-server</developerConnection>
 		<url>https://github.com/greenbuttonalliance/gba-resource-server</url>
 	</scm>
