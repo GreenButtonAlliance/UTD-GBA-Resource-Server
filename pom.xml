@@ -32,7 +32,7 @@
 	<developers></developers>
 
 	<scm>
-		<connection>scm:git:https//github.com/greenbuttonalliance/gba-resource-server</connection>
+		<connection>scm:git:https://github.com/greenbuttonalliance/gba-resource-server</connection>
 		<developerConnection>scm:git:ssh://git@github.com/greenbuttonalliance/gba-resource-server</developerConnection>
 		<url>https://github.com/greenbuttonalliance/gba-resource-server</url>
 	</scm>
