@@ -17,6 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -33,6 +34,12 @@ import java.util.Set;
 @Setter
 @Accessors(chain = true)
 public class IntervalBlock extends IdentifiedObject {
+
+	@Column
+	private Long start; // in epoch-seconds
+
+	@Column
+	private Integer duration; // in seconds
 
 	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
 	private Set<IntervalReading> intervalReadings = new HashSet<>();

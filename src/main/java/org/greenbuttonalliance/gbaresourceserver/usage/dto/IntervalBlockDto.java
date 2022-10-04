@@ -22,9 +22,7 @@ import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -38,20 +36,10 @@ public class IntervalBlockDto extends IdentifiedObjectDto {
 	private Set<IntervalReadingDto> IntervalReading = new HashSet<>(); // unusual naming convention to match NAESB schema
 
 	public static IntervalBlockDto fromIntervalBlock(IntervalBlock intervalBlock) {
-		/* Calculates the start and duration for a collection of IntervalReadings by taking the earliest start date and calculating the duration from that
-		until the latest possible end date */
-		Optional<Long> overallStart = intervalBlock.getIntervalReadings().stream()
-			.map(ir -> ir.getStart())
-			.reduce(BinaryOperator.minBy(Long::compareTo));
-		Optional<Integer> overallDuration = overallStart.flatMap(os -> intervalBlock.getIntervalReadings().stream()
-			.map(ir -> ir.getStart() + ir.getDuration())
-			.reduce(BinaryOperator.maxBy(Long::compareTo))
-			.map(overallEnd -> Math.toIntExact(overallEnd - os)));
-
 		return new IdentifiedObjectDtoSubclassFactory<>(IntervalBlockDto::new).create(intervalBlock)
 			.setInterval(new DateTimeInterval()
-				.setDuration(overallDuration.orElse(null))
-				.setStart(overallStart.orElse(null)))
+				.setDuration(intervalBlock.getDuration())
+				.setStart(intervalBlock.getStart()))
 			.setIntervalReading(intervalBlock.getIntervalReadings().stream()
 				.map(IntervalReadingDto::fromIntervalReading)
 				.collect(Collectors.toSet()));

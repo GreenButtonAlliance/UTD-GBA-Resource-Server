@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage;
+package org.greenbuttonalliance.gbaresourceserver.usage.service;
 
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
