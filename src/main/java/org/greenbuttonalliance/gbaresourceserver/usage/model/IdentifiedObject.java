@@ -17,12 +17,13 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
@@ -33,10 +34,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
+@SuperBuilder
+@RequiredArgsConstructor
 public abstract class IdentifiedObject {
 
 	@Id
-	@GeneratedValue
 	private UUID uuid;
 
 	@Column

@@ -112,6 +112,11 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<scope>9.3.1</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.f4b6a3</groupId>
+			<artifactId>uuid-creator</artifactId>
+			<version>5.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

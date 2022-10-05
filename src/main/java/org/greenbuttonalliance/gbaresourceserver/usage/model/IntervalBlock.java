@@ -22,8 +22,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +35,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
+@SuperBuilder
+@RequiredArgsConstructor
 public class IntervalBlock extends IdentifiedObject {
 
 	@Column
