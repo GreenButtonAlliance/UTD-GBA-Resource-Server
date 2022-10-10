@@ -49,7 +49,7 @@ public class IntervalBlockRepositoryTest {
 	private final IntervalBlockRepository intervalBlockRepository;
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
+	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -127,7 +127,7 @@ public class IntervalBlockRepositoryTest {
 				.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.selfLinkRel("self")
-				.upLinkHref("/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.start(1330578000L)
@@ -156,9 +156,9 @@ public class IntervalBlockRepositoryTest {
 				.build(),
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
+				.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 				.selfLinkRel("self")
-				.upLinkHref("/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 				.start(1330578800L)
@@ -176,9 +176,9 @@ public class IntervalBlockRepositoryTest {
 				.build(),
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
+				.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
 				.selfLinkRel("self")
-				.upLinkHref("/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 				.start(1330987644L)
