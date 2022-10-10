@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## Avoid pushing credentials to public repo ##
+src/main/resources/application.properties
