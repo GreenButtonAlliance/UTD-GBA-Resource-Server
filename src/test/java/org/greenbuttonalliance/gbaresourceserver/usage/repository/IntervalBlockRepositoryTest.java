@@ -20,7 +20,7 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.QualityOfReading;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
