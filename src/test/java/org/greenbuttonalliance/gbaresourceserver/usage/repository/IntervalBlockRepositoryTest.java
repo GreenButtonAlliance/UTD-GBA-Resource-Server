@@ -131,12 +131,12 @@ public class IntervalBlockRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.start(1330578000L)
-				.duration(1800)
+				.duration(1800L)
 				.intervalReadings(Stream.of(
 					new IntervalReading()
 						.setCost(974L)
 						.setStart(1330578000L)
-						.setDuration(900)
+						.setDuration(900L)
 						.setValue(285L)
 						.setReadingQualities(
 							Stream.of(new ReadingQuality().setQuality(QualityOfReading.VALID),
@@ -146,7 +146,7 @@ public class IntervalBlockRepositoryTest {
 					new IntervalReading()
 						.setCost(965L)
 						.setStart(1330578900L)
-						.setDuration(900)
+						.setDuration(900L)
 						.setValue(383L)
 						.setReadingQualities(
 							Stream.of(new ReadingQuality().setQuality(QualityOfReading.OTHER),
@@ -162,12 +162,12 @@ public class IntervalBlockRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 				.start(1330578800L)
-				.duration(900)
+				.duration(900L)
 				.intervalReadings(Stream.of(
 					new IntervalReading()
 						.setCost(922L)
 						.setStart(1330578800L)
-						.setDuration(900)
+						.setDuration(900L)
 						.setValue(350L)
 						.setReadingQualities(
 							Stream.of(new ReadingQuality().setQuality(QualityOfReading.VALID))
@@ -182,7 +182,7 @@ public class IntervalBlockRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 				.start(1330987644L)
-				.duration(900)
+				.duration(900L)
 				.intervalReadings(Collections.emptySet())
 				.build()
 		);
