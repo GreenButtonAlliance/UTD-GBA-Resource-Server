@@ -43,7 +43,7 @@ public class IntervalBlock extends IdentifiedObject {
 	private Long start; // in epoch-seconds
 
 	@Column
-	private Integer duration; // in seconds
+	private Long duration; // in seconds
 
 	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
 	private Set<IntervalReading> intervalReadings = new HashSet<>();

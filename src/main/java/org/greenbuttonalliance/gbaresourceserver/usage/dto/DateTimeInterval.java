@@ -29,6 +29,6 @@ import java.io.Serializable;
 @Setter
 @Accessors(chain = true)
 public class DateTimeInterval implements Serializable {
-	private Integer duration; // in epoch-seconds
+	private Long duration; // in epoch-seconds
 	private Long start; // in seconds
 }

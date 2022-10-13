@@ -54,7 +54,7 @@ public class IntervalReading {
 	private Long start; // in epoch-seconds
 
 	@Column
-	private Integer duration; // in seconds
+	private Long duration; // in seconds
 
 	@Column
 	private Long value; // in units specified by associated ReadingType
