@@ -6,13 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.sql.Blob;
 
 @Entity
-@Table(name = "Time_Configuration", schema = "usage")
+@Table(name = "time_configuration", schema = "usage")
 @Getter
 @Setter
 @SuperBuilder
