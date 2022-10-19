@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2022 Green Button Alliance, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
@@ -21,7 +36,7 @@ import java.util.UUID;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TimeConfigurationTest {
+public class TimeConfigurationRepositoryTest {
 	private final TimeConfigurationRepository timeConfigurationRepository;
 	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
@@ -67,7 +82,7 @@ public class TimeConfigurationTest {
 			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
 		);
 	}
-
+	//TODO: Add entityMappings_areNotNull test once Usage point is created
 
 
 	public static List<TimeConfiguration> buildTestData() {
