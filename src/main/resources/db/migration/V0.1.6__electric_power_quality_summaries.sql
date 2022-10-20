@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS usage.electric_power_quality_summaries (
+  description TEXT,
+  published TIMESTAMP,
+  self_link_href TEXT,
+  self_link_rel TEXT,
+  up_link_href TEXT,
+  up_link_rel TEXT,
+  updated TIMESTAMP,
+  uuid UUID NOT NULL PRIMARY KEY,
+  flickerPlt BIGINT,
+  flickerPst BIGINT,
+  harmonicVoltage BIGINT,
+  longInterruptions BIGINT,
+  mainsVoltage BIGINT,
+  measurementProtocol SMALLINT,
+  powerFrequency BIGINT,
+  rapidVoltageChanges BIGINT,
+  shortInterruptions BIGINT,
+  duration BIGINT,
+  start BIGINT,
+  supplyVoltageDips BIGINT,
+  supplyVoltageImbalance BIGINT,
+  supplyVoltageVariations BIGINT,
+  tempOvervoltage BIGINT,
+--   TODO add reference to usage_points uuid EX: REFERENCES usage.usage_points ON DELETE CASCADE
+  usage_point_uuid UUID NOT NULL
+);
