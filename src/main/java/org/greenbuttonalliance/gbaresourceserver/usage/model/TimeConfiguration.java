@@ -36,6 +36,6 @@ public class TimeConfiguration extends IdentifiedObject{
 	private Long dstOffset;
 	@Column(name = "dst_start_rule")
 	private byte[] dstStartRule;
-	@Column
+	@Column(name = "tz_offset")
 	private Long tzOffset;
 }
