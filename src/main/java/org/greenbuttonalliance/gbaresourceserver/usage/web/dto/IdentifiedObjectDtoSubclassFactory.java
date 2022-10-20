@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.dto;
+package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
 import lombok.AllArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
