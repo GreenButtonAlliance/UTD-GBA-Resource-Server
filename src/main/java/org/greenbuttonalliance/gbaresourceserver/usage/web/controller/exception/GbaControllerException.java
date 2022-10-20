@@ -14,21 +14,12 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.dto;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+package org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception;
 
 /**
- * Just a starting point for the API team, feel free to modify/delete as needed
+ * This interface is for exceptions who want to log a concise internal error message (i.e. not a full stack trace) and return an external error message as a web response when thrown inside a controller.
  */
-@Getter
-@Setter
-@Accessors(chain = true)
-public class DateTimeInterval implements Serializable {
-	private Long duration; // in epoch-seconds
-	private Long start; // in seconds
+public interface GbaControllerException {
+	String getInternalErrorMessage();
+	String getExternalErrorMessage();
 }

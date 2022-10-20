@@ -14,12 +14,26 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.controller.exception;
+package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
+
+import java.io.Serializable;
 
 /**
- * This interface is for exceptions who want to log a concise internal error message (i.e. not a full stack trace) and return an external error message as a web response when thrown inside a controller.
+ * Just a starting point for the API team, feel free to modify/delete as needed
  */
-public interface GbaControllerException {
-	String getInternalErrorMessage();
-	String getExternalErrorMessage();
+@Getter
+@Setter
+@Accessors(chain = true)
+public class ReadingQualityDto implements Serializable {
+	private int quality;
+
+	public static ReadingQualityDto fromReadingQuality(ReadingQuality readingQuality) {
+		return new ReadingQualityDto()
+			.setQuality(readingQuality.getQuality().schemaValue);
+	}
 }

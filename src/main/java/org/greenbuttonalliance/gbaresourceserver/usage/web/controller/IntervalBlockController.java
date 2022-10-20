@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.controller;
+package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
-import org.greenbuttonalliance.gbaresourceserver.usage.controller.exception.EntityNotFoundByIdException;
-import org.greenbuttonalliance.gbaresourceserver.usage.dto.IntervalBlockDto;
+import org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception.EntityNotFoundByIdException;
+import org.greenbuttonalliance.gbaresourceserver.usage.web.dto.IntervalBlockDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
