@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS usage.electric_power_quality_summaries (
   supply_voltage_dips BIGINT,
   supply_voltage_imbalance BIGINT,
   supply_voltage_variations BIGINT,
-  temp_overvoltage BIGINT,
---   TODO add reference to usage_points uuid EX: REFERENCES usage.usage_points ON DELETE CASCADE
-  usage_point_uuid UUID NOT NULL
+  temp_overvoltage BIGINT
+--   TODO add reference to usage_points uuid EX: usage_point_uuid UUID NOT NULL REFERENCES usage.usage_points ON DELETE CASCADE
 );
