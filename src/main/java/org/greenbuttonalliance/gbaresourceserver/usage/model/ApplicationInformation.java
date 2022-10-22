@@ -23,8 +23,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.hibernate.annotations.ColumnTransformer;
+
+import java.util.Set;
 
 
 @Entity
@@ -33,7 +35,7 @@ import org.hibernate.annotations.ColumnTransformer;
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-public class ApllicationInformation extends IdentifiedObject{
+public class ApplicationInformation extends IdentifiedObject{
 	@Column
 	private String kind;
 	// i can find no information about the kind column in this table in usage.xsd
@@ -62,8 +64,8 @@ public class ApllicationInformation extends IdentifiedObject{
 	private Byte[] contacts;
 	@Column(name = "data_custodian_application_status")
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.application_status)", read = "application_status::TEXT")
-	private ApplicationStatus dataCustodianApplicationStatus;
+	@ColumnTransformer(write = "CAST(? AS usage.data_custodian_application_status)", read = "data_custodian_application_status::TEXT")
+	private DataCustodianApplicationStatus dataCustodianApplicationStatus;
 	@Column(name="data_custodian_bulk_request_uri")
 	private String dataCustodianBulkRequestURI;
 	@Column(name="data_custodian_default_batch_resource")
@@ -80,5 +82,54 @@ public class ApllicationInformation extends IdentifiedObject{
 	private String logoURI;
 	@Column(name="policy_uri")
 	private String policyURI;
+	@Column(name="third_party_application_description")
+	private String thirdPartyApplicationDescription;
+	@Column(name="third_party_application_status")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.third_party_application_status)", read = "third_party_application_status::TEXT")
+	private ThirdPartyApplicationStatus thirdPartyApplicationStatus;
+	@Column(name="third_party_application_type")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.third_party_application_type)", read = "third_party_application_type::TEXT")
+	private ThirdPartyApplicationType thirdPartyApplicationType;
+	@Column(name="third_party_application_use")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.third_party_application_use)", read = "third_party_application_use::TEXT")
+	private ThirdPartyApplicationUse thirdPartyApplicationUse;
+	@Column(name="third_party_phone")
+	private String thirdPartyPhone;
+	@Column(name="third_party_notify_uri")
+	private String thirdPartyNotifyUri;
+	@Column(name="third_party_scope_selection_screen_uri")
+	private String thirdPartyScopeSelectionScreenURI;
+	@Column(name="third_party_user_portal_screen")
+	private String thirdPartyUserPortalScreen;
+	@Column(name="redirect_uri")
+	private String redirectURI;
+	@Column(name="tos_uri")
+	private String tosURI;
+	@Column(name="software_id")
+	private String softwareID;
+	@Column(name="software_version")
+	private String softwareVersion;
+	@Column (name="token_endpoint_auth_method")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.token_endpoint_method)", read = "token_endpoint_method::TEXT")
+	private TokenEndPointMethod tokenEndpointAuthMethod;
+	@Column (name="response_types")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.response_types)", read = "response_types::TEXT")
+	private ResponseTypes responseTypes;
+	@Column(name="registration_client_uri")
+	private String registrationClientURI;
+	@Column(name="registration_access_token")
+	private String registrationAccessToken;
 
+	//these are listed as a separate table (with no key) in the final milestone, may need to split off
+	/*@Column (name="response_types")
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.response_types)", read = "response_types::TEXT")
+	private Set<GrantTypes> grantTypes;
+	@Column
+	private String scope;*/
 }

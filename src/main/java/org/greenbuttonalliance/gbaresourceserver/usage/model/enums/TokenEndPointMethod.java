@@ -17,19 +17,18 @@
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
+
 import java.util.EnumSet;
-public enum ApplicationStatus {
-	REVIEW(1),
-	PRODUCTION(2),
-	ONHOLD(3),
-	REVOKED(4);
-	public final int schemaValue;
-	ApplicationStatus(int schemaValue) {
+
+public enum TokenEndPointMethod {
+	BASIC("client_secret_basic");
+	public final String schemaValue;
+	TokenEndPointMethod(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
-	public static ApplicationStatus getAccumulationKindFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(ApplicationStatus.class).stream()
-			.filter(ak -> ak.schemaValue == schemaValue)
+	public static TokenEndPointMethod getAccumulationKindFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(TokenEndPointMethod.class).stream()
+			.filter(ak -> ak.schemaValue.equals(schemaValue))
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException("No " + AccumulationKind.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
