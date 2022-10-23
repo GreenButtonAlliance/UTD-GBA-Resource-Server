@@ -18,5 +18,23 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-public class ApplicationInformationScopes {
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import java.util.UUID;
+
+@Entity
+@Table(name = "reading_quality", schema = "usage")
+@Getter
+@Setter
+@Accessors(chain = true)
+public class ApplicationInformationScope {
+	@Id
+	private UUID uuid;
+	@Column
+	private String scope;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "scope_uuid",nullable = false)
+	private ApplicationInformation applicableScope;
 }

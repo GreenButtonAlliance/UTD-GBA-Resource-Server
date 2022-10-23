@@ -125,11 +125,9 @@ public class ApplicationInformation extends IdentifiedObject{
 	@Column(name="registration_access_token")
 	private String registrationAccessToken;
 
-	//these are listed as a separate table (with no key) in the final milestone, may need to split off
-	/*@Column (name="response_types")
-	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.response_types)", read = "response_types::TEXT")
-	private Set<GrantTypes> grantTypes;
-	@Column
-	private String scope;*/
+	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
+	Set<ApplicationInformationGrantTypes> grantTypes;
+
+	@OneToMany(mappedBy = "applicableScope",cascade = CascadeType.ALL)
+	Set<ApplicationInformationScope> applicationScope;
 }
