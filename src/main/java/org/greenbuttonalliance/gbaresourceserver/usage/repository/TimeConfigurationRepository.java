@@ -13,30 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-package org.greenbuttonalliance.gbaresourceserver.usage.dto;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Just a starting point for the API team, feel free to modify/delete as needed
- */
-@Getter
-@Setter
-@Accessors(chain = true)
-public abstract class IdentifiedObjectDto implements Serializable {
-	private UUID uuid;
-	private String description;
-	private LocalDateTime published;
-	private String selfLinkHref;
-	private String selfLinkRel;
-	private String upLinkHref;
-	private String upLinkRel;
-	private LocalDateTime updated;
+@Repository
+public interface TimeConfigurationRepository extends JpaRepository<TimeConfiguration, UUID> {
 }

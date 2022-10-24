@@ -14,36 +14,49 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
 import java.util.EnumSet;
 
-public enum QualityOfReading {
-	VALID(0),
-	MANUALLY_EDITED(7),
-	ESTIMATED_USING_REFERENCE_DAY(8),
-	ESTIMATED_USING_LINEAR_INTERPOLATION(9),
-	QUESTIONABLE(10),
-	DERIVED(11),
-	PROJECTED_FORECAST(12),
-	MIXED(13),
-	RAW(14),
-	NORMALIZED_FOR_WEATHER(15),
-	OTHER(16),
-	VALIDATED(17),
-	VERIFIED(18),
-	REVENUE_QUALITY(19);
+public enum PhaseCodeKind {
+	ABCN(225),
+	ABC(224),
+	ABN(193),
+	ACN(41),
+	BCN(97),
+	AB(132),
+	AC(96),
+	BC(66),
+	AN(129),
+	BN(65),
+	CN(33),
+	A(128),
+	B(64),
+	C(32),
+	N(16),
+	S2N(272),
+	S12NEUTRAL(784),
+	S1N(528),
+	S2(256),
+	S12(768),
+	S12N(769),
+	NONE(0),
+	A_TO_A_V(136),
+	BA_V(72),
+	CA_V(40),
+	NG(17),
+	S1(512);
 
 	public final int schemaValue;
 
-	QualityOfReading(int schemaValue) {
+	PhaseCodeKind(int schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static QualityOfReading getQualityFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(QualityOfReading.class).stream()
-			.filter(qor -> qor.schemaValue == schemaValue)
+	public static PhaseCodeKind getPhaseCodeKindFromSchemaValue(int schemaValue) {
+		return EnumSet.allOf(PhaseCodeKind.class).stream()
+			.filter(pck -> pck.schemaValue == schemaValue)
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + QualityOfReading.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + PhaseCodeKind.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }

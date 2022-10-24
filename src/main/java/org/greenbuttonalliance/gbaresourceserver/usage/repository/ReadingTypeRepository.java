@@ -14,12 +14,14 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.controller.exception;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
-/**
- * This interface is for exceptions who want to log a concise internal error message (i.e. not a full stack trace) and return an external error message as a web response when thrown inside a controller.
- */
-public interface GbaControllerException {
-	String getInternalErrorMessage();
-	String getExternalErrorMessage();
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface ReadingTypeRepository extends JpaRepository<ReadingType, UUID> {
 }
