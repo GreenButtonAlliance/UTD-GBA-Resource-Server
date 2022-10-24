@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
+package org.greenbuttonalliance.gbaresourceserver.common.web.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -30,13 +30,15 @@ import java.util.Optional;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class ReadingQualityDto implements Serializable {
-	private int quality;
+public class DateTimeIntervalDto implements Serializable {
+	private Long duration; // in epoch-seconds
+	private Long start; // in seconds
 
-	public static ReadingQualityDto fromReadingQuality(ReadingQuality readingQuality) {
-		return Optional.ofNullable(readingQuality)
-			.map(rq -> new ReadingQualityDto()
-				.setQuality(rq.getQuality().schemaValue))
+	public static DateTimeIntervalDto fromDateTimeInterval(DateTimeInterval dateTimeInterval) {
+		return Optional.ofNullable(dateTimeInterval)
+			.map(dti -> new DateTimeIntervalDto()
+				.setStart(dti.getStart())
+				.setDuration(dti.getDuration()))
 			.orElse(null);
 	}
 }

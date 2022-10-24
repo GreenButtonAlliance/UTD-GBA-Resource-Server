@@ -19,9 +19,11 @@ package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.common.web.dto.DateTimeIntervalDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,16 +34,16 @@ import java.util.stream.Collectors;
 @Setter
 @Accessors(chain = true)
 public class IntervalBlockDto extends IdentifiedObjectDto {
-	private DateTimeInterval interval;
+	private DateTimeIntervalDto interval;
 	private Set<IntervalReadingDto> IntervalReading = new HashSet<>(); // unusual naming convention to match NAESB schema
 
 	public static IntervalBlockDto fromIntervalBlock(IntervalBlock intervalBlock) {
-		return new IdentifiedObjectDtoSubclassFactory<>(IntervalBlockDto::new).create(intervalBlock)
-			.setInterval(new DateTimeInterval()
-				.setDuration(intervalBlock.getDuration())
-				.setStart(intervalBlock.getStart()))
-			.setIntervalReading(intervalBlock.getIntervalReadings().stream()
-				.map(IntervalReadingDto::fromIntervalReading)
-				.collect(Collectors.toSet()));
+		return Optional.ofNullable(intervalBlock)
+			.map(ib -> new IdentifiedObjectDtoSubclassFactory<>(IntervalBlockDto::new).create(ib)
+				.setInterval(DateTimeIntervalDto.fromDateTimeInterval(ib.getInterval()))
+				.setIntervalReading(ib.getIntervalReadings().stream()
+					.map(IntervalReadingDto::fromIntervalReading)
+					.collect(Collectors.toSet())))
+			.orElse(null);
 	}
 }

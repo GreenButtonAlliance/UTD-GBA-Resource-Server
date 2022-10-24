@@ -19,10 +19,12 @@ package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.common.web.dto.DateTimeIntervalDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,24 +37,24 @@ import java.util.stream.Collectors;
 public class IntervalReadingDto implements Serializable {
 	private Long cost;
 	private Set<ReadingQualityDto> ReadingQuality = new HashSet<>(); // unusual naming convention to match NAESB schema
-	private DateTimeInterval timePeriod;
+	private DateTimeIntervalDto timePeriod;
 	private Long value;
 	private Short consumptionTier;
 	private Short tou;
 	private Short cpp;
 
 	public static IntervalReadingDto fromIntervalReading(IntervalReading intervalReading) {
-		return new IntervalReadingDto()
-			.setCost(intervalReading.getCost())
-			.setReadingQuality(intervalReading.getReadingQualities().stream()
-				.map(ReadingQualityDto::fromReadingQuality)
-				.collect(Collectors.toSet()))
-			.setTimePeriod(new DateTimeInterval()
-				.setDuration(intervalReading.getDuration())
-				.setStart(intervalReading.getStart()))
-			.setValue(intervalReading.getValue())
-			.setConsumptionTier(intervalReading.getConsumptionTier())
-			.setTou(intervalReading.getTou())
-			.setCpp(intervalReading.getCpp());
+		return Optional.ofNullable(intervalReading)
+			.map(ir -> new IntervalReadingDto()
+				.setCost(ir.getCost())
+				.setReadingQuality(ir.getReadingQualities().stream()
+					.map(ReadingQualityDto::fromReadingQuality)
+					.collect(Collectors.toSet()))
+				.setTimePeriod(DateTimeIntervalDto.fromDateTimeInterval(ir.getTimePeriod()))
+				.setValue(ir.getValue())
+				.setConsumptionTier(ir.getConsumptionTier())
+				.setTou(ir.getTou())
+				.setCpp(ir.getCpp()))
+			.orElse(null);
 	}
 }
