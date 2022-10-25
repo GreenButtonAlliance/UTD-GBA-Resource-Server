@@ -2,6 +2,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 
 import org.junit.jupiter.api.Assertions;
@@ -98,8 +99,9 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.powerFrequency(7L)
 				.rapidVoltageChanges(8L)
 				.shortInterruptions(9L)
-				.duration(10L)
-				.start(11L)
+				.summaryInterval(new DateTimeInterval()
+					.setDuration(10L)
+					.setStart(11L))
 				.supplyVoltageDips(12L)
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
@@ -121,8 +123,9 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.powerFrequency(7L)
 				.rapidVoltageChanges(8L)
 				.shortInterruptions(9L)
-				.duration(10L)
-				.start(11L)
+				.summaryInterval(new DateTimeInterval()
+					.setDuration(10L)
+					.setStart(11L))
 				.supplyVoltageDips(12L)
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
@@ -144,8 +147,9 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.powerFrequency(7L)
 				.rapidVoltageChanges(8L)
 				.shortInterruptions(9L)
-				.duration(10L)
-				.start(11L)
+				.summaryInterval(new DateTimeInterval()
+					.setDuration(10L)
+					.setStart(11L))
 				.supplyVoltageDips(12L)
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)

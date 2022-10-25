@@ -17,6 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 @Entity
 @Table(name = "electric_power_quality_summaries", schema = "usage")
@@ -61,11 +63,8 @@ public class ElectricPowerQualitySummary extends IdentifiedObject {
 	@Column(name = "short_interruptions")
 	private Long shortInterruptions;
 
-	@Column
-	private Long duration;
-
-	@Column
-	private Long start;
+	@Embedded
+	private DateTimeInterval summaryInterval;
 
 	@Column(name = "supply_voltage_dips")
 	private Long supplyVoltageDips;
