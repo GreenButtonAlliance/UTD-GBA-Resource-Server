@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "interval_block", schema = "usage")
+@Table(name = "retail_customer", schema = "usage")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -51,8 +51,4 @@ public class RetailCustomer extends IdentifiedObject {
 
 	@Column
 	private String username;
-	/*
-	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
-	private Set<IntervalReading> intervalReadings = new HashSet<>();
-	 */
 }
