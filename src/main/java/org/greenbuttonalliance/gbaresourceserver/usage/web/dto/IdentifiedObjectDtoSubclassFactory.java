@@ -19,6 +19,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 import lombok.AllArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -30,14 +31,15 @@ public class IdentifiedObjectDtoSubclassFactory<Dto extends IdentifiedObjectDto>
 
 	public <Model extends IdentifiedObject> Dto create(Model base) {
 		Dto dto = dtoSupplier.get();
-		dto.setUuid(base.getUuid())
-			.setDescription(base.getDescription())
-			.setPublished(base.getPublished())
-			.setSelfLinkHref(base.getSelfLinkHref())
-			.setSelfLinkRel(base.getSelfLinkRel())
-			.setUpLinkHref(base.getUpLinkHref())
-			.setUpLinkRel(base.getUpLinkRel())
-			.setUpdated(base.getUpdated());
+		Optional.ofNullable(base)
+			.map(b -> dto.setUuid(b.getUuid())
+				.setDescription(b.getDescription())
+				.setPublished(b.getPublished())
+				.setSelfLinkHref(b.getSelfLinkHref())
+				.setSelfLinkRel(b.getSelfLinkRel())
+				.setUpLinkHref(b.getUpLinkHref())
+				.setUpLinkRel(b.getUpLinkRel())
+				.setUpdated(b.getUpdated()));
 		return dto;
 	}
 }
