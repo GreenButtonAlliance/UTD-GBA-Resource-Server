@@ -1,3 +1,4 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/GreenButtonAlliance/GBA-Resource-Server/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/GreenButtonAlliance/GBA-Resource-Server/tree/main)
 # GBA Resource Server (UTD FA2022 CS4885 Project)
 The GBA Resource Server is a project to replace the original Sample North American Energy Standards Board (NAESB) Energy Service Provider Interface (ESPI) standard sample Utility OAuth 2.0 Authorization Server and Resource Server application.  The original source code can be found in two GitHub repositories:
 
