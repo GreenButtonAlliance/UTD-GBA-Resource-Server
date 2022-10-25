@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,11 +52,8 @@ public class IntervalReading {
 	@OneToMany(mappedBy = "reading", cascade = CascadeType.ALL)
 	private Set<ReadingQuality> readingQualities = new HashSet<>();
 
-	@Column
-	private Long start; // in epoch-seconds
-
-	@Column
-	private Long duration; // in seconds
+	@Embedded
+	private DateTimeInterval timePeriod;
 
 	@Column
 	private Long value; // in units specified by associated ReadingType

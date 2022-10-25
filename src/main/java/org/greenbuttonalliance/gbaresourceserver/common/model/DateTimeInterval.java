@@ -14,21 +14,23 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
+package org.greenbuttonalliance.gbaresourceserver.common.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-
-/**
- * Just a starting point for the API team, feel free to modify/delete as needed
- */
+@Embeddable
 @Getter
 @Setter
 @Accessors(chain = true)
-public class DateTimeInterval implements Serializable {
-	private Long duration; // in epoch-seconds
-	private Long start; // in seconds
+public class DateTimeInterval {
+
+	@Column
+	private Long start; // in epoch-seconds
+
+	@Column
+	private Long duration; // in seconds
 }
