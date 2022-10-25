@@ -64,13 +64,13 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Transactional
-@RequestMapping(path = "/intervalBlock", produces = MediaType.APPLICATION_ATOM_XML_VALUE)
+@RequestMapping(path = "/espi/1_1/resource/IntervalBlock", produces = MediaType.APPLICATION_ATOM_XML_VALUE)
 @ResponseStatus(HttpStatus.OK)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockController {
 	private final IntervalBlockService intervalBlockService;
 
-	@GetMapping("/all")
+	@GetMapping
 	public List<IntervalBlockDto> getAll() {
 		return intervalBlockService.findAll().stream()
 			.map(IntervalBlockDto::fromIntervalBlock)
