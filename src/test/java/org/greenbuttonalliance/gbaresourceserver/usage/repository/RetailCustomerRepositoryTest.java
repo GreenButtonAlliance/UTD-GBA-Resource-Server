@@ -47,7 +47,7 @@ public class RetailCustomerRepositoryTest {
 
 	@BeforeEach
 	public void initTestData() {
-		//retailCustomerRepository.deleteAllInBatch();
+		retailCustomerRepository.deleteAllInBatch();
 		retailCustomerRepository.saveAll(buildTestData());
 	}
 

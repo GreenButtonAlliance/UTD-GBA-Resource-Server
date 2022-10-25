@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS usage.retail_customer (
                                                       up_link_href TEXT,
                                                       up_link_rel TEXT,
                                                       updated TIMESTAMP,
-  --tinyblob doesn't exist in postgres, bytea seems to be the closest equvilant
                                                       enabled BOOLEAN,
                                                       first_name TEXT,
                                                       last_name TEXT,
