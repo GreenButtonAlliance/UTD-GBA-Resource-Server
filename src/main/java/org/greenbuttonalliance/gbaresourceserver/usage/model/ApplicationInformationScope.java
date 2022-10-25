@@ -22,6 +22,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
+
 import java.util.UUID;
 
 @Entity
@@ -35,6 +37,17 @@ public class ApplicationInformationScope {
 	@Column
 	private String scope;
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "scope_uuid",nullable = false)
-	private ApplicationInformation applicableScope;
+	@JoinColumn(name = "application_information_uuid",nullable = false)
+	private ApplicationInformation applicationInformation;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj)) {
+			return false;
+		}
+
+		ApplicationInformationScope sObj = (ApplicationInformationScope) obj;
+		return this.scope.equals(sObj.scope);
+	}
 }

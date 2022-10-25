@@ -20,7 +20,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 import java.util.EnumSet;
 public enum ThirdPartyApplicationStatus {
 	DEVELOPMENT(1),
-	REVIEWTEST(2),
+	REVIEW_TEST(2),
 	LIVE(3),
 	REMOVE(4);
 	public final int schemaValue;

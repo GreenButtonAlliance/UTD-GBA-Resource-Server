@@ -21,9 +21,9 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 import java.util.EnumSet;
 
 public enum GrantTypes {
-	AUTHORIZATIONCODE("authorization_code"),
-	CLIENTCREDENTIALS("client_credentials"),
-	REFRESHTOKEN("refresh_token");
+	AUTHORIZATION_CODE("authorization_code"),
+	CLIENT_CREDENTIALS("client_credentials"),
+	REFRESH_TOKEN("refresh_token");
 	public final String schemaValue;
 	GrantTypes(String schemaValue) {
 		this.schemaValue = schemaValue;

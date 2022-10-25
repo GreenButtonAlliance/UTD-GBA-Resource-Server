@@ -21,7 +21,7 @@ import java.util.EnumSet;
 public enum DataCustodianApplicationStatus {
 	REVIEW(1),
 	PRODUCTION(2),
-	ONHOLD(3),
+	ON_HOLD(3),
 	REVOKED(4);
 	public final int schemaValue;
 	DataCustodianApplicationStatus(int schemaValue) {

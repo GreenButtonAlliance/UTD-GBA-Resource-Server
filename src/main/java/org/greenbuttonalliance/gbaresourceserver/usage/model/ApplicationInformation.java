@@ -47,7 +47,7 @@ public class ApplicationInformation extends IdentifiedObject{
 	private String authorizationServerTokenEndpoint;
 	@Column(name = "authorization_server_uri")
 	private String authorizationServerURI;
-	@Column(name="client_id")
+	@Column(name="client_id",nullable = false)
 	private String clientId;
 	//Blue diamond means not null, so client id can't be null
 	@Column(name="client_id_issued_at")
@@ -61,7 +61,7 @@ public class ApplicationInformation extends IdentifiedObject{
 	@Column(name="client_uri")
 	private String clientURI;
 	@Column
-	private Byte[] contacts;
+	private byte[] contacts;
 	@Column(name = "data_custodian_application_status")
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.data_custodian_application_status)", read = "data_custodian_application_status::TEXT")
@@ -100,8 +100,6 @@ public class ApplicationInformation extends IdentifiedObject{
 	private String thirdPartyPhone;
 	@Column(name="third_party_notify_uri")
 	private String thirdPartyNotifyUri;
-	@Column(name="third_party_scope_selection_screen_uri")
-	private String thirdPartyScopeSelectionScreenURI;
 	@Column(name="third_party_user_portal_screen")
 	private String thirdPartyUserPortalScreen;
 	@Column(name="redirect_uri")
@@ -128,6 +126,8 @@ public class ApplicationInformation extends IdentifiedObject{
 	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
 	Set<ApplicationInformationGrantTypes> grantTypes;
 
-	@OneToMany(mappedBy = "applicableScope",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
 	Set<ApplicationInformationScope> applicationScope;
+
+	//TODO Add connection to subscription class
 }

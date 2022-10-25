@@ -19,11 +19,11 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 import java.util.EnumSet;
 public enum ThirdPartyApplicationUse {
-	ENERGYMANAGEMENT(1),
+	ENERGY_MANAGEMENT(1),
 	COMPARISONS(2),
 	GOVERNMENT(3),
 	ACADEMIC(4),
-	LAWENFORCEMENT(5);
+	LAW_ENFORCEMENT(5);
 public final int schemaValue;
 	ThirdPartyApplicationUse(int schemaValue) {
 	this.schemaValue = schemaValue;

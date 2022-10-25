@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantTypes;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnTransformer;
 import java.util.UUID;
 
@@ -43,5 +44,15 @@ public class ApplicationInformationGrantTypes {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "application_information_uuid")
 	private ApplicationInformation applicationInformation;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj)) {
+			return false;
+		}
 
+		ApplicationInformationGrantTypes gtObj = (ApplicationInformationGrantTypes) obj;
+		return this.grantTypes == gtObj.grantTypes;
+	}
 }
