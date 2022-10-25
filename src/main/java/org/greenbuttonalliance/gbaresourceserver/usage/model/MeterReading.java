@@ -17,38 +17,35 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "interval_block", schema = "usage")
+@Table(name = "meter_reading", schema = "usage")
 @Getter
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class IntervalBlock extends IdentifiedObject {
+public class MeterReading extends IdentifiedObject {
 
-	@Embedded
-	private DateTimeInterval interval;
+	// TODO add UsagePoint reference once entity is available
 
-	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
-	private Set<IntervalReading> intervalReadings = new HashSet<>();
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "reading_type_uuid")
+	private ReadingType readingType;
 
-	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "meter_reading_uuid", nullable = false)
-	private MeterReading meterReading;
+	@OneToMany(mappedBy = "meterReading", cascade = CascadeType.ALL)
+	private Set<IntervalBlock> intervalBlocks = new HashSet<>();
 }
