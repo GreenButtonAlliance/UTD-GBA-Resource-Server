@@ -17,7 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,11 +40,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class IntervalBlock extends IdentifiedObject {
 
-	@Column
-	private Long start; // in epoch-seconds
-
-	@Column
-	private Long duration; // in seconds
+	@Embedded
+	private DateTimeInterval interval;
 
 	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
 	private Set<IntervalReading> intervalReadings = new HashSet<>();
