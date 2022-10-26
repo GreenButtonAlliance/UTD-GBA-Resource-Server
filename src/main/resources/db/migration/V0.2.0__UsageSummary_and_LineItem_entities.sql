@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_summaries (
 CREATE TABLE IF NOT EXISTS usage.line_item (
   uuid UUID PRIMARY KEY NOT NULL,
   amount BIGINT NOT NULL,
-  date_time BIGINT NOT NULL,
+  date_time TIMESTAMP NOT NULL,
   note TEXT,
   rounding BIGINT,
   usage_summary_uuid UUID NOT NULL REFERENCES usage.usage_summaries ON DELETE CASCADE
