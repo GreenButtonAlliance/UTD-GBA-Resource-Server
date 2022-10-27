@@ -36,8 +36,9 @@ public class ApplicationInformationScope {
 	private UUID uuid;
 	@Column
 	private String scope;
+
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "application_information_uuid",nullable = false)
+	@JoinColumn(name = "application_information_uuid")
 	private ApplicationInformation applicationInformation;
 	@Override
 	public boolean equals(Object obj) {

@@ -26,8 +26,8 @@ import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.hibernate.annotations.ColumnTransformer;
 
+import java.time.LocalDateTime;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "application_information", schema = "usage")
@@ -36,8 +36,9 @@ import java.util.Set;
 @SuperBuilder
 @RequiredArgsConstructor
 public class ApplicationInformation extends IdentifiedObject{
-	@Column
-	private String kind;
+	//TODO This column shouldn't exist
+	//@Column
+	//private String kind;
 	// i can find no information about the kind column in this table in usage.xsd
 	@Column(name = "authorization_server_authorization_endpoint")
 	private String authorizationServerAuthorizationEndpoint;
@@ -51,13 +52,13 @@ public class ApplicationInformation extends IdentifiedObject{
 	private String clientId;
 	//Blue diamond means not null, so client id can't be null
 	@Column(name="client_id_issued_at")
-	private Long clientIdIssuedAt;
+	private LocalDateTime clientIdIssuedAt;
 	@Column(name="client_name")
 	private String clientName;
 	@Column(name="client_secret")
 	private String clientSecret;
 	@Column(name="client_secret_expires_at")
-	private Long clientSecretExpiresAt;
+	private LocalDateTime clientSecretExpiresAt;
 	@Column(name="client_uri")
 	private String clientURI;
 	@Column
@@ -123,6 +124,12 @@ public class ApplicationInformation extends IdentifiedObject{
 	@Column(name="registration_access_token")
 	private String registrationAccessToken;
 
+	//deprecated
+	@Column(name = "third_party_selection_screen_uri")
+	private String thirdPartyScopeSelectionScreenURI;
+	@Column(name="data_custodian_scope_selection_uri")
+	private String dataCustodianScopeSelectionScreenURI;
+	//end
 	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
 	Set<ApplicationInformationGrantTypes> grantTypes;
 

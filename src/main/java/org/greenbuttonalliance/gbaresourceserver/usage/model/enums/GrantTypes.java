@@ -18,6 +18,8 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformationGrantTypes;
+
 import java.util.EnumSet;
 
 public enum GrantTypes {

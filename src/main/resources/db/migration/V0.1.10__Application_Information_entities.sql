@@ -80,16 +80,15 @@ CREATE TABLE IF NOT EXISTS usage.application_information
   up_link_href                                    TEXT,
   up_link_rel                                     TEXT,
   updated                                         TIMESTAMP,
-  kind                                            TEXT,
   authorization_server_authorization_endpoint     TEXT,
   authorization_server_registration_endpoint      TEXT,
   authorization_server_token_endpoint             TEXT,
   authorization_server_uri                        TEXT,
   client_id                                       TEXT NOT NULL,
-  client_id_issued_at                             BIGINT,
+  client_id_issued_at                             TIMESTAMP,
   client_name                                     TEXT,
   client_secret                                   TEXT,
-  client_secret_expires_at                        BIGINT,
+  client_secret_expires_at                        TIMESTAMP,
   client_uri                                      TEXT,
   contacts                                        bytea,
   data_custodian_application_status               usage.data_custodian_application_status,
@@ -115,7 +114,9 @@ CREATE TABLE IF NOT EXISTS usage.application_information
   token_endpoint_auth_method                      usage.token_end_point_method,
   response_types                                  usage.response_types,
   registration_client_uri                         TEXT,
-  registration_access_token                       TEXT
+  registration_access_token                       TEXT,
+  third_party_selection_screen_uri                TEXT,
+  data_custodian_scope_selection_uri              TEXT
 );
 CREATE TABLE IF NOT EXISTS usage.application_information_scope
 (

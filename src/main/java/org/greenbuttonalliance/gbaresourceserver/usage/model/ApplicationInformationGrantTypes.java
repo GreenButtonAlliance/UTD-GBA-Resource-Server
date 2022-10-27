@@ -41,7 +41,7 @@ public class ApplicationInformationGrantTypes {
 	private GrantTypes grantTypes;
 
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL,optional = false)
 	@JoinColumn(name = "application_information_uuid")
 	private ApplicationInformation applicationInformation;
 	@Override
