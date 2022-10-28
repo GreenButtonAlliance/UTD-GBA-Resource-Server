@@ -16,6 +16,17 @@ DO $$
     END IF;
   END $$;
 
+DO $$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'enrollment_status' AND ns.nspname = 'usage') THEN
+      CREATE TYPE usage.enrollment_status AS ENUM (
+        'UNENROLLED',
+        'ENROLLED',
+        'ENROLLED_PENDING'
+        );
+    END IF;
+  END $$;
+
 -- the abbreviate potm will be used for power_of_ten_multiplier
 CREATE TABLE IF NOT EXISTS usage.usage_summaries (
   description TEXT,
@@ -26,56 +37,61 @@ CREATE TABLE IF NOT EXISTS usage.usage_summaries (
   up_link_rel TEXT,
   updated TIMESTAMP,
   uuid UUID PRIMARY KEY NOT NULL,
-  bill_last_period BIGINT,
-  bill_to_date BIGINT,
   billing_period_duration BIGINT,
   billing_period_start BIGINT,
+  bill_last_period BIGINT,
+  bill_to_date BIGINT,
   cost_additional_last_period BIGINT,
   currency TEXT,
+  overall_consumption_last_period_potm TEXT,
+  overall_consumption_last_period_time_stamp TIMESTAMP,
+  overall_consumption_last_period_uom TEXT,
+  overall_consumption_last_period_value BIGINT,
   current_billing_period_overall_consumption_potm TEXT,
-  current_billing_period_overall_consumption_time_stamp BIGINT,
+  current_billing_period_overall_consumption_time_stamp TIMESTAMP,
   current_billing_period_overall_consumption_uom TEXT,
   current_billing_period_overall_consumption_value BIGINT,
   current_day_last_year_net_consumption_potm TEXT,
-  current_day_last_year_net_consumption_time_stamp BIGINT,
+  current_day_last_year_net_consumption_time_stamp TIMESTAMP,
   current_day_last_year_net_consumption_uom TEXT,
   current_day_last_year_net_consumption_value BIGINT,
   current_day_net_consumption_potm TEXT,
-  current_day_net_consumption_time_stamp BIGINT,
+  current_day_net_consumption_time_stamp TIMESTAMP,
   current_day_net_consumption_uom TEXT,
   current_day_net_consumption_value BIGINT,
   current_day_overall_consumption_potm TEXT,
-  current_day_overall_consumption_time_stamp BIGINT,
+  current_day_overall_consumption_time_stamp TIMESTAMP,
   current_day_overall_consumption_uom TEXT,
   current_day_overall_consumption_value BIGINT,
-  overall_consumption_last_period_potm TEXT,
-  overall_consumption_last_period_time_stamp BIGINT,
-  overall_consumption_last_period_uom TEXT,
-  overall_consumption_last_period_value BIGINT,
   peak_demand_potm TEXT,
-  peak_demand_time_stamp BIGINT,
+  peak_demand_time_stamp TIMESTAMP,
   peak_demand_uom TEXT,
   peak_demand_value BIGINT,
   previous_day_last_year_overall_consumption_potm TEXT,
-  previous_day_last_year_overall_consumption_time_stamp BIGINT,
+  previous_day_last_year_overall_consumption_time_stamp TIMESTAMP,
   previous_day_last_year_overall_consumption_uom TEXT,
   previous_day_last_year_overall_consumption_value BIGINT,
   previous_day_net_consumption_potm TEXT,
-  previous_day_net_consumption_time_stamp BIGINT,
+  previous_day_net_consumption_time_stamp TIMESTAMP,
   previous_day_net_consumption_uom TEXT,
   previous_day_net_consumption_value BIGINT,
   previous_day_overall_consumption_potm TEXT,
-  previous_day_overall_consumption_time_stamp BIGINT,
+  previous_day_overall_consumption_time_stamp TIMESTAMP,
   previous_day_overall_consumption_uom TEXT,
   previous_day_overall_consumption_value BIGINT,
   quality_of_reading TEXT,
   ratchet_demand_potm TEXT,
-  ratchet_demand_time_stamp BIGINT,
+  ratchet_demand_time_stamp TIMESTAMP,
   ratchet_demand_uom TEXT,
   ratchet_demand_value BIGINT,
   ratchet_demand_period_duration BIGINT,
   ratchet_demand_period_start BIGINT,
-  status_time_stamp BIGINT NOT NULL
+  status_time_stamp TIMESTAMP NOT NULL,
+  commodity TEXT,
+  tariff_profile TEXT,
+  read_cycle TEXT,
+--   tariffRiderRefs
+  agencyName TEXT
 --   TODO add reference to usage_points uuid EX: usage_point_uuid UUID NOT NULL REFERENCES usage.usage_points ON DELETE CASCADE
   );
 
