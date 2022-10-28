@@ -80,8 +80,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 //	public void entityMappings_areNotNull() {
 //	}
 
-	// encapsulated in a method to make available to other test classes
-	public static List<ElectricPowerQualitySummary> buildTestData() {
+	private static List<ElectricPowerQualitySummary> buildTestData() {
 		List<ElectricPowerQualitySummary> electricPowerQualitySummaries = Arrays.asList(
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))

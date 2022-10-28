@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
@@ -30,6 +31,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttribute
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -98,11 +102,20 @@ public class ReadingTypeRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		// TODO test mapping from ReadingType to MeterReading when available
+		ReadingType fullyMappedReadingType = readingTypeRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedReadingType != null);
+
+		Function<ReadingType, Optional<MeterReading>> readingTypeToMeterReading = rt -> Optional.ofNullable(rt.getMeterReading());
+
+		Assertions.assertAll(
+			"Entity mapping failures for reading type " + fullyMappedReadingType.getUuid(),
+			Stream.of(readingTypeToMeterReading)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedReadingType).isPresent()))
+		);
 	}
 
-	// encapsulated in a method to make available to other test classes
-	public static List<ReadingType> buildTestData() {
+	private static List<ReadingType> buildTestData() {
 		List<ReadingType> readingTypes = Arrays.asList(
 			ReadingType.builder()
 				.description("Type of Meter Reading Data")
@@ -132,6 +145,15 @@ public class ReadingTypeRepositoryTest {
 				.measuringPeriod(null)
 				.argumentNumerator(1L)
 				.argumentDenominator(2L)
+				.meterReading(MeterReading.builder()
+					.description("Fifteen Minute Electricity Consumption")
+					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.build())
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Received")
@@ -161,6 +183,15 @@ public class ReadingTypeRepositoryTest {
 				.measuringPeriod(null)
 				.argumentNumerator(null)
 				.argumentDenominator(null)
+				.meterReading(MeterReading.builder()
+					.description("Hourly Wh Received")
+					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
+					.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
+					.selfLinkRel("self")
+					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
+					.build())
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Delivered")
@@ -190,13 +221,18 @@ public class ReadingTypeRepositoryTest {
 				.measuringPeriod(null)
 				.argumentNumerator(null)
 				.argumentDenominator(null)
+				.meterReading(null)
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
 		readingTypes.forEach(rt -> {
 			rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
-			// TODO hydrate MeterReading reference when available
+
+			Optional.ofNullable(rt.getMeterReading()).ifPresent(mr -> {
+				mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
+				mr.setReadingType(rt);
+			});
 		});
 		return readingTypes;
 	}

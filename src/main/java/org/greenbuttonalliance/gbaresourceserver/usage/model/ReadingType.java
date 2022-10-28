@@ -16,10 +16,12 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -131,4 +133,8 @@ public class ReadingType extends IdentifiedObject {
 
 	@Column(name = "argument_denominator")
 	private Long argumentDenominator;
+
+	// MeterReadings can exist without a corresponding ReadingType, so don't cascade delete operations through CascadeType.ALL
+	@OneToOne(mappedBy = "readingType", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private MeterReading meterReading;
 }

@@ -85,7 +85,7 @@ public class TimeConfigurationRepositoryTest {
 	//TODO: Add entityMappings_areNotNull test once Usage point is created
 
 
-	public static List<TimeConfiguration> buildTestData() {
+	private static List<TimeConfiguration> buildTestData() {
 		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
 		List<TimeConfiguration> timeConfigurations =  Arrays.asList(TimeConfiguration.builder()
 			.published(LocalDateTime.parse("2011-07-03 12:09:38", SQL_FORMATTER))
