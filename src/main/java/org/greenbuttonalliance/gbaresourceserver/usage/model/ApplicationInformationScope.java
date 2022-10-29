@@ -20,26 +20,33 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "reading_quality", schema = "usage")
+@Table(name = "application_information_scope", schema = "usage")
 @Getter
 @Setter
+@SuperBuilder
+@RequiredArgsConstructor
 @Accessors(chain = true)
 public class ApplicationInformationScope {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID uuid;
 	@Column
 	private String scope;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},optional = false)
 	@JoinColumn(name = "application_information_uuid")
-	private ApplicationInformation applicationInformation;
+	private ApplicationInformation applicationInformationS;
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

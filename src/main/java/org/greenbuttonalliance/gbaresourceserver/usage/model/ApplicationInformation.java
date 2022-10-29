@@ -111,9 +111,9 @@ public class ApplicationInformation extends IdentifiedObject{
 	private String softwareID;
 	@Column(name="software_version")
 	private String softwareVersion;
-	@Column (name="token_endpoint_auth_method")
+	@Column (name="token_end_point_auth_method")
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.token_endpoint_method)", read = "token_endpoint_method::TEXT")
+	@ColumnTransformer(write = "CAST(? AS usage.token_end_point_auth_method)", read = "token_end_point_auth_method::TEXT")
 	private TokenEndPointMethod tokenEndpointAuthMethod;
 	@Column (name="response_types")
 	@Enumerated(EnumType.STRING)
@@ -121,19 +121,21 @@ public class ApplicationInformation extends IdentifiedObject{
 	private ResponseTypes responseTypes;
 	@Column(name="registration_client_uri")
 	private String registrationClientURI;
+	@Column(name = "third_party_selection_screen_uri")
+	private String thirdPartyScopeSelectionScreenURI;
 	@Column(name="registration_access_token")
 	private String registrationAccessToken;
 
-	//deprecated
-	@Column(name = "third_party_selection_screen_uri")
-	private String thirdPartyScopeSelectionScreenURI;
-	@Column(name="data_custodian_scope_selection_uri")
+	@Column(name="data_custodian_scope_selection_screen_uri")
 	private String dataCustodianScopeSelectionScreenURI;
+	//deprecated
+
 	//end
-	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "applicationInformationGT",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	Set<ApplicationInformationGrantTypes> grantTypes;
 
-	@OneToMany(mappedBy = "applicationInformation",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "applicationInformationS",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	Set<ApplicationInformationScope> applicationScope;
 
 	//TODO Add connection to subscription class

@@ -20,20 +20,28 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantTypes;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.util.UUID;
 
 @Entity
-@Table(name = "reading_quality", schema = "usage")
+@Table(name = "application_information_grant_type", schema = "usage")
 @Getter
 @Setter
+@SuperBuilder
+@RequiredArgsConstructor
 @Accessors(chain = true)
 public class ApplicationInformationGrantTypes {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID uuid;
 	@Column(name="grant_types")
 	@Enumerated(EnumType.STRING)
@@ -41,9 +49,9 @@ public class ApplicationInformationGrantTypes {
 	private GrantTypes grantTypes;
 
 
-	@ManyToOne(cascade = CascadeType.ALL,optional = false)
+	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},optional = false)
 	@JoinColumn(name = "application_information_uuid")
-	private ApplicationInformation applicationInformation;
+	private ApplicationInformation applicationInformationGT;
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

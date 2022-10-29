@@ -20,12 +20,15 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
+
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformationGrantTypes;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformationScope;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -37,13 +40,13 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+//reading quality isn't even part of the imports, where is it coming from
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ApplicationInformationRepositoryTest {
 	private final ApplicationInformationRepository applicationInformationRepository;
-	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
+	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/ApplicationInformation/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final String DUMMY_STRING= "test1";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -93,8 +96,8 @@ public class ApplicationInformationRepositoryTest {
 
 		Function<ApplicationInformation, Optional<Set<ApplicationInformationGrantTypes>>> grantTypeMap = ai -> Optional.ofNullable(ai.getGrantTypes());
 		Function<ApplicationInformation,Optional<Set<ApplicationInformationScope>>> scopeType = ai -> Optional.ofNullable(ai.getApplicationScope());
-		Function<ApplicationInformation, Optional<ApplicationInformation>> grantTypeMapReverse= grantTypeMap.andThen(opt->opt.flatMap(grantType->grantType.stream().findFirst().map(ApplicationInformationGrantTypes::getApplicationInformation)));
-		Function<ApplicationInformation,Optional<ApplicationInformation>> scopeTypeReverse = scopeType.andThen(opt->opt.flatMap(scope->scope.stream().findFirst().map(ApplicationInformationScope::getApplicationInformation)));
+		Function<ApplicationInformation, Optional<ApplicationInformation>> grantTypeMapReverse= grantTypeMap.andThen(opt->opt.flatMap(grantType->grantType.stream().findFirst().map(ApplicationInformationGrantTypes::getApplicationInformationGT)));
+		Function<ApplicationInformation,Optional<ApplicationInformation>> scopeTypeReverse = scopeType.andThen(opt->opt.flatMap(scope->scope.stream().findFirst().map(ApplicationInformationScope::getApplicationInformationS)));
 
 		Assertions.assertAll(
 			"Entity mapping failures for forward " + fullyMapped.getUuid(),
@@ -113,8 +116,8 @@ public class ApplicationInformationRepositoryTest {
 		List<ApplicationInformation> applicationInformations = Arrays.asList(ApplicationInformation.builder()
 			.published(LocalDateTime.parse("2011-07-03 12:09:38", SQL_FORMATTER))
 			.selfLinkHref(SELF_LINK)
-			.selfLinkRel("self")
-			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+			.selfLinkRel("self1")
+			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/ApplicationInformation/01/IntervalBlock")
 			.upLinkRel("up")
 			.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 			.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
@@ -152,24 +155,40 @@ public class ApplicationInformationRepositoryTest {
 				.registrationAccessToken(DUMMY_STRING)
 				.thirdPartyScopeSelectionScreenURI(DUMMY_STRING)
 				.dataCustodianScopeSelectionScreenURI(DUMMY_STRING)
-				.grantTypes(Stream.of(
+				/*.grantTypes(Stream.of(
 					new ApplicationInformationGrantTypes()
 						.setGrantTypes(GrantTypes.AUTHORIZATION_CODE),
 					new ApplicationInformationGrantTypes()
 						.setGrantTypes(GrantTypes.CLIENT_CREDENTIALS)
+				).collect(Collectors.toSet()))*/
+				.grantTypes(Stream.of(ApplicationInformationGrantTypes.builder()
+						.grantTypes(GrantTypes.AUTHORIZATION_CODE)
+					.build(),
+					ApplicationInformationGrantTypes.builder()
+						.grantTypes(GrantTypes.CLIENT_CREDENTIALS)
+						.build()
 				).collect(Collectors.toSet()))
-				.applicationScope(Stream.of(
+				/*.applicationScope(Stream.of(
 					new ApplicationInformationScope()
 						.setScope("testestest"),
 					new ApplicationInformationScope()
 						.setScope("testestest2")
-				).collect(Collectors.toSet()))
+				).collect(Collectors.toSet()))*/
+				.applicationScope(Stream.of(
+					ApplicationInformationScope.builder()
+						.scope("scope 1")
+						.build(),
+					ApplicationInformationScope.builder()
+						.scope("scope 2")
+						.build()
+					).collect(Collectors.toSet())
+				)
 			.build(),
 			ApplicationInformation.builder()
 				.published(LocalDateTime.parse("2012-07-03 12:09:38", SQL_FORMATTER))
 				.selfLinkHref(SELF_LINK)
-				.selfLinkRel("self")
-				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/02/IntervalBlock")
+				.selfLinkRel("self2")
+				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/ApplicationInformation/02/IntervalBlock")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2013-03-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
@@ -207,34 +226,40 @@ public class ApplicationInformationRepositoryTest {
 				.registrationAccessToken(DUMMY_STRING)
 				.thirdPartyScopeSelectionScreenURI(DUMMY_STRING)
 				.dataCustodianScopeSelectionScreenURI(DUMMY_STRING)
-				.grantTypes(Stream.of(
-					new ApplicationInformationGrantTypes()
-						.setGrantTypes(GrantTypes.AUTHORIZATION_CODE),
-					new ApplicationInformationGrantTypes()
-						.setGrantTypes(GrantTypes.CLIENT_CREDENTIALS)
+				.grantTypes(Stream.of(ApplicationInformationGrantTypes.builder()
+						.grantTypes(GrantTypes.REFRESH_TOKEN)
+						.build(),
+					ApplicationInformationGrantTypes.builder()
+						.grantTypes(GrantTypes.CLIENT_CREDENTIALS)
+						.build()
 				).collect(Collectors.toSet()))
 				.applicationScope(Stream.of(
-					new ApplicationInformationScope()
-						.setScope("testestest"),
-					new ApplicationInformationScope()
-						.setScope("testestest2")
-				).collect(Collectors.toSet()))
+						ApplicationInformationScope.builder()
+							.scope("scope 3")
+							.build(),
+						ApplicationInformationScope.builder()
+							.scope("scope 4")
+							.build()
+					).collect(Collectors.toSet())
+				)
 
 				.build()
 			);
 		applicationInformations.forEach(ai->{
 
-			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,ai.getSelfLinkHref()));
-			UUID key=ai.getUuid();
+			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ai.getSelfLinkHref()));
 			ai.getApplicationScope().forEach(as -> {
-				as.setApplicationInformation(ai);
-				as.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,ai.getSelfLinkHref()));
-
+				//as.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,as.getScope()));
+				as.setApplicationInformationS(ai);
 			});
 			ai.getGrantTypes().forEach(gt ->{
-				gt.setApplicationInformation(ai);
-				gt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,ai.getSelfLinkHref()));
+
+				//gt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,gt.getApplicationInformationGT().toString()));
+				gt.setApplicationInformationGT(ai);
 				});
+
+				ai.getGrantTypes();
+
 			}
 
 		);

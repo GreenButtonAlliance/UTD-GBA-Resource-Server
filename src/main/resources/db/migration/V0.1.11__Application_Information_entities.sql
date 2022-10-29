@@ -111,22 +111,22 @@ CREATE TABLE IF NOT EXISTS usage.application_information
   tos_uri                                         TEXT,
   software_id                                     TEXT,
   software_version                                TEXT,
-  token_endpoint_auth_method                      usage.token_end_point_method,
+  token_end_point_auth_method                     usage.token_end_point_method,
   response_types                                  usage.response_types,
   registration_client_uri                         TEXT,
-  registration_access_token                       TEXT,
   third_party_selection_screen_uri                TEXT,
-  data_custodian_scope_selection_uri              TEXT
+  registration_access_token                       TEXT,
+  data_custodian_scope_selection_screen_uri       TEXT
 );
 CREATE TABLE IF NOT EXISTS usage.application_information_scope
 (
   uuid       UUID PRIMARY KEY,
   scope      TEXT,
-  application_information_uuid UUID NOT NULL REFERENCES usage.application_information
+  application_information_uuid UUID REFERENCES usage.application_information ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS usage.application_information_grant_type
 (
   uuid                         UUID PRIMARY KEY,
   grant_types                  usage.grant_types,
-  application_information_uuid UUID NOT NULL REFERENCES usage.application_information
+  application_information_uuid UUID REFERENCES usage.application_information ON DELETE CASCADE
 );
