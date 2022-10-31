@@ -34,7 +34,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.UUID;
@@ -78,8 +80,12 @@ public class IntervalBlockController {
 
 	@GetMapping
 	public String getAll() {
+		//Possibly run a sort of Loop for all Data Collection
+		List<IntervalBlockDto> listIntervalBlockDto = intervalBlockService.findAll().stream()
+			.map(IntervalBlockDto::fromIntervalBlock).collect(Collectors.toList());
+
 		IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream()
-			.map(IntervalBlockDto::fromIntervalBlock).toList().get(0);
+			.map(IntervalBlockDto::fromIntervalBlock).toList().get(1);
 
 		String retVal = null;
 		try {
@@ -89,16 +95,33 @@ public class IntervalBlockController {
 			StringWriter stringWriter = new StringWriter();
 			mar.marshal(intervalBlockDto, stringWriter);
 			retVal = stringWriter.toString();
-		} catch (Exception e) {
-			log.error("Exception " + e);
+		} catch (JAXBException e) {
+			System.out.println(e);
 		}
 
 		return retVal;
 	}
 
 	@GetMapping("/{uuid}")
-	public IntervalBlockDto getByUuid(@PathVariable UUID uuid) {
+	public String getByUuid(@PathVariable UUID uuid) {
+		//The code currently returns the requested variables, however it doesn't have the data feed
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
-		return IntervalBlockDto.fromIntervalBlock(intervalBlock);
+
+		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
+
+		String retVal = null;
+		try {
+			JAXBContext context = JAXBContext.newInstance(IdentifiedObjectDto.class);
+			Marshaller mar = context.createMarshaller();
+			mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
+			//mar.setProperty(Marshaller.J);
+			StringWriter stringWriter = new StringWriter();
+			mar.marshal(singleIntervalBlockDto, stringWriter);
+			retVal = stringWriter.toString();
+		} catch (JAXBException e) {
+			System.out.println(e);
+		}
+
+		return retVal;
 	}
 }
