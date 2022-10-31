@@ -28,13 +28,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.util.HashSet;
@@ -97,6 +91,7 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "data_custodian_resource_endpoint", nullable = false)
 	private String dataCustodianResourceEndpoint;
 
+	//deprecated
 	@Column(name = "third_party_scope_selection_screen_uri")
 	private String thirdPartyScopeSelectionScreenUri;
 
@@ -163,6 +158,7 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "registration_access_token", nullable = false)
 	private String registrationAccessToken;
 
+	//deprecated
 	@Column(name = "data_custodian_scope_selection_screen_uri")
 	private String dataCustodianScopeSelectionScreenUri;
 
