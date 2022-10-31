@@ -22,6 +22,7 @@ import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.common.web.dto.DateTimeIntervalDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;

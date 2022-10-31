@@ -17,8 +17,10 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception.EntityNotFoundByIdException;
+import org.greenbuttonalliance.gbaresourceserver.usage.web.dto.IdentifiedObjectDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.web.dto.IntervalBlockDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -64,6 +69,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Transactional
+@Slf4j
 @RequestMapping(path = "/espi/1_1/resource/IntervalBlock", produces = MediaType.APPLICATION_ATOM_XML_VALUE)
 @ResponseStatus(HttpStatus.OK)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -71,10 +77,23 @@ public class IntervalBlockController {
 	private final IntervalBlockService intervalBlockService;
 
 	@GetMapping
-	public List<IntervalBlockDto> getAll() {
-		return intervalBlockService.findAll().stream()
-			.map(IntervalBlockDto::fromIntervalBlock)
-			.collect(Collectors.toList());
+	public String getAll() {
+		IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream()
+			.map(IntervalBlockDto::fromIntervalBlock).toList().get(0);
+
+		String retVal = null;
+		try {
+			JAXBContext context = JAXBContext.newInstance(IdentifiedObjectDto.class);
+			Marshaller mar = context.createMarshaller();
+			mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
+			StringWriter stringWriter = new StringWriter();
+			mar.marshal(intervalBlockDto, stringWriter);
+			retVal = stringWriter.toString();
+		} catch (Exception e) {
+			log.error("Exception " + e);
+		}
+
+		return retVal;
 	}
 
 	@GetMapping("/{uuid}")
