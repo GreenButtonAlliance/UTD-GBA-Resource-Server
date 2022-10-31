@@ -18,22 +18,19 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
 import java.util.EnumSet;
 
-public enum ThirdPartyApplicationStatus {
-	DEVELOPMENT(1),
-	REVIEW_TEST(2),
-	PRODUCTION(3),
-	RETIRED(4);
+public enum TokenEndpointMethod {
+	BASIC("client_secret_basic");
 
-	public final int schemaValue;
+	public final String schemaValue;
 
-	ThirdPartyApplicationStatus(int schemaValue) {
+	TokenEndpointMethod(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static ThirdPartyApplicationStatus getThirdPartyApplicationStatusFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(ThirdPartyApplicationStatus.class).stream()
-			.filter(tpas -> tpas.schemaValue == schemaValue)
+	public static TokenEndpointMethod getTokenEndpointMethodFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(TokenEndpointMethod.class).stream()
+			.filter(tepm -> tepm.schemaValue.equals(schemaValue))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + ThirdPartyApplicationStatus.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + TokenEndpointMethod.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }

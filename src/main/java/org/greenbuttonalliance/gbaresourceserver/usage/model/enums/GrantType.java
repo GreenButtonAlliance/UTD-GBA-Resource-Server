@@ -18,22 +18,21 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
 import java.util.EnumSet;
 
-public enum ThirdPartyApplicationStatus {
-	DEVELOPMENT(1),
-	REVIEW_TEST(2),
-	PRODUCTION(3),
-	RETIRED(4);
+public enum GrantType {
+	AUTHORIZATION_CODE("authorization_code"),
+	CLIENT_CREDENTIALS("client_credentials"),
+	REFRESH_TOKEN("refresh_token");
 
-	public final int schemaValue;
+	public final String schemaValue;
 
-	ThirdPartyApplicationStatus(int schemaValue) {
+	GrantType(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static ThirdPartyApplicationStatus getThirdPartyApplicationStatusFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(ThirdPartyApplicationStatus.class).stream()
-			.filter(tpas -> tpas.schemaValue == schemaValue)
+	public static GrantType getGrantTypeFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(GrantType.class).stream()
+			.filter(gt -> gt.schemaValue.equals(schemaValue))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + ThirdPartyApplicationStatus.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + GrantType.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }
