@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.UUID;
@@ -80,7 +79,7 @@ public class IntervalBlockController {
 
 	@GetMapping
 	public String getAll() {
-		//Possibly run a sort of Loop for all Data Collection
+		//Will convert the incoming data to String and add the proper xml bits.
 		List<IntervalBlockDto> listIntervalBlockDto = intervalBlockService.findAll().stream()
 			.map(IntervalBlockDto::fromIntervalBlock).collect(Collectors.toList());
 
@@ -89,7 +88,7 @@ public class IntervalBlockController {
 
 		String retVal = null;
 		try {
-			JAXBContext context = JAXBContext.newInstance(IdentifiedObjectDto.class);
+			JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
 			Marshaller mar = context.createMarshaller();
 			mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
 			StringWriter stringWriter = new StringWriter();
@@ -104,17 +103,15 @@ public class IntervalBlockController {
 
 	@GetMapping("/{uuid}")
 	public String getByUuid(@PathVariable UUID uuid) {
-		//The code currently returns the requested variables, however it doesn't have the data feed
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
 
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
 
 		String retVal = null;
 		try {
-			JAXBContext context = JAXBContext.newInstance(IdentifiedObjectDto.class);
+			JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
 			Marshaller mar = context.createMarshaller();
 			mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
-			//mar.setProperty(Marshaller.J);
 			StringWriter stringWriter = new StringWriter();
 			mar.marshal(singleIntervalBlockDto, stringWriter);
 			retVal = stringWriter.toString();
