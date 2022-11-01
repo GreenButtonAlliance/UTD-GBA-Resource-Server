@@ -16,14 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -41,6 +34,9 @@ import java.util.Set;
 @SuperBuilder
 @RequiredArgsConstructor
 public class ApplicationInformation extends IdentifiedObject {
+
+	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL)
+	private Set<Subscription> subscription = new HashSet<>();
 
 	@Column(name = "authorization_server_authorization_endpoint", nullable = false)
 	private String authorizationServerAuthorizationEndpoint;

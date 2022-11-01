@@ -16,14 +16,15 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "retail_customer", schema = "usage")
@@ -33,6 +34,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @RequiredArgsConstructor
 public class RetailCustomer extends IdentifiedObject {
+
+	@OneToMany(mappedBy = "retail_customer", cascade = CascadeType.ALL)
+	private Set<Subscription> subscription = new HashSet<>();
 
 	@Column
 	private Boolean enabled;
