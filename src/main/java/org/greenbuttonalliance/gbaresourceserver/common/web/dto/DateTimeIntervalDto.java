@@ -31,8 +31,8 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class DateTimeIntervalDto implements Serializable {
-	private Long duration; // in epoch-seconds
-	private Long start; // in seconds
+	private Long start; // in epoch-seconds
+	private Long duration; // in seconds
 
 	public static DateTimeIntervalDto fromDateTimeInterval(DateTimeInterval dateTimeInterval) {
 		return Optional.ofNullable(dateTimeInterval)
