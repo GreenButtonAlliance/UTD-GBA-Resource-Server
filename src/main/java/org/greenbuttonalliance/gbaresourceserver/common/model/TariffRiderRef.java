@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +38,7 @@ public class TariffRiderRef {
 	private String riderType;
 
 	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.enrollment_status)", read = "enrollment_status::TEXT")
 	private EnrollmentStatus enrollmentStatus;
 
 	private LocalDateTime effectiveDate;
