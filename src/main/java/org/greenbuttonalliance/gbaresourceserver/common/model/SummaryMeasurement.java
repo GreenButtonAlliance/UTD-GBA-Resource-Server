@@ -16,7 +16,6 @@
 
 package org.greenbuttonalliance.gbaresourceserver.common.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,21 +34,16 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class SummaryMeasurement {
 
-	@Column(name = "power_of_ten_multiplier")
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "power_of_ten_multiplier::TEXT")
 	private UnitMultiplierKind powerOfTenMultiplier;
 
-	@Column(name = "time_stamp")
 	private LocalDateTime timeStamp;
 
-	@Column
+	@Enumerated(EnumType.STRING)
 	private UnitSymbolKind uom;
 
-	@Column
 	private Long value;
 
-	@Column(name = "reading_type_ref")
 	private String readingTypeRef;
 
 }

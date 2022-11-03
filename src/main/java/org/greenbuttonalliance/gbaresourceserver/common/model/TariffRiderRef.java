@@ -16,14 +16,27 @@
 
 package org.greenbuttonalliance.gbaresourceserver.common.model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TariffRiderRef {
 
 	private String riderType;
 
+	@Enumerated(EnumType.STRING)
 	private EnrollmentStatus enrollmentStatus;
 
 	private LocalDateTime effectiveDate;

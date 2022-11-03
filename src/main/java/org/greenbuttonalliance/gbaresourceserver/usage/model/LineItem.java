@@ -16,6 +16,8 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -30,7 +32,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
@@ -49,7 +50,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class LineItem {
 
 	@Id
@@ -70,6 +70,13 @@ public class LineItem {
 	private String note;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "powerOfTenMultiplier", column = @Column(name = "power_of_ten_multiplier")),
+		@AttributeOverride(name = "timeStamp", column = @Column(name = "time_stamp")),
+		@AttributeOverride(name = "readingTypeRef", column = @Column(name = "reading_type_ref"))
+	})
+	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "power_of_ten_multiplier::TEXT")
+	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "uom::TEXT")
 	private SummaryMeasurement measurement;
 
 	@Enumerated(EnumType.STRING)
@@ -83,7 +90,7 @@ public class LineItem {
 	@Embedded
 	private DateTimeInterval itemPeriod;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "usage_summary_uuid", nullable = false)
-	private UsageSummary usageSummary;
+//	@ManyToOne(optional = false)
+//	@JoinColumn(name = "usage_summary_uuid", nullable = false)
+//	private UsageSummary usageSummary;
 }
