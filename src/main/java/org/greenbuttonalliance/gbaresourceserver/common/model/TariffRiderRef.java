@@ -16,6 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.common.model;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDateTime;
 
+@Embeddable
 @Getter
 @Setter
 @Builder

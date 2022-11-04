@@ -35,11 +35,13 @@ import java.time.LocalDateTime;
 public class SummaryMeasurement {
 
 	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)")
 	private UnitMultiplierKind powerOfTenMultiplier;
 
 	private LocalDateTime timeStamp;
 
 	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)")
 	private UnitSymbolKind uom;
 
 	private Long value;

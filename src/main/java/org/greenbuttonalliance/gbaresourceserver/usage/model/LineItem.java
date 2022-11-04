@@ -75,8 +75,6 @@ public class LineItem {
 		@AttributeOverride(name = "timeStamp", column = @Column(name = "time_stamp")),
 		@AttributeOverride(name = "readingTypeRef", column = @Column(name = "reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "power_of_ten_multiplier::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "uom::TEXT")
 	private SummaryMeasurement measurement;
 
 	@Enumerated(EnumType.STRING)

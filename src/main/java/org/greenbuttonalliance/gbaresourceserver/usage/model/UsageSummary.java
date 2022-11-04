@@ -39,6 +39,7 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.BillingChargeSourc
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRefs;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
