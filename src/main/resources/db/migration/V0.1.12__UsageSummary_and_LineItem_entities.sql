@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS usage.line_item (
   item_kind usage.item_kind,
   unit_cost BIGINT,
   start BIGINT,
-  duration BIGINT
---   usage_summary_uuid UUID NOT NULL REFERENCES usage.usage_summaries ON DELETE CASCADE
+  duration BIGINT,
+  usage_summary_uuid UUID NOT NULL REFERENCES usage.usage_summaries ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS usage.tariff_rider_ref (

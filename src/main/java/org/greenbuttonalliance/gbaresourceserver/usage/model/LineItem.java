@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -88,7 +89,7 @@ public class LineItem {
 	@Embedded
 	private DateTimeInterval itemPeriod;
 
-//	@ManyToOne(optional = false)
-//	@JoinColumn(name = "usage_summary_uuid", nullable = false)
-//	private UsageSummary usageSummary;
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "usage_summary_uuid", nullable = false)
+	private UsageSummary usageSummary;
 }
