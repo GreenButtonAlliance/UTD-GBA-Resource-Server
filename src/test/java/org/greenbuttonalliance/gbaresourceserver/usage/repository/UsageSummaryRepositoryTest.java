@@ -28,10 +28,12 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +43,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -55,10 +61,9 @@ public class UsageSummaryRepositoryTest {
 	private final UsageSummaryRepository usageSummaryRepository;
 
 	// for testing findById
-	private static final String UUID_PARAMETER = "USTest";
-	private static final String PRESENT = "USTest1";
-
-	private static final String NOT_PRESENT = "foobar";
+	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/UsageSummary";
+	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/UsageSummary/174";
+	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@BeforeEach
@@ -69,7 +74,7 @@ public class UsageSummaryRepositoryTest {
 
 	@Test
 	public void findByPresentId_returnsMatching() {
-		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT);
+		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK);
 		UUID foundUuid = usageSummaryRepository.findById(presentUuid).map(UsageSummary::getUuid).orElse(null);
 
 		Assertions.assertEquals(
@@ -81,7 +86,7 @@ public class UsageSummaryRepositoryTest {
 
 	@Test
 	public void findByNotPresentId_returnsEmpty() {
-		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, NOT_PRESENT);
+		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, NOT_PRESENT_SELF_LINK);
 		Optional<UsageSummary> usageSummary = usageSummaryRepository.findById(notPresentUuid);
 
 		Assertions.assertTrue(
@@ -102,15 +107,95 @@ public class UsageSummaryRepositoryTest {
 		);
 	}
 
-	public static List<UsageSummary> buildTestData() {
+	@Test
+	public void entityMappings_areNotNull() {
+		UsageSummary fullyMappedUsageSummary = usageSummaryRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedUsageSummary != null);
+
+		Function<UsageSummary, Optional<Set<LineItem>>> usageSummaryToLineItems = us -> Optional.ofNullable(us.getLineItems());
+		// TODO test mapping to UsagePoint once entity is available
+
+		Assertions.assertAll(
+			"Entity mapping failures for usage summary " + fullyMappedUsageSummary.getUuid(),
+			Stream.of(usageSummaryToLineItems)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsageSummary).isPresent()))
+		);
+	}
+
+	private static List<UsageSummary> buildTestData() {
 		List<UsageSummary> usageSummaries = Arrays.asList(
 			UsageSummary.builder()
+				.description("description")
+				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+				.selfLinkHref(PRESENT_SELF_LINK)
+				.selfLinkRel("self")
+				.upLinkHref(upLinkHref)
+				.upLinkRel("up")
+				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
 					.setStart(11L))
 				.billLastPeriod(1L)
 				.billToDate(1L)
 				.costAdditionalLastPeriod(1L)
+				.lineItems(new HashSet<>(List.of(
+					LineItem.builder()
+						.amount(1L)
+						.rounding(1L)
+						.dateTime(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+						.note("note")
+						.measurement(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.itemKind(ItemKind.INFORMATION)
+						.unitCost(1L)
+						.itemPeriod(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.build(),
+
+					LineItem.builder()
+						.amount(1L)
+						.rounding(1L)
+						.dateTime(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+						.note("note")
+						.measurement(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.itemKind(ItemKind.INFORMATION)
+						.unitCost(1L)
+						.itemPeriod(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.build(),
+
+					LineItem.builder()
+						.amount(1L)
+						.rounding(1L)
+						.dateTime(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+						.note("note")
+						.measurement(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.itemKind(ItemKind.INFORMATION)
+						.unitCost(1L)
+						.itemPeriod(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.build()
+					)
+					)
+				)
 				.currency(Currency.USD)
 				.overallConsumptionLastPeriod(new SummaryMeasurement()
 					.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
@@ -182,11 +267,11 @@ public class UsageSummaryRepositoryTest {
 				.readCycle("readCycle")
 				.tariffRiderRefs(
 					new HashSet<>(
-						Arrays.asList(
+						Collections.singletonList(
 							TariffRiderRef.builder()
 								.enrollmentStatus(EnrollmentStatus.ENROLLED)
-									.effectiveDate(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
-										.riderType("riderType")
+								.effectiveDate(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+								.riderType("riderType")
 								.build()
 						)
 					)
@@ -196,12 +281,76 @@ public class UsageSummaryRepositoryTest {
 				.build(),
 
 			UsageSummary.builder()
+				.description("description")
+				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/175")
+				.selfLinkRel("self")
+				.upLinkHref(upLinkHref)
+				.upLinkRel("up")
+				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
 					.setStart(11L))
 				.billLastPeriod(1L)
 				.billToDate(1L)
 				.costAdditionalLastPeriod(1L)
+				.lineItems(new HashSet<>(List.of(
+						LineItem.builder()
+							.amount(1L)
+							.rounding(1L)
+							.dateTime(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.note("note")
+							.measurement(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.itemKind(ItemKind.INFORMATION)
+							.unitCost(1L)
+							.itemPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.build(),
+
+						LineItem.builder()
+							.amount(1L)
+							.rounding(1L)
+							.dateTime(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+							.note("note")
+							.measurement(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.itemKind(ItemKind.INFORMATION)
+							.unitCost(1L)
+							.itemPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.build(),
+
+						LineItem.builder()
+							.amount(1L)
+							.rounding(1L)
+							.dateTime(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+							.note("note")
+							.measurement(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.itemKind(ItemKind.INFORMATION)
+							.unitCost(1L)
+							.itemPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.build()
+					)
+					)
+				)
 				.currency(Currency.USD)
 				.overallConsumptionLastPeriod(new SummaryMeasurement()
 					.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
@@ -273,7 +422,7 @@ public class UsageSummaryRepositoryTest {
 				.readCycle("readCycle")
 				.tariffRiderRefs(
 					new HashSet<>(
-						Arrays.asList(
+						Collections.singletonList(
 							TariffRiderRef.builder()
 								.enrollmentStatus(EnrollmentStatus.ENROLLED)
 								.effectiveDate(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
@@ -287,12 +436,76 @@ public class UsageSummaryRepositoryTest {
 				.build(),
 
 							UsageSummary.builder()
+								.description("description")
+								.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+								.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/176")
+								.selfLinkRel("self")
+								.upLinkHref(upLinkHref)
+								.upLinkRel("up")
+								.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 								.billingPeriod(new DateTimeInterval()
 									.setDuration(10L)
 									.setStart(11L))
 								.billLastPeriod(1L)
 								.billToDate(1L)
 								.costAdditionalLastPeriod(1L)
+								.lineItems(new HashSet<>(List.of(
+										LineItem.builder()
+											.amount(1L)
+											.rounding(1L)
+											.dateTime(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+											.note("note")
+											.measurement(new SummaryMeasurement()
+												.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+												.setTimeStamp(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+												.setUom(UnitSymbolKind.M)
+												.setValue(1L)
+												.setReadingTypeRef("readingTypeRef"))
+											.itemKind(ItemKind.INFORMATION)
+											.unitCost(1L)
+											.itemPeriod(new DateTimeInterval()
+												.setDuration(10L)
+												.setStart(11L))
+											.build(),
+
+										LineItem.builder()
+											.amount(1L)
+											.rounding(1L)
+											.dateTime(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+											.note("note")
+											.measurement(new SummaryMeasurement()
+												.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+												.setTimeStamp(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
+												.setUom(UnitSymbolKind.M)
+												.setValue(1L)
+												.setReadingTypeRef("readingTypeRef"))
+											.itemKind(ItemKind.INFORMATION)
+											.unitCost(1L)
+											.itemPeriod(new DateTimeInterval()
+												.setDuration(10L)
+												.setStart(11L))
+											.build(),
+
+										LineItem.builder()
+											.amount(1L)
+											.rounding(1L)
+											.dateTime(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+											.note("note")
+											.measurement(new SummaryMeasurement()
+												.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+												.setTimeStamp(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+												.setUom(UnitSymbolKind.M)
+												.setValue(1L)
+												.setReadingTypeRef("readingTypeRef"))
+											.itemKind(ItemKind.INFORMATION)
+											.unitCost(1L)
+											.itemPeriod(new DateTimeInterval()
+												.setDuration(10L)
+												.setStart(11L))
+											.build()
+									)
+									)
+								)
 								.currency(Currency.USD)
 								.overallConsumptionLastPeriod(new SummaryMeasurement()
 									.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
@@ -364,13 +577,13 @@ public class UsageSummaryRepositoryTest {
 								.readCycle("readCycle")
 								.tariffRiderRefs(
 									new HashSet<>(
-										Arrays.asList(
+										Collections.singletonList(
 											TariffRiderRef.builder()
 												.enrollmentStatus(EnrollmentStatus.ENROLLED)
 												.effectiveDate(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 												.riderType("riderType")
 												.build()
-						)
+										)
 					)
 				)
 				.billingChargeSource(new BillingChargeSource()
@@ -378,11 +591,17 @@ public class UsageSummaryRepositoryTest {
 				.build()
 		);
 
+		//TODO add UsagePoints
+
 		// hydrate UUIDs and entity mappings
-		AtomicInteger count = new AtomicInteger();
 		usageSummaries.forEach(us -> {
-			count.getAndIncrement();
-			us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, UUID_PARAMETER+count));
+			us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, us.getSelfLinkHref()));
+			AtomicInteger count = new AtomicInteger();
+			us.getLineItems().forEach(li -> {
+				count.getAndIncrement();
+				li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
+				li.setUsageSummary(us);
+			});
 		});
 
 		return usageSummaries;

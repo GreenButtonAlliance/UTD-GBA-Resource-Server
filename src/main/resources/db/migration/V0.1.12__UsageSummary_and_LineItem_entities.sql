@@ -100,7 +100,6 @@ CREATE TABLE IF NOT EXISTS usage.usage_summaries (
   commodity TEXT,
   tariff_profile TEXT,
   read_cycle TEXT,
---   tariffRiderRefs
   agency_name TEXT
 --   TODO add reference to usage_points uuid EX: usage_point_uuid UUID NOT NULL REFERENCES usage.usage_points ON DELETE CASCADE
   );

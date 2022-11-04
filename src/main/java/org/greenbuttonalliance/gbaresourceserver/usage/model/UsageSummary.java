@@ -29,17 +29,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.BillingChargeSource;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRefs;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
@@ -54,9 +52,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
+@RequiredArgsConstructor
 public class UsageSummary extends IdentifiedObject{
 
 	@Embedded
@@ -75,8 +72,8 @@ public class UsageSummary extends IdentifiedObject{
 	@Column(name = "cost_additional_last_period")
 	private Long costAdditionalLastPeriod;
 
-//	@OneToMany(mappedBy = "usageSummary", cascade = CascadeType.ALL)
-//	private Set<LineItem> lineItems = new HashSet<>();
+	@OneToMany(mappedBy = "usageSummary", cascade = CascadeType.ALL)
+	private Set<LineItem> lineItems = new HashSet<>();
 
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.currency)", read = "currency::TEXT")
