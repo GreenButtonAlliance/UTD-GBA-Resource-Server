@@ -38,7 +38,7 @@ public class SummaryMeasurement {
 	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)")
 	private UnitMultiplierKind powerOfTenMultiplier;
 
-	private LocalDateTime timeStamp;
+	private Long timeStamp; //in epoch-seconds
 
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)")

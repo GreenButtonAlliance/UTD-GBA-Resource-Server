@@ -40,7 +40,6 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -65,7 +64,7 @@ public class LineItem {
 
 	@Column(name = "date_time")
 	@NonNull
-	private LocalDateTime dateTime;
+	private Long dateTime; //in epoch-seconds
 
 	@Column
 	private String note;

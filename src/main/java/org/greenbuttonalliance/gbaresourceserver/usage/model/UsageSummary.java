@@ -43,7 +43,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -213,7 +212,7 @@ public class UsageSummary extends IdentifiedObject{
 	private DateTimeInterval ratchetDemandPeriod;
 
 	@Column(name = "status_time_stamp")
-	private LocalDateTime statusTimeStamp;
+	private Long statusTimeStamp; //in epoch-seconds
 
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.commodity_kind)", read = "commodity::TEXT")
