@@ -19,20 +19,12 @@ package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.greenbuttonalliance.gbaresourceserver.common.web.dto.DateTimeIntervalDto;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-/**
- * Just a starting point for the API team, feel free to modify/delete as needed
- */
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -56,7 +48,7 @@ public class ReadingTypeDto implements Serializable {
 	private TimeAttributeKind measuringPeriod;
 //	private RationalNumber argument;
 
-	public static ReadingTypeDto fromIntervalReading(ReadingType readingType) {
+	public static ReadingTypeDto fromReadingType(ReadingType readingType) {
 		return Optional.ofNullable(readingType)
 			.map(rt -> new ReadingTypeDto()
 				.setAccumulationBehavior(rt.getAccumulationBehavior())
