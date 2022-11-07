@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 public class IntervalBlockDto extends IdentifiedObjectDto {
 	@XmlElement
 	private DateTimeIntervalDto interval;
+
 	private Set<IntervalReadingDto> IntervalReading = new HashSet<>(); // unusual naming convention to match NAESB schema
 
 	public static IntervalBlockDto fromIntervalBlock(IntervalBlock intervalBlock) {
