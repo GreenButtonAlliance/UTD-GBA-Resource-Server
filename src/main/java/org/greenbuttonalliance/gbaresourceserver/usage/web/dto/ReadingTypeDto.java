@@ -28,7 +28,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class ReadingTypeDto implements Serializable {
+public class ReadingTypeDto extends IdentifiedObjectDto implements Serializable {
 	private AccumulationKind accumulationBehavior;
 	private CommodityKind commodity;
 	private Short consumptionTier;
@@ -36,7 +36,7 @@ public class ReadingTypeDto implements Serializable {
 	private DataQualifierKind dataQualifier;
 	private QualityOfReading defaultQuality;
 	private FlowDirectionKind flowDirection;
-	private Long intervalLength; //Java doesn't support unsigned integers, so doubled capacity
+	private Long intervalLength; //Java doesn't support unsigned integers, so just using Long
 	private MeasurementKind kind;
 	private PhaseCodeKind phase;
 	private UnitMultiplierKind powerOfTenMultiplier;
@@ -50,7 +50,7 @@ public class ReadingTypeDto implements Serializable {
 
 	public static ReadingTypeDto fromReadingType(ReadingType readingType) {
 		return Optional.ofNullable(readingType)
-			.map(rt -> new ReadingTypeDto()
+			.map(rt -> new IdentifiedObjectDtoSubclassFactory<>(ReadingTypeDto::new).create(rt)
 				.setAccumulationBehavior(rt.getAccumulationBehavior())
 				.setCommodity(rt.getCommodity())
 				.setConsumptionTier(rt.getConsumptionTier())
