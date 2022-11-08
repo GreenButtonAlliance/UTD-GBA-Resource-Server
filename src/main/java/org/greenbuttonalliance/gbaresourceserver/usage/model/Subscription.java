@@ -20,9 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Subscription extends IdentifiedObject {
 
-	@Embedded
-	private DateTimeInterval interval;
-
+	// TODO Potential Embedded private DateTimeInterval interval;
 	// TODO add UsagePoint reference once entity is available
 
 	@Column(name = "hashed_id")
