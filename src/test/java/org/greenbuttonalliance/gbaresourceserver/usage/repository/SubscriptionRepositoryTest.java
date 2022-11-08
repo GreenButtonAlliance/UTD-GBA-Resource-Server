@@ -20,7 +20,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 	import lombok.RequiredArgsConstructor;
 	import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 	import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
-	import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
+	import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 	import org.greenbuttonalliance.gbaresourceserver.usage.service.ApplicationInformationService;
 	import org.junit.jupiter.api.Assertions;
 	import org.junit.jupiter.api.Assumptions;
@@ -59,6 +59,7 @@ public class SubscriptionRepositoryTest {
 	@BeforeEach
 	public void initTestData() {
 		subscriptionRepository.deleteAllInBatch();
+		// TODO finish buildTestData();
 		subscriptionRepository.saveAll(buildTestData());
 	}
 
@@ -77,11 +78,11 @@ public class SubscriptionRepositoryTest {
 	@Test
 	public void findByNotPresentId_returnsEmpty() {
 		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, NOT_PRESENT_SELF_LINK);
-		Optional<Subscription> Subscription = subscriptionRepository.findById(notPresentUuid);
+		Optional<Subscription> subscription = subscriptionRepository.findById(notPresentUuid);
 
 		Assertions.assertTrue(
-			Subscription.isEmpty(),
-			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, Subscription.map(Subscription::getUuid).orElse(null))
+			subscription.isEmpty(),
+			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, subscription.map(Subscription::getUuid).orElse(null))
 		);
 	}
 
@@ -97,38 +98,202 @@ public class SubscriptionRepositoryTest {
 		);
 	}
 
-	/*
-	APPLY test when the models for usagepoint, applicationInformation, and applicationInformationScopes are done.
-	 */
-//	@Test
-//	public void entityMappings_areNotNull() {
-//		Subscription fullyMappedSubscription = SubscriptionRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-//		Assumptions.assumeTrue(fullyMappedSubscription != null);
-//
-//		/* Test bidirectional mappings all the way from IntervalBlock <--> Application Information (IntervalReading) <--> Application Information Scopes (ReadingQuality) here since IntervalReading and ReadingQuality don't have
-//		their own repositories for which we're testing their individual mappings */
-//		Function<Subscription, Optional<Set<ApplicationInformation>>> subscriptionToApplicationInformation = ib -> Optional.ofNullable(ib.getApplicationInformation());
-//		Function<Subscription, Optional<Set<ApplicationInformationScopes>>> subscriptionToApplicationInformationScopes = subscriptionToApplicationInformation.andThen(opt -> opt.flatMap(
-//			readings -> readings.stream().findFirst().map(ApplicationInformation::getApplicationInformationScopes)
-//		));
-//		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformationReversed = subscriptionToApplicationInformationScopes.andThen(opt -> opt.flatMap(
-//			applicationInformationScopes -> applicationInformationScopes.stream().findFirst().map(ApplicationInformationScopes::getScope)
-//		));
-//		Function<Subscription, Optional<Subscription>> subscriptionToSubscriptionReversed = subscriptionToApplicationInformationScopesReversed.andThen(opt -> opt.map(
-//			ApplicationInformation::getClientId
-//		));
-//
-//		Function<Subscription, Optional<UsagePoint>> subscriptionToUsagePoint = ib -> Optional.ofNullable(ib.getUsagepoint_id()); // this is potentially getUsagePoint, not getUsagepoint_id
-//
-//		Assertions.assertAll(
-//			"Entity mapping failures for block " + fullyMappedSubscription.getUuid(),
-//			Stream.of(SubscriptionToApplicationInformation,
-//					SubscriptionToApplicationInformationScopes,
-//					SubscriptionToApplicationInformationReversed,
-//					SubscriptionToSubscriptionReversed,
-//					SubscriptionToUsagePoint)
-//				.map(mappingFunc ->
-//					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedSubscription).isPresent()))
-//		);
-//	}
+	@Test
+	public void entityMappings_areNotNull() {
+		Subscription fullyMappedSubscription = subscriptionRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedSubscription != null);
+
+		/* Test bidirectional mappings all the way from IntervalBlock <--> Application Information (IntervalReading) <--> Application Information Scopes (ReadingQuality) here since IntervalReading and ReadingQuality don't have
+		their own repositories for which we're testing their individual mappings */
+		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformation = mr -> Optional.ofNullable(mr.getApplicationInformation());
+		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = mr -> Optional.ofNullable(mr.getRetail_customer());
+
+		// TODO test connection from Subscription -> ApplicationInformation -> ApplicationInformationScopes
+		// TODO test connection from Subscription -> UsagePoint
+		// TODO test for the reverse from ApplicationInformationScopes -> ApplicationInformation -> Subscription
+
+		Assertions.assertAll(
+			"Entity mapping failures for block " + fullyMappedSubscription.getUuid(),
+			Stream.of(subscriptionToApplicationInformation, subscriptionToRetailCustomer)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedSubscription).isPresent()))
+		);
+	}
+
+	// TODO buildTestData()
+		// TODO List<Subscription> subscription = Arrays.asList(...)
+		// TODO ApplicationInformation testApplication = ApplicationInformation.builder()...
+		// TODO hydrate UUIDs and entity mappings subscription.forEach(ib -> { ...
+
+	private static List<MeterReading> buildTestData() {
+		List<Subscription> subscription = Arrays.asList(
+			Subscription.builder()
+				.description("Fifteen Minute Electricity Consumption")
+				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.selfLinkHref(PRESENT_SELF_LINK)
+				.selfLinkRel("self")
+				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+				.upLinkRel("up")
+				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.applicationInformation(ApplicationInformation.builder()
+					.description("Type of Meter Reading Data")
+					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.selfLinkHref(PRESENT_SELF_LINK)
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.authorizationServerAuthorizationEndpoint()
+					.authorizationServerRegistrationEndpoint()
+					.authorizationServerTokenEndpoint()
+					.authorizationServerUri()
+					.clientId()
+					.clientIdIssuedAt()
+					.clientName()
+					.clientSecret()
+					.clientSecretExpiresAt()
+					.clientUri()
+					.contacts()
+					.dataCustodianApplicationStatus()
+					.dataCustodianBulkRequestUri()
+					.dataCustodianId()
+					.dataCustodianResourceEndpoint()
+					/* deprecated .thirdPartyScopeSelectionScreenUri */
+					.thirdPartyUserPortalScreenUri()
+					.logoUri()
+					.policyUri()
+					.thirdPartyApplicationDescription()
+					.thirdPartyApplicationStatus()
+					.thirdPartyApplicationType()
+					.thirdPartyApplicationUse()
+					.thirdPartyPhone()
+					.thirdPartyNotifyUri()
+					.redirectUris()
+					.tosUri()
+					.softwareId()
+					.softwareVersion()
+					.tokenEndpointAuthMethod()
+					.responseType()
+					.registrationClientUri()
+					.registrationAccessToken()
+					/* deprecated .dataCustodianScopeSelectionScreenUri */
+					.grantTypes()
+					.scopes()
+					.build())
+				.retail_customer(RetailCustomer.builder()
+					.description("Type of Meter Reading Data")
+					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.selfLinkHref(PRESENT_SELF_LINK)
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+					.upLinkRel("up")
+					.enabled()
+					.firstName()
+					.lastName()
+					.password()
+					.role()
+					.username()
+					.build())
+				.build(),
+			Subscription.builder()
+				.description("Hourly Wh Received")
+				.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
+				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
+				.selfLinkRel("self")
+				.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
+				.upLinkRel("up")
+				.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
+				.applicationInformation(ApplicationInformation.builder()
+					.description("Type of Meter Reading Data")
+					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.selfLinkHref(PRESENT_SELF_LINK)
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.authorizationServerAuthorizationEndpoint()
+					.authorizationServerRegistrationEndpoint()
+					.authorizationServerTokenEndpoint()
+					.authorizationServerUri()
+					.clientId()
+					.clientIdIssuedAt()
+					.clientName()
+					.clientSecret()
+					.clientSecretExpiresAt()
+					.clientUri()
+					.contacts()
+					.dataCustodianApplicationStatus()
+					.dataCustodianBulkRequestUri()
+					.dataCustodianId()
+					.dataCustodianResourceEndpoint()
+					/* deprecated .thirdPartyScopeSelectionScreenUri */
+					.thirdPartyUserPortalScreenUri()
+					.logoUri()
+					.policyUri()
+					.thirdPartyApplicationDescription()
+					.thirdPartyApplicationStatus()
+					.thirdPartyApplicationType()
+					.thirdPartyApplicationUse()
+					.thirdPartyPhone()
+					.thirdPartyNotifyUri()
+					.redirectUris()
+					.tosUri()
+					.softwareId()
+					.softwareVersion()
+					.tokenEndpointAuthMethod()
+					.responseType()
+					.registrationClientUri()
+					.registrationAccessToken()
+					/* deprecated .dataCustodianScopeSelectionScreenUri */
+					.grantTypes()
+					.scopes()
+					.build())
+				.retail_customer(RetailCustomer.builder()
+					.description("Type of Meter Reading Data")
+					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.selfLinkHref(PRESENT_SELF_LINK)
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+					.upLinkRel("up")
+					.enabled()
+					.firstName()
+					.lastName()
+					.password()
+					.role()
+					.username()
+					.build())
+				.build(),
+			Subscription.builder()
+				.description("Hourly Wh Delivered")
+				.published(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
+				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/2")
+				.selfLinkRel("self")
+				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
+				.upLinkRel("up")
+				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
+				.hashedId()
+				.lastUpdate()
+				.applicationInformation()
+				.authorization_id()
+				.retail_customer()
+				.usagepoint_id()
+				.build()
+		);
+
+		// hydrate UUIDs and entity mappings
+		subscription.forEach(mr -> {
+			mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
+
+			// TODO mr.getUsagePoint().forEach(ib -> { ...
+
+			Optional.ofNullable(mr.getApplicationInformation()).ifPresent(rt -> {
+				rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
+				rt.setSubscription(mr); // this might be failing bc there isn't a OneToOne relationship in ApplicationInformation.java
+			});
+
+			// TODO hydrate UsagePoint reference once entity is available
+		});
+		return subscription;
+	}
+
 }
