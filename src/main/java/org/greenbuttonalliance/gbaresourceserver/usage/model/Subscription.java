@@ -40,7 +40,7 @@ public class Subscription extends IdentifiedObject {
 	private ApplicationInformation applicationInformation; //TO _DO change teh id names
 
 	@Column(name = "authorization_id")
-	private Long authorization_id; // can this be a short?
+	private Long authorization_id;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "retail_customer", nullable = false)
