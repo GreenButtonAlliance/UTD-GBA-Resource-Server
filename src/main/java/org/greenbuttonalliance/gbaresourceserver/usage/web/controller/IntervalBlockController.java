@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.StringWriter;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,24 +74,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockController {
 	private final IntervalBlockService intervalBlockService;
+	private static final SimpleDateFormat publicationDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+	private static final SimpleDateFormat lastUpdateDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+	//uuid needs to be changed
 	private String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-		"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>       {The href= entry should be a valid URL in production.  This may be omitted for the current project}\n" +
+		"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
 		"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
-		"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>       {This is a unique UUID version 3 or 5 value calculated at the time the API is requested}\n" +
-		"               <title>Green Button Usage Feed</title>                                                {This is a constant created for each API but MUST not contain Personal Identifiable Information (PII)}\n" +
-		"               <updated>{lastUpdateDate}</updated>                                                 {UTC timestamp normally the time the API response is issued}\n" +
+		"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>\n" +
+		"               <title>Green Button Usage Feed</title>\n" +
+		"               <updated>" + lastUpdateDate +"</updated>\n" +
 		"   Entity being exported:\n" +
 		"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
 		"           <id>{uuid}</id>                                                                                          {resource Index UUID value}\n" +
-		"           <link rel=\"{selfLinkRel}\" href=\"{selfLinkHref}\" type=\"espi-entry/{resourceName}\" />                    {This is ESPI Resource name}\n" +
-		"           <link rel=\"{upLinkRel}\" href=\"{upLinkHref}\" type=\"espi-feed/{resourceName}\" />\n" +
-		"          <link rel=\"related\" href=\"{selfLinkHref of related Resources}\" type=\"espi-entry/{ResourceName}\"  />  {While the type= is usually a xxxx-entry it could be a collection and would be xxxx-feed}\n" +
-		"           <title>Description</tltle>                                                                        {Required element, but it can be empty}\n" +
+		"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
+		"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
+		"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
+		"           <title>Description</tltle>\n" +
 		"           <content>";
 
 	private String suffix = "</content>\n" +
-		"       <published>{publicationDate}</updated>                                              {UTC timestamp normally the time the API response is issued}\n" +
-		"       <updated>{lastUpdateDate}</updated>                                                 {UTC timestamp normally the time the API response is issued}\n" +
+		"       <published>"+publicationDate+"</updated>\n" +
+		"       <updated>"+lastUpdateDate+"</updated>\n" +
 		"       </entry>\n" +
 		"      </feed>    ";
 
