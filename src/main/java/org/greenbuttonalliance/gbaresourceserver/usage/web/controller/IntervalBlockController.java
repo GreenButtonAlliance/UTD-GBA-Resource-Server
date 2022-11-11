@@ -85,7 +85,7 @@ public class IntervalBlockController {
 		"               <updated>" + lastUpdateDate +"</updated>\n" +
 		"   Entity being exported:\n" +
 		"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
-		"           <id>{uuid}</id>                                                                                          {resource Index UUID value}\n" +
+		"           <id>{uuid}</id> \n" +
 		"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
 		"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
 		"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
