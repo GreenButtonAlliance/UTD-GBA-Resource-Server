@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2022 Green Button Alliance, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "organisation", schema = "customer")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Organisation {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "street_address_id")
+	private StreetAddress streetAddress;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "postal_address_id")
+	private StreetAddress postalAddress;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "phone1_id")
+	private TelephoneNumber phone1;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "phone2_id")
+	private TelephoneNumber phone2;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "electronic_address_id")
+	private ElectronicAddress electronicAddress;
+
+	@Column(name = "organisation_name")
+	private String organisationName;
+}
