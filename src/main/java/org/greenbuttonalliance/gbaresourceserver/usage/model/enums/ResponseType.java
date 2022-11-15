@@ -14,14 +14,23 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.EnumSet;
 
-import java.util.UUID;
+public enum ResponseType {
+	CODE("code");
 
-@Repository
-public interface ElectricPowerQualitySummaryRepository extends JpaRepository<ElectricPowerQualitySummary, UUID> {
+	public final String schemaValue;
+
+	ResponseType(String schemaValue) {
+		this.schemaValue = schemaValue;
+	}
+
+	public static ResponseType getResponseTypeFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(ResponseType.class).stream()
+			.filter(rt -> rt.schemaValue.equals(schemaValue))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException("No " + ResponseType.class.getCanonicalName() + " with schemaValue " + schemaValue));
+	}
 }
