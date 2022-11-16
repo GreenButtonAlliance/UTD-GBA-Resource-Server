@@ -77,56 +77,83 @@ public class IntervalBlockController {
 	private static final SimpleDateFormat publicationDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	private static final SimpleDateFormat lastUpdateDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	//uuid needs to be changed
-	private String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+	private String parentPrefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 		"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
 		"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
 		"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>\n" +
 		"               <title>Green Button Usage Feed</title>\n" +
-		"               <updated>" + lastUpdateDate +"</updated>\n" +
-		"   Entity being exported:\n" +
-		"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
-		"           <id>{uuid}</id> \n" +
-		"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
-		"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
-		"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
-		"           <title>Description</tltle>\n" +
-		"           <content>";
+		"               <updated>" + lastUpdateDate +"</updated>\n";
 
-	private String suffix = "</content>\n" +
-		"       <published>"+publicationDate+"</updated>\n" +
-		"       <updated>"+lastUpdateDate+"</updated>\n" +
-		"       </entry>\n" +
-		"      </feed>    ";
+	private String parentSuffix = "      </feed>    ";
 
 	@GetMapping
 	public String getAll() {
-		//Will convert the incoming data to String and add the proper xml bits.
 		List<IntervalBlockDto> listIntervalBlockDto = intervalBlockService.findAll().stream()
 			.map(IntervalBlockDto::fromIntervalBlock).collect(Collectors.toList());
 
-		IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream()
-			.map(IntervalBlockDto::fromIntervalBlock).toList().get(1);
+		int blockSize = 0;
+		blockSize = intervalBlockService.findAll().stream().map(IntervalBlockDto::fromIntervalBlock).toList().size();
+		String retVal ="";
+		String combinedUUIDs = "";
 
-		String retVal = null;
-		try {
-			JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
-			Marshaller mar = context.createMarshaller();
-			mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
-			StringWriter stringWriter = new StringWriter();
-			mar.marshal(intervalBlockDto, stringWriter);
-			retVal = stringWriter.toString();
-		} catch (JAXBException e) {
-			System.out.println(e);
+		for(int i = 0; i < blockSize; i++){
+			IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream().map(IntervalBlockDto::fromIntervalBlock).toList().get(i);
+			UUID theUUID = intervalBlockDto.getUuid();
+			String descript = intervalBlockDto.getDescription();
+			String intPrefix = "<entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
+				"           <id>" + theUUID +"</id> \n" +
+				"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
+				"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
+				"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
+				"           <title>"+ descript +"</tltle>\n" +
+				"           <content>";
+
+			String intSuffix = "</content>\n" +
+				"       <published>"+publicationDate+"</updated>\n" +
+				"       <updated>"+lastUpdateDate+"</updated>\n" +
+				"       </entry>\n";
+			try {
+				JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
+				Marshaller mar = context.createMarshaller();
+				//mar.setProperty(Marshaller.JAXB_ENCODING, "http://www.w3.org/2001/XMLSchema-instance");
+				StringWriter stringWriter = new StringWriter();
+				mar.marshal(intervalBlockDto, stringWriter);
+				retVal = stringWriter.toString();
+			} catch (JAXBException e) {
+				System.out.println(e);
+			}
+			combinedUUIDs += intPrefix + retVal + intSuffix;
 		}
 
-		return prefix + retVal + suffix;
+
+		return parentPrefix + combinedUUIDs + parentSuffix;
 	}
 
 	@GetMapping("/{uuid}")
 	public String getByUuid(@PathVariable UUID uuid) {
+
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
 
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
+		String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+			"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
+			"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
+			"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>\n" +
+			"               <title>Green Button Usage Feed</title>\n" +
+			"               <updated>" + lastUpdateDate +"</updated>\n" +
+			"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
+			"           <id>{uuid}</id> \n" +
+			"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
+			"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
+			"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
+			"           <title>Description</tltle>\n" +
+			"           <content>";
+
+		String suffix = "</content>\n" +
+			"       <published>"+publicationDate+"</updated>\n" +
+			"       <updated>"+lastUpdateDate+"</updated>\n" +
+			"       </entry>\n" +
+			"      </feed>    ";
 
 		String retVal = null;
 		try {
