@@ -78,7 +78,6 @@ public class IntervalBlockController {
 	private static final SimpleDateFormat lastUpdateDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	//uuid needs to be changed
 	private String parentPrefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-		"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
 		"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
 		"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>\n" +
 		"               <title>Green Button Usage Feed</title>\n" +
@@ -134,7 +133,6 @@ public class IntervalBlockController {
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
 
 		String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
 			"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
 			"               <id>"+uuid+"</id>\n" +
 			"               <title>Green Button Usage Feed</title>\n" +
