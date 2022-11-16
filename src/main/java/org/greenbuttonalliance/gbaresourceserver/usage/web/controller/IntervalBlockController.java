@@ -99,13 +99,12 @@ public class IntervalBlockController {
 		for(int i = 0; i < blockSize; i++){
 			IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream().map(IntervalBlockDto::fromIntervalBlock).toList().get(i);
 			UUID theUUID = intervalBlockDto.getUuid();
-			String descript = intervalBlockDto.getDescription();
 			String intPrefix = "<entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
 				"           <id>" + theUUID +"</id> \n" +
-				"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
-				"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
-				"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
-				"           <title>"+ descript +"</tltle>\n" +
+				"           <link rel=\"self\" href=\""+ intervalBlockDto.getSelfLinkHref() +"\" type=\"espi-entry/Subscription\" />\n" +
+				"           <link rel=\"up\" href=\""+ intervalBlockDto.getUpLinkHref() +"\" type=\"espi-feed/UsagePoint\" />\n" +
+				"          <link rel=\"related\" href=\"" + intervalBlockDto.getUpLinkRel() +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
+				"           <title>"+ intervalBlockDto.getDescription()+"</title>\n" +
 				"           <content>";
 
 			String intSuffix = "</content>\n" +
@@ -132,8 +131,8 @@ public class IntervalBlockController {
 	public String getByUuid(@PathVariable UUID uuid) {
 
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
-
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
+
 		String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 			"           <?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n" +
 			"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
@@ -142,10 +141,10 @@ public class IntervalBlockController {
 			"               <updated>" + lastUpdateDate +"</updated>\n" +
 			"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
 			"           <id>"+ uuid +"</id> \n" +
-			"           <link rel=\"self\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Subscription/4a795488\" type=\"espi-entry/Subscription\" />\n" +
-			"           <link rel=\"up\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/UsagePoint\" type=\"espi-feed/UsagePoint\" />\n" +
-			"          <link rel=\"related\" href=\"https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/RetailCustomer/92770a14/ElectricPowerQualitySummary/0b1d2485\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
-			"           <title>Description</tltle>\n" +
+			"           <link rel=\"self\" href=\""+ singleIntervalBlockDto.getSelfLinkHref() +"\" type=\"espi-entry/Subscription\" />\n" +
+			"           <link rel=\"up\" href=\""+ singleIntervalBlockDto.getUpLinkHref() +"\" type=\"espi-feed/UsagePoint\" />\n" +
+			"          <link rel=\"related\" href=\"" + singleIntervalBlockDto.getUpLinkRel() +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
+			"           <title>"+ singleIntervalBlockDto.getDescription()+"</tltle>\n" +
 			"           <content>";
 
 		String suffix = "</content>\n" +
