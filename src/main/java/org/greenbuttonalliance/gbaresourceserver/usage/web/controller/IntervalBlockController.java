@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.StringWriter;
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -74,7 +76,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockController {
 	private final IntervalBlockService intervalBlockService;
-	private static final SimpleDateFormat publicationDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	private static final SimpleDateFormat lastUpdateDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	//uuid needs to be changed
 	private String parentPrefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -107,8 +109,8 @@ public class IntervalBlockController {
 				"           <content>";
 
 			String intSuffix = "</content>\n" +
-				"       <published>"+publicationDate+"</updated>\n" +
-				"       <updated>"+lastUpdateDate+"</updated>\n" +
+				"       <published>"+dtf.format(intervalBlockDto.getPublished())+"</published>\n" +
+				"       <updated>"+dtf.format(intervalBlockDto.getUpdated())+"</updated>\n" +
 				"       </entry>\n";
 			try {
 				JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
@@ -146,8 +148,8 @@ public class IntervalBlockController {
 			"           <content>";
 
 		String suffix = "</content>\n" +
-			"       <published>"+publicationDate+"</updated>\n" +
-			"       <updated>"+lastUpdateDate+"</updated>\n" +
+			"       <published>"+dtf.format(singleIntervalBlockDto.getPublished())+"</published>\n" +
+			"       <updated>"+dtf.format(singleIntervalBlockDto.getUpdated())+"</updated>\n" +
 			"       </entry>\n" +
 			"      </feed>    ";
 
