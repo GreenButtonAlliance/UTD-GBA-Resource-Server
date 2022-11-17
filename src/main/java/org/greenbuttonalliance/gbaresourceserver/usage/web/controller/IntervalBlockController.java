@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception.EntityNotFoundByIdException;
+import org.greenbuttonalliance.gbaresourceserver.usage.web.dto.IdentifiedObjectDto;
 import org.greenbuttonalliance.gbaresourceserver.usage.web.dto.IntervalBlockDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,56 +77,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockController {
 	private final IntervalBlockService intervalBlockService;
-	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-	private static final SimpleDateFormat lastUpdateDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-	//uuid needs to be changed
-	private String parentPrefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-		"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
-		"               <id>urn:uuid:046b4788-f971-4662-b177-6d94832dd403</id>\n" +
-		"               <title>Green Button Usage Feed</title>\n" +
-		"               <updated>" + lastUpdateDate +"</updated>\n";
-
-	private String parentSuffix = "      </feed>    ";
 
 	@GetMapping
 	public String getAll() {
 		List<IntervalBlockDto> listIntervalBlockDto = intervalBlockService.findAll().stream()
-			.map(IntervalBlockDto::fromIntervalBlock).collect(Collectors.toList());
+			.map(IntervalBlockDto::fromIntervalBlock).toList();
 
-		int blockSize = 0;
-		blockSize = intervalBlockService.findAll().stream().map(IntervalBlockDto::fromIntervalBlock).toList().size();
-		String retVal ="";
-		String combinedUUIDs = "";
+		StringBuilder contentSB = new StringBuilder();
 
-		for(int i = 0; i < blockSize; i++){
-			IntervalBlockDto intervalBlockDto = intervalBlockService.findAll().stream().map(IntervalBlockDto::fromIntervalBlock).toList().get(i);
-			UUID theUUID = intervalBlockDto.getUuid();
-			String intPrefix = "<entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
-				"           <id>" + theUUID +"</id> \n" +
-				"           <link rel=\"self\" href=\""+ intervalBlockDto.getSelfLinkHref() +"\" type=\"espi-entry/Subscription\" />\n" +
-				"           <link rel=\"up\" href=\""+ intervalBlockDto.getUpLinkHref() +"\" type=\"espi-feed/UsagePoint\" />\n" +
-				"          <link rel=\"related\" href=\"" + intervalBlockDto.getUpLinkRel() +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
-				"           <title>"+ intervalBlockDto.getDescription()+"</title>\n" +
-				"           <content>";
-
-			String intSuffix = "</content>\n" +
-				"       <published>"+dtf.format(intervalBlockDto.getPublished())+"</published>\n" +
-				"       <updated>"+dtf.format(intervalBlockDto.getUpdated())+"</updated>\n" +
-				"       </entry>\n";
-			try {
-				JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
-				Marshaller mar = context.createMarshaller();
-				StringWriter stringWriter = new StringWriter();
-				mar.marshal(intervalBlockDto, stringWriter);
-				retVal = stringWriter.toString();
-			} catch (JAXBException e) {
-				System.out.println(e);
-			}
-			combinedUUIDs += intPrefix + retVal + intSuffix;
+		for(IntervalBlockDto intervalBlockDto : listIntervalBlockDto) {
+			String content = IdentifiedObjectDto.getContent(intervalBlockDto);
+			contentSB.append(intervalBlockDto.addWrapper(content, true));
 		}
-
-
-		return parentPrefix + combinedUUIDs + parentSuffix;
+		return IdentifiedObjectDto.addParentWrapper(contentSB.toString(), "IntervalBlock");
 	}
 
 	@GetMapping("/{uuid}")
@@ -134,36 +98,8 @@ public class IntervalBlockController {
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
 
-		String prefix = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"           <feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
-			"               <id>"+uuid+"</id>\n" +
-			"               <title>Green Button Usage Feed</title>\n" +
-			"               <updated>" + lastUpdateDate +"</updated>\n" +
-			"       <entry xmlns:espi=\"http://naesb.org/espi\" xmlns=\"http://www.w3.org/2005/Atom\">\n" +
-			"           <id>"+ uuid +"</id> \n" +
-			"           <link rel=\"self\" href=\""+ singleIntervalBlockDto.getSelfLinkHref() +"\" type=\"espi-entry/Subscription\" />\n" +
-			"           <link rel=\"up\" href=\""+ singleIntervalBlockDto.getUpLinkHref() +"\" type=\"espi-feed/UsagePoint\" />\n" +
-			"          <link rel=\"related\" href=\"" + singleIntervalBlockDto.getUpLinkRel() +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
-			"           <title>"+ singleIntervalBlockDto.getDescription()+"</tltle>\n" +
-			"           <content>";
+		String content = IdentifiedObjectDto.getContent(singleIntervalBlockDto);
 
-		String suffix = "</content>\n" +
-			"       <published>"+dtf.format(singleIntervalBlockDto.getPublished())+"</published>\n" +
-			"       <updated>"+dtf.format(singleIntervalBlockDto.getUpdated())+"</updated>\n" +
-			"       </entry>\n" +
-			"      </feed>    ";
-
-		String retVal = null;
-		try {
-			JAXBContext context = JAXBContext.newInstance(IntervalBlockDto.class);
-			Marshaller mar = context.createMarshaller();
-			StringWriter stringWriter = new StringWriter();
-			mar.marshal(singleIntervalBlockDto, stringWriter);
-			retVal = stringWriter.toString();
-		} catch (JAXBException e) {
-			System.out.println(e);
-		}
-
-		return prefix + retVal + suffix;
+		return singleIntervalBlockDto.addWrapper(content, false);
 	}
 }
