@@ -17,10 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -38,12 +35,13 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@XmlRootElement
+@XmlRootElement(name = "IntervalBlock")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IntervalBlockDto extends IdentifiedObjectDto {
 	@XmlElement
 	private DateTimeIntervalDto interval;
 
+	@XmlElement
 	private Set<IntervalReadingDto> IntervalReading = new HashSet<>(); // unusual naming convention to match NAESB schema
 
 	public static IntervalBlockDto fromIntervalBlock(IntervalBlock intervalBlock) {

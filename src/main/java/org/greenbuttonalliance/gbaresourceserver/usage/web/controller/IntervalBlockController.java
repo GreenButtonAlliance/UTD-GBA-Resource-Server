@@ -16,9 +16,6 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
@@ -32,15 +29,8 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.StringWriter;
-import java.security.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Just a starting point for the API team, feel free to modify/delete as needed
@@ -86,8 +76,8 @@ public class IntervalBlockController {
 		StringBuilder contentSB = new StringBuilder();
 
 		for(IntervalBlockDto intervalBlockDto : listIntervalBlockDto) {
-			String content = IdentifiedObjectDto.getContent(intervalBlockDto);
-			contentSB.append(intervalBlockDto.addWrapper(content, true));
+			String content = intervalBlockDto.getContent();
+			contentSB.append(intervalBlockDto.addEntryWrapper("IntervalBlock", content));
 		}
 		return IdentifiedObjectDto.addParentWrapper(contentSB.toString(), "IntervalBlock");
 	}
@@ -98,8 +88,8 @@ public class IntervalBlockController {
 		IntervalBlock intervalBlock = intervalBlockService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundByIdException(IntervalBlock.class, uuid));
 		IntervalBlockDto singleIntervalBlockDto = IntervalBlockDto.fromIntervalBlock(intervalBlock);
 
-		String content = IdentifiedObjectDto.getContent(singleIntervalBlockDto);
+		String content = singleIntervalBlockDto.getContent();
 
-		return singleIntervalBlockDto.addWrapper(content, false);
+		return singleIntervalBlockDto.addEntryWrapper("IntervalBlock", content);
 	}
 }
