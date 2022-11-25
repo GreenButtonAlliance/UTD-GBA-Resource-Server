@@ -14,14 +14,20 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+package org.greenbuttonalliance.gbaresourceserver.common.model;
 
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import java.util.UUID;
+@Embeddable
+@Getter
+@Setter
+@Accessors(chain = true)
+public class BillingChargeSource {
 
-@Repository
-public interface ElectricPowerQualitySummaryRepository extends JpaRepository<ElectricPowerQualitySummary, UUID> {
+	@Column
+	private String agencyName;
 }
