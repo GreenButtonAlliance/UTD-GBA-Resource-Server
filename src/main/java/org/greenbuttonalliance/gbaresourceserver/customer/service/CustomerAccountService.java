@@ -14,31 +14,30 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.web.dto;
+package org.greenbuttonalliance.gbaresourceserver.customer.service;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.CustomerAccount;
+import org.greenbuttonalliance.gbaresourceserver.customer.repository.CustomerAccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Just a starting point for the API team, feel free to modify/delete as needed
  */
-@Getter
-@Setter
-@Accessors(chain = true)
-public class DateTimeIntervalDto implements Serializable {
-	private Long start; // in epoch-seconds
-	private Long duration; // in seconds
+@Service
+public class CustomerAccountService {
+	@Autowired
+	private CustomerAccountRepository customerAccountRepository;
 
-	public static DateTimeIntervalDto fromDateTimeInterval(DateTimeInterval dateTimeInterval) {
-		return Optional.ofNullable(dateTimeInterval)
-			.map(dti -> new DateTimeIntervalDto()
-				.setStart(dti.getStart())
-				.setDuration(dti.getDuration()))
-			.orElse(null);
+	public Optional<CustomerAccount> findByUuid(UUID uuid) {
+		return customerAccountRepository.findById(uuid);
+	}
+
+	public List<CustomerAccount> findAll() {
+		return customerAccountRepository.findAll();
 	}
 }

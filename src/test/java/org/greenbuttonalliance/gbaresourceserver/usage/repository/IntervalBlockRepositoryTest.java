@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +36,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -98,31 +100,37 @@ public class IntervalBlockRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		IntervalBlock fullyMappedBlock = intervalBlockRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-		Assumptions.assumeTrue(fullyMappedBlock != null);
+		IntervalBlock fullyMappedIntervalBlock = intervalBlockRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedIntervalBlock != null);
 
-		// build functions to test mappings from IntervalBlock <--> IntervalReading <--> ReadingQuality
-		Function<IntervalBlock, Optional<Set<IntervalReading>>> blockToReadings = ib -> Optional.ofNullable(ib.getIntervalReadings());
-		Function<IntervalBlock, Optional<Set<ReadingQuality>>> blockToReadingQualities = blockToReadings.andThen(opt -> opt.flatMap(
+		/* Test bidirectional mappings all the way from IntervalBlock <--> IntervalReading <--> ReadingQuality here since IntervalReading and ReadingQuality don't have
+		their own repositories for which we're testing their individual mappings */
+		Function<IntervalBlock, Optional<Set<IntervalReading>>> blockToIntervalReadings = ib -> Optional.ofNullable(ib.getIntervalReadings());
+		Function<IntervalBlock, Optional<Set<ReadingQuality>>> blockToReadingQualities = blockToIntervalReadings.andThen(opt -> opt.flatMap(
 			readings -> readings.stream().findFirst().map(IntervalReading::getReadingQualities)
 		));
-		Function<IntervalBlock, Optional<IntervalReading>> blockToReadingReversed = blockToReadingQualities.andThen(opt -> opt.flatMap(
+		Function<IntervalBlock, Optional<IntervalReading>> blockToIntervalReadingReversed = blockToReadingQualities.andThen(opt -> opt.flatMap(
 			readingQualities -> readingQualities.stream().findFirst().map(ReadingQuality::getReading)
 		));
-		Function<IntervalBlock, Optional<IntervalBlock>> blockToBlockReversed = blockToReadingReversed.andThen(opt -> opt.map(
+		Function<IntervalBlock, Optional<IntervalBlock>> intervalBlockToIntervalBlockReversed = blockToIntervalReadingReversed.andThen(opt -> opt.map(
 			IntervalReading::getBlock
 		));
 
+		Function<IntervalBlock, Optional<MeterReading>> blockToMeterReading = ib -> Optional.ofNullable(ib.getMeterReading());
+
 		Assertions.assertAll(
-			"Entity mapping failures for block " + fullyMappedBlock.getUuid(),
-			Stream.of(blockToReadings, blockToReadingQualities, blockToReadingReversed, blockToBlockReversed)
+			"Entity mapping failures for block " + fullyMappedIntervalBlock.getUuid(),
+			Stream.of(blockToIntervalReadings,
+					blockToReadingQualities,
+					blockToIntervalReadingReversed,
+					intervalBlockToIntervalBlockReversed,
+					blockToMeterReading)
 				.map(mappingFunc ->
-					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedBlock).isPresent()))
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedIntervalBlock).isPresent()))
 		);
 	}
 
-	// encapsulated in a method to make available to other test classes
-	public static List<IntervalBlock> buildTestData() {
+	private static List<IntervalBlock> buildTestData() {
 		List<IntervalBlock> intervalBlocks = Arrays.asList(
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
@@ -194,9 +202,23 @@ public class IntervalBlockRepositoryTest {
 				.build()
 		);
 
+		MeterReading testMeterReading = MeterReading.builder()
+			.description("Fifteen Minute Electricity Consumption")
+			.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+			.selfLinkRel("self")
+			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+			.upLinkRel("up")
+			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+			.intervalBlocks(new HashSet<>(intervalBlocks))
+			.build();
+		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
+
 		// hydrate UUIDs and entity mappings
 		intervalBlocks.forEach(ib -> {
 			ib.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ib.getSelfLinkHref()));
+			ib.setMeterReading(testMeterReading);
+
 			ib.getIntervalReadings().forEach(ir -> {
 				ir.setBlock(ib);
 				ir.getReadingQualities().forEach(rq -> rq.setReading(ir));

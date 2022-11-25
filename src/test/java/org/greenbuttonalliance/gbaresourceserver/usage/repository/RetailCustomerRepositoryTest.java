@@ -91,8 +91,7 @@ public class RetailCustomerRepositoryTest {
 		// TODO test mapping from RetailCustomer to Subscription and UsagePoint
 	}
 
-	// encapsulated in a method to make available to other test classes
-	public static List<RetailCustomer> buildTestData() {
+	private static List<RetailCustomer> buildTestData() {
 		List<RetailCustomer> readingTypes = Arrays.asList(
 			RetailCustomer.builder()
 				.description("Type of Meter Reading Data")

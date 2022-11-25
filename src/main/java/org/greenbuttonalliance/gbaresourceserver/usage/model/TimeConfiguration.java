@@ -29,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @RequiredArgsConstructor
 public class TimeConfiguration extends IdentifiedObject{
-	//note: using the correct naming scheme for columns matters, auto generated code adn queries assume you follow the correct scheme
+	//note: using the correct naming scheme for columns matters, auto generated code and queries assume you follow the correct scheme
 	@Column(name= "dst_end_rule")
 	private byte[] dstEndRule;
 	@Column(name = "dst_offset")
