@@ -115,6 +115,14 @@
 			<artifactId>uuid-creator</artifactId>
 			<version>5.2.0</version>
 		</dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -143,6 +151,10 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
 		</plugins>
 	</build>
 
