@@ -16,48 +16,44 @@
  *
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.common.model.ElectronicAddress;
-import org.greenbuttonalliance.gbaresourceserver.common.model.StreetAddress;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TelephoneNumber;
-
-import java.util.UUID;
-
+import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
 @MappedSuperclass
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public abstract class Location extends IdentifiedObject{
+public abstract class Location extends IdentifiedObject {
 	@Column
 	private String type;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name= "main_address")
 	private StreetAddress mainAddress;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name= "secondary_address")
 	private StreetAddress secondaryAddress;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="phone1")
 	private TelephoneNumber phone1;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="phone2")
 	private TelephoneNumber phone2;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="electronic_address")
 	private ElectronicAddress electronicAddress;
-	@Column
+	@Column(name="geo_info_reference")
 	private String geoInfoReference;
 	@Column
 	private String direction;
 	@Column
 	private String status;
-	@Column
-	private String positionPoints;
-
+	//position point
+	@Embedded
+	private PositionPoint positionPoint;
 }

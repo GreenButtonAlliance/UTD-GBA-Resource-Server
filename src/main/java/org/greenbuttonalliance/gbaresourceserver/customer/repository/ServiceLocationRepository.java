@@ -16,33 +16,14 @@
  *
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.ServiceLocation;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Embeddable
-@Getter
-@Setter
-@Accessors(chain = true)
-public class TelephoneNumber {
-	@Column
-	private String countryCode;
-	@Column
-	private String areaCode;
-	@Column
-	private String cityCode;
-	@Column
-	private String localNumber;
-	@Column
-	private String ext;
-	@Column
-	private String dialOut;
-	@Column
-	private String internationalPrefix;
-	@Column
-	private String ituPhone;
+import java.util.UUID;
+
+@Repository
+public interface ServiceLocationRepository extends JpaRepository<ServiceLocation, UUID> {
 }

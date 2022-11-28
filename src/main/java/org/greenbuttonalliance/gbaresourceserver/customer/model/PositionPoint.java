@@ -16,25 +16,23 @@
  *
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.*;
 
 @Embeddable
 @Getter
 @Setter
-@Accessors(chain = true)
-public class Status {
-	@Column
-	private String statusValue;
-	@Column
-	private long dateTime;
-	@Column
-	private String remark;
-	@Column
-	private String reason;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PositionPoint {
+	@Column(name = "x_position")
+	private String xPosition;
+	@Column(name = "y_position")
+	private String yPosition;
+	@Column(name = "z_position")
+	private String zPosition;
 }

@@ -16,12 +16,12 @@
  *
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.service;
+package org.greenbuttonalliance.gbaresourceserver.customer.service;
 
 import lombok.RequiredArgsConstructor;
 
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceLocation;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.ServiceLocationRepository;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.ServiceLocation;
+import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

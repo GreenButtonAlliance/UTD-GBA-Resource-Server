@@ -16,13 +16,12 @@
  *
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
@@ -32,22 +31,23 @@ import java.util.Set;
 @Table(name = "service_location", schema = "customer")
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-//technically extends work location, but work location contains nothing and just extends location
 public class ServiceLocation extends Location{
-	@Column(name = "access_method")
-	String accessMethod;
-	@Column(name = "site_accesss_problem")
-	String siteAccessProblem;
-	@Column(name = "needs_inspection")
-	boolean needsInspection;
-	//made a collection to handle unbounded max occurs
+	@Column(name="access_method")
+	private String accessMethod;
+
+	@Column(name="site_access_problem")
+	private String siteAccessProblem;
+
+	@Column(name="needs_inspection")
+	private boolean needsInspection;
+
 	@ElementCollection
-	@CollectionTable(name = "service_location_usage_points", schema = "customer", joinColumns = {@JoinColumn(name = "service_location_uuid", nullable = false)})
-	@Column(name = "usage_points", nullable = false)
+	@CollectionTable(name = "usage_points", schema = "customer", joinColumns = {@JoinColumn(name = "usage_point_uuid", nullable = false)})
+	@Column(name = "usage_point", nullable = false)
 	private Set<String> usagePoints = new HashSet<>();
-	@Column(name = "outage_block")
+
+	@Column(name="outage_block")
 	private String outageBlock;
 }
