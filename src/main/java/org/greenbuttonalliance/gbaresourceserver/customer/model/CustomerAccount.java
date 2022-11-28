@@ -53,7 +53,7 @@ public class CustomerAccount extends Document {
 	@Column(name = "last_bill_amount")
 	private Long lastBillAmount;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "contact_info_id")
 	private Organisation contactInfo;
 

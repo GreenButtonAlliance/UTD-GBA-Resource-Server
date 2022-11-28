@@ -48,7 +48,7 @@ public abstract class Document {
 	@Column(name = "revision_number")
 	private String revisionNumber;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "electronic_address_id")
 	private ElectronicAddress electronicAddress;
 
@@ -58,11 +58,11 @@ public abstract class Document {
 	@Column
 	private String title;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "doc_status_id")
 	private Status docStatus;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "status_id")
 	private Status status;
 
