@@ -49,7 +49,7 @@ public class IntervalReading {
 	@Column
 	private Long cost;
 
-	@OneToMany(mappedBy = "reading", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "reading", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ReadingQuality> readingQualities = new HashSet<>();
 
 	@Embedded

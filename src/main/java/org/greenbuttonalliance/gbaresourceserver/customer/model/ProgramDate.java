@@ -14,45 +14,34 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
-import org.hibernate.annotations.ColumnTransformer;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "tariff_rider_ref", schema = "usage")
+@Table(name = "program_date", schema = "customer")
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class TariffRiderRef {
+@SuperBuilder
+@RequiredArgsConstructor
+public class ProgramDate {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "rider_type")
-	private String riderType;
+	@Column(name = "program_date")
+	private Long programDate; // in epoch-seconds
 
-	@Column(name = "enrollment_status")
-	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS public.enrollment_status)", read = "enrollment_status::TEXT")
-	private EnrollmentStatus enrollmentStatus;
-
-	@Column(name = "effective_date")
-	private Long effectiveDate; //in epoch-seconds
+	@Column(name = "program_date_description")
+	private String programDateDescription;
 }

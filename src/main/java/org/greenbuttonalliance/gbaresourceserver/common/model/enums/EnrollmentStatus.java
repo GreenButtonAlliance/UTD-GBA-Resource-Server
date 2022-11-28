@@ -14,36 +14,25 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
+package org.greenbuttonalliance.gbaresourceserver.common.model.enums;
 
 import java.util.EnumSet;
 
-public enum Currency {
-	USD(840),
-	EUR(978),
-	AUD(36),
-	CAD(124),
-	CHF(756),
-	CNY(156),
-	DKK(208),
-	GBP(826),
-	JPY(392),
-	NOK(578),
-	RUB(643),
-	SEK(752),
-	INR(356),
-	OTHER(0);
+public enum EnrollmentStatus {
+	UNENROLLED("unenrolled"),
+	ENROLLED("enrolled"),
+	ENROLLED_PENDING("enrolledPending");
 
-	public final int schemaValue;
+	public final String schemaValue;
 
-	Currency(int schemaValue) {
+	EnrollmentStatus(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static Currency getCurrencyFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(Currency.class).stream()
-			.filter(c -> c.schemaValue == schemaValue)
+	public static EnrollmentStatus getEnrollmentStatusFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(EnrollmentStatus.class).stream()
+			.filter(es -> es.schemaValue.equals(schemaValue))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + Currency.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + EnrollmentStatus.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }

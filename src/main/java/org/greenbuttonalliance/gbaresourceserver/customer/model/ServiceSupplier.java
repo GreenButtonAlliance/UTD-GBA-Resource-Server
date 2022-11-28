@@ -14,45 +14,42 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
+import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.SupplierKind;
 import org.hibernate.annotations.ColumnTransformer;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "tariff_rider_ref", schema = "usage")
+@Table(name = "service_supplier", schema = "customer")
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class TariffRiderRef {
+@SuperBuilder
+@RequiredArgsConstructor
+public class ServiceSupplier extends OrganisationRole {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private UUID uuid;
 
-	@Column(name = "rider_type")
-	private String riderType;
-
-	@Column(name = "enrollment_status")
+	@Column
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS public.enrollment_status)", read = "enrollment_status::TEXT")
-	private EnrollmentStatus enrollmentStatus;
+	@ColumnTransformer(write = "CAST(? AS customer.supplier_kind)", read = "kind::TEXT")
+	private SupplierKind kind;
+
+	@Column(name = "issuer_identification_number")
+	private String issuerIdentificationNumber;
 
 	@Column(name = "effective_date")
-	private Long effectiveDate; //in epoch-seconds
+	private Long effectiveDate; // in epoch-seconds
 }

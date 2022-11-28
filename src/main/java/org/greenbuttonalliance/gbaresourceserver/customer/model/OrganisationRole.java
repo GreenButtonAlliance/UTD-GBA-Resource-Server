@@ -14,38 +14,25 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "meter_reading", schema = "usage")
+@MappedSuperclass
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class MeterReading extends IdentifiedObject {
+public abstract class OrganisationRole {
 
-	// TODO add UsagePoint reference once entity is available
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "reading_type_uuid")
-	private ReadingType readingType;
-
-	@OneToMany(mappedBy = "meterReading", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<IntervalBlock> intervalBlocks = new HashSet<>();
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "organisation_id")
+	private Organisation organisation;
 }

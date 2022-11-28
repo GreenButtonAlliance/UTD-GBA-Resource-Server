@@ -19,48 +19,57 @@ package org.greenbuttonalliance.gbaresourceserver.customer.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.CustomerKind;
+import org.hibernate.annotations.ColumnTransformer;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "customer_account", schema = "customer")
+@Table(name = "customer", schema = "customer")
 @Getter
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-public class CustomerAccount extends Document {
+public class Customer extends OrganisationRole {
 
 	@Id
 	private UUID uuid;
 
-	@Column(name = "billing_cycle")
-	private String billingCycle;
+	@Column
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS customer.customer_kind)", read = "kind::TEXT")
+	private CustomerKind kind;
 
-	@Column(name = "budget_bill")
-	private String budgetBill;
+	@Column(name = "special_need")
+	private String specialNeed;
 
-	@Column(name = "last_bill_amount")
-	private Long lastBillAmount;
+	@Column
+	private Boolean vip;
+
+	@Column(name = "puc_number")
+	private String pucNumber;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "contact_info_id")
-	private Organisation contactInfo;
+	@JoinColumn(name = "status_id")
+	private Status status;
 
-	@Column(name = "account_id")
-	private String accountId;
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "priority_id")
+	private Priority priority;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "customer_account_id", nullable = false)
-	private Set<AccountNotification> accountNotifications = new HashSet<>();
+	@Column
+	private String locale;
+
+	@Column(name = "customer_name")
+	private String customerName;
 }

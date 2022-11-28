@@ -14,12 +14,10 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,30 +27,26 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
-import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
-@Table(name = "tariff_rider_ref", schema = "usage")
+@Table(name = "priority", schema = "customer")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TariffRiderRef {
+public class Priority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "rider_type")
-	private String riderType;
+	@Column(nullable = false)
+	private Long rank;
 
-	@Column(name = "enrollment_status")
-	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS public.enrollment_status)", read = "enrollment_status::TEXT")
-	private EnrollmentStatus enrollmentStatus;
+	@Column
+	private String type;
 
-	@Column(name = "effective_date")
-	private Long effectiveDate; //in epoch-seconds
+	@Column
+	private String justification;
 }

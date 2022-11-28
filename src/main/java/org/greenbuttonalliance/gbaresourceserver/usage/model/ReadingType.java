@@ -30,15 +30,15 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
@@ -65,7 +65,7 @@ public class ReadingType extends IdentifiedObject {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.currency)", read = "currency::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.currency)", read = "currency::TEXT")
 	private Currency currency;
 
 	@Column(name = "data_qualifier")
@@ -98,7 +98,7 @@ public class ReadingType extends IdentifiedObject {
 
 	@Column(name = "power_of_ten_multiplier")
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "power_of_ten_multiplier::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "power_of_ten_multiplier::TEXT")
 	private UnitMultiplierKind powerOfTenMultiplier;
 
 	@Column(name = "time_attribute")
@@ -111,7 +111,7 @@ public class ReadingType extends IdentifiedObject {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "uom::TEXT")
 	private UnitSymbolKind uom;
 
 	@Column

@@ -22,11 +22,9 @@ import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.hibernate.annotations.ColumnTransformer;
-
-import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
@@ -35,13 +33,13 @@ import java.time.LocalDateTime;
 public class SummaryMeasurement {
 
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)")
 	private UnitMultiplierKind powerOfTenMultiplier;
 
 	private Long timeStamp; //in epoch-seconds
 
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)")
 	private UnitSymbolKind uom;
 
 	private Long value;
