@@ -16,41 +16,63 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
-
-import java.io.*;
-import java.net.*;
-import java.io.IOException;
 import java.util.regex.*;
-import java.util.stream.Collectors;
-
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 /**
  * @author Donald F. Coffin
  */
+@WebMvcTest(controllers = IntervalBlockController.class)
+@ExtendWith(SpringExtension.class)
 class IntervalBlockControllerTest {
 
+	@Autowired
+	private MockMvc mockMvc;
 
-//Verifies if the number of interval blocks recived is the same as exxpected
-//To use test update IntervalBlock file the expectedValue
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@MockBean
+	private IntervalBlockService intervalBlockService;
+
 	@Test
-	void getAll()throws IOException {
+	void testStatus()throws Exception{
+		mockMvc.perform(get("/espi/1_1/resource/IntervalBlock")
+				.contentType("application/xml"))
+			.andExpect(status().isOk());
+	}
+
+
+	//Verifies if the number of interval blocks recived is the same as exxpected
+	//To use test update IntervalBlock file the expectedValue
+	@Test
+	void getAll()throws Exception{
+		//get xml output
+		MvcResult mvcResult = mockMvc.perform(get("/espi/1_1/resource/IntervalBlock")
+				.contentType("application/xml"))
+			.andReturn();
+
+		String actualResponseBody = mvcResult.getResponse().getContentAsString();
+
+
+		//counts the number of times the <id> tag in the xml output. If its the same as the expected value then it returns true.
 		int expectedValue = 20;
 		int actualValue = 0;
-
-
-		URL website = new URL("http://localhost:8080/espi/1_1/resource/IntervalBlock");
-		URLConnection yc = website.openConnection();
-		BufferedReader in = new BufferedReader(
-			new InputStreamReader(
-				yc.getInputStream()));
-		String xml = in.lines().collect(Collectors.joining("\n"));
-		in.close();
-
 		Pattern p = Pattern.compile("<id>");
-		Matcher m = p.matcher( xml );
+		Matcher m = p.matcher( actualResponseBody );
 		while (m.find()) {
 			actualValue++;
 		}
@@ -59,20 +81,18 @@ class IntervalBlockControllerTest {
 	}
 
 
+
 	//Check if a certin intervalblock exists in the XML output by checking for its UUID
 	//To use test update IntervalBlock file the IntervalBlock
 	@Test
-	void getByUuid() throws IOException {
+	void getByUuid()throws Exception{
 		String expectedUUID = "046b4788-f971-4662-b177-6d94832dd403";
-		URL website = new URL("http://localhost:8080/espi/1_1/resource/IntervalBlock");
-		URLConnection yc = website.openConnection();
-		BufferedReader in = new BufferedReader(
-			new InputStreamReader(
-				yc.getInputStream()));
-		String inputLine = in.lines().collect(Collectors.joining("\n"));
-		in.close();
+		MvcResult mvcResult = mockMvc.perform(get("/espi/1_1/resource/IntervalBlock")
+				.contentType("application/xml"))
+			.andReturn();
 
-		System.out.println(inputLine.contains(expectedUUID));
+		String actualResponseBody = mvcResult.getResponse().getContentAsString();
+		System.out.println(actualResponseBody.contains(expectedUUID));
 	}
 
 }
