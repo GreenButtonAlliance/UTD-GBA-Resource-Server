@@ -31,7 +31,7 @@ import java.util.UUID;
 public class ApplicationInformationService {
 	private final ApplicationInformationRepository applicationInformationRepositoryRepository;
 
-	public Optional<ApplicationInformation> findByUuid(UUID uuid) {
+	public static Optional<ApplicationInformation> findByUuid(UUID uuid) {
 		return applicationInformationRepositoryRepository.findById(uuid);
 	}
 
