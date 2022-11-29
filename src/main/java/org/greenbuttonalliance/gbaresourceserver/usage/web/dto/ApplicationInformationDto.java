@@ -1,5 +1,6 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
+import jakarta.xml.bind.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,12 +11,18 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.io.Serializable;
 import java.util.Optional;
 
 @Getter
 @Setter
 @Accessors(chain = true)
+@XmlRootElement(name = "ApplicationInformation")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationInformationDto extends IdentifiedObjectDto implements Serializable {
 	private String dataCustodianId;
 	private DataCustodianApplicationStatus dataCustodianApplicationStatus;
@@ -75,6 +82,4 @@ public class ApplicationInformationDto extends IdentifiedObjectDto implements Se
 				)
 			.orElse(null);
 	}
-
-
 }
