@@ -48,4 +48,64 @@ public class MeterReading extends IdentifiedObject {
 
 	@OneToMany(mappedBy = "meterReading", cascade = CascadeType.ALL)
 	private Set<IntervalBlock> intervalBlocks = new HashSet<>();
+
+	@Override
+	public String getDataCustodianBulkRequestURI() {
+		return null;
+	}
+
+	@Override
+	public String getThirdPartyScopeSelectionURI() {
+		return null;
+	}
+
+	@Override
+	public String getThirdPartyUserPortalScreenURI() {
+		return null;
+	}
+
+	@Override
+	public String getClient_secret() {
+		return null;
+	}
+
+	@Override
+	public String getLogo_uri() {
+		return null;
+	}
+
+	@Override
+	public String getClient_name() {
+		return null;
+	}
+
+	@Override
+	public String getClient_uri() {
+		return null;
+	}
+
+	@Override
+	public String getRedirect_uri() {
+		return null;
+	}
+
+	@Override
+	public String getClient_id() {
+		return null;
+	}
+
+	@Override
+	public String getTos_uri() {
+		return null;
+	}
+
+	@Override
+	public String getPolicy_uri() {
+		return null;
+	}
+
+	@Override
+	public String getSoftware_id() {
+		return null;
+	}
 }
