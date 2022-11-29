@@ -29,7 +29,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ApplicationInformationService {
-	private final ApplicationInformationRepository applicationInformationRepositoryRepository;
+	private static final ApplicationInformationRepository applicationInformationRepositoryRepository = null;
 
 	public static Optional<ApplicationInformation> findByUuid(UUID uuid) {
 		return applicationInformationRepositoryRepository.findById(uuid);
