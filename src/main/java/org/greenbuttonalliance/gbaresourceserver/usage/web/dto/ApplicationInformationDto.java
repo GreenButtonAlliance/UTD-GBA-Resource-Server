@@ -1,5 +1,6 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
+import jakarta.xml.bind.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,12 +11,18 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.io.Serializable;
 import java.util.Optional;
 
 @Getter
 @Setter
 @Accessors(chain = true)
+@XmlRootElement(name = "ApplicationInformation")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationInformationDto extends IdentifiedObjectDto implements Serializable {
 	private String dataCustodianId;
 	private DataCustodianApplicationStatus dataCustodianApplicationStatus;
@@ -59,22 +66,20 @@ public class ApplicationInformationDto extends IdentifiedObjectDto implements Se
 				.setAuthorizationServerAuthorizationEndpoint(ai.getAuthorizationServerAuthorizationEndpoint())
 				.setAuthorizationServerRegistrationEndpoint(ai.getAuthorizationServerRegistrationEndpoint())
 				.setAuthorizationServerTokenEndpoint(ai.getAuthorizationServerTokenEndpoint())
-				//.setDataCustodianBulkRequestURI(ai.getDataCustodianBulkRequestURI())
+				.setDataCustodianBulkRequestURI(ai.getDataCustodianBulkRequestURI())
 				.setDataCustodianResourceEndpoint(ai.getDataCustodianResourceEndpoint())
-				//.setThirdPartyScopeSelectionURI(ai.getThirdPartyScopeSelectionURI())
-				//.setThirdPartyUserPortalScreenURI(ai.getThirdPartyUserPortalScreenURI())
-				//.setClient_secret(ai.getClient_secret())
-				//.setLogo_uri(ai.getLogo_uri())
-				//.setClient_name(ai.getClient_name())
-				//.setClient_uri(ai.getClient_uri())
-				//.setRedirect_uri(ai.getRedirect_uri())
-				//.setClient_id(ai.getClient_id())
-				//.setTos_uri(ai.getTos_uri())
-				//.setPolicy_uri(ai.getPolicy_uri())
-				//.setSoftware_id(ai.getSoftware_id())
+				.setThirdPartyScopeSelectionURI(ai.getThirdPartyScopeSelectionURI())
+				.setThirdPartyUserPortalScreenURI(ai.getThirdPartyUserPortalScreenURI())
+				.setClient_secret(ai.getClient_secret())
+				.setLogo_uri(ai.getLogo_uri())
+				.setClient_name(ai.getClient_name())
+				.setClient_uri(ai.getClient_uri())
+				.setRedirect_uri(ai.getRedirect_uri())
+				.setClient_id(ai.getClient_id())
+				.setTos_uri(ai.getTos_uri())
+				.setPolicy_uri(ai.getPolicy_uri())
+				.setSoftware_id(ai.getSoftware_id())
 				)
 			.orElse(null);
 	}
-
-
 }
