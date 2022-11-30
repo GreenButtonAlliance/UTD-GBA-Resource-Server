@@ -20,7 +20,6 @@ package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.*;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +27,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import java.util.function.Function;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,9 +39,7 @@ public class ServiceLocationRepositoryTest {
 	@Autowired
 	private ServiceLocationRepository serviceLocationRepository;
 	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";
-	private static final String PRESENT_TITLE = "foo";
 	private static final String NOT_PRESENT_TITLE = "bar";
-	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -84,11 +82,53 @@ public class ServiceLocationRepositoryTest {
 	}
 	@Test
 	public void entityMappings_areNotNull() {
-		ServiceLocation fullyMappedCustomerAccount = serviceLocationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-		Assumptions.assumeTrue(fullyMappedCustomerAccount != null);
+		ServiceLocation fullyMappedServiceLocation = serviceLocationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedServiceLocation != null);
 		//first level
 
+		Function<ServiceLocation,Optional<StreetAddress>> serviceLocationToMainAddress=sl->Optional.ofNullable(sl.getMainAddress());
+		Function<ServiceLocation,Optional<StreetAddress>> serviceLocationToSecondaryAddress= sl->Optional.ofNullable(sl.getSecondaryAddress());
+		Function<ServiceLocation,Optional<TelephoneNumber>> serviceLocationToTelephoneNumber1 = sl-> Optional.ofNullable(sl.getPhone1());
+		Function<ServiceLocation,Optional<TelephoneNumber>> serviceLocationToTelephoneNumber2 = sl-> Optional.ofNullable(sl.getPhone2());
+		Function<ServiceLocation,Optional<ElectronicAddress>> serviceLocationToElectronicAddress=sl->Optional.ofNullable(sl.getElectronicAddress());
 
+		//level 2
+		//from ServiceLocation.Mainaddress and ServiceLocation.SecondaryAddress
+		Function<ServiceLocation,Optional<StreetDetail>> serviceLocationToMainStreetAddressStreetDetail =serviceLocationToMainAddress.andThen(opt->opt.map(
+			StreetAddress::getStreetDetail
+		));
+		Function<ServiceLocation,Optional<StreetDetail>> serviceLocationToSecondaryStreetAddressStreetDetail= serviceLocationToSecondaryAddress.andThen(opt->opt.map(
+			StreetAddress::getStreetDetail
+		));
+		Function<ServiceLocation,Optional<TownDetail>> serviceLocationToMainStreetAddressTownDetail=serviceLocationToMainAddress.andThen(opt->opt.map(
+			StreetAddress::getTownDetail
+		));
+		Function<ServiceLocation,Optional<TownDetail>> serviceLocationToSecondaryStreetAddressTownDetail=serviceLocationToSecondaryAddress.andThen(opt->opt.map(
+			StreetAddress::getTownDetail
+		));
+		Function<ServiceLocation,Optional<Status>> serviceLocationToMainStreetAddressStatus=serviceLocationToMainAddress.andThen(opt->opt.map(
+			StreetAddress::getStatus
+		));
+		Function<ServiceLocation,Optional<Status>> serviceLocationToSecondaryStreetAddressStatus=serviceLocationToSecondaryAddress.andThen(opt->opt.map(
+			StreetAddress::getStatus
+		));
+
+		Assertions.assertAll(
+			"Entity mapping failures for customer account " + fullyMappedServiceLocation.getUuid(),
+			Stream.of(serviceLocationToMainAddress,
+				serviceLocationToSecondaryAddress,
+				serviceLocationToTelephoneNumber1,
+				serviceLocationToTelephoneNumber2,
+				serviceLocationToElectronicAddress,
+				serviceLocationToMainStreetAddressStreetDetail,
+				serviceLocationToSecondaryStreetAddressStreetDetail,
+				serviceLocationToMainStreetAddressTownDetail,
+				serviceLocationToSecondaryStreetAddressTownDetail,
+				serviceLocationToMainStreetAddressStatus,
+				serviceLocationToSecondaryStreetAddressStatus
+			)
+				.map(mappingFunc->()->Assertions.assertTrue(mappingFunc.apply(fullyMappedServiceLocation).isPresent()))
+		);
 	}
 	private static List<ServiceLocation> buildTestData() {
 		List<ServiceLocation> serviceLocations = Arrays.asList(
