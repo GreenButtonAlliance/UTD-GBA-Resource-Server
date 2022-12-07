@@ -225,13 +225,8 @@ public class UsageSummary extends IdentifiedObject{
 	@Column(name = "read_cycle")
 	private String readCycle;
 
-	@ElementCollection()
-	@CollectionTable(name = "tariff_rider_ref", schema = "usage", joinColumns = {@JoinColumn(name = "usage_summary_uuid", nullable = false)})
-	@AttributeOverrides({
-		@AttributeOverride(name = "riderType", column = @Column(name = "rider_type")),
-		@AttributeOverride(name = "enrollmentStatus", column = @Column(name = "enrollment_status")),
-		@AttributeOverride(name = "effectiveDate", column = @Column(name = "effective_date"))
-	})
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "tariff_rider_ref_id", nullable = false)
 	private Set<TariffRiderRef> tariffRiderRefs = new HashSet<>();
 
 	@Embedded
