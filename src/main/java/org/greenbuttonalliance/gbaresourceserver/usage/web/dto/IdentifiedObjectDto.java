@@ -68,41 +68,12 @@ public abstract class IdentifiedObjectDto implements Serializable {
 			mar.setProperty(Marshaller.JAXB_FRAGMENT, true);
 			StringWriter stringWriter = new StringWriter();
 			mar.marshal(this, stringWriter);
-			return stringWriter.toString();
+			return stringWriter.toString() + "\n";
 		} catch (JAXBException e) {
 			System.out.println(e);
 		}
 		return null;
 	}
-//
-//	public String getContent() {
-//		try {
-//			JAXBContext context = JAXBContext.newInstance(this.getClass());
-//			Marshaller mar = context.createMarshaller();
-//			StringWriter stringWriter = new StringWriter();
-//			mar.marshal(this, stringWriter);
-////			System.out.println(stringWriter.toString());
-////			StringBuilder sb = new StringBuilder();
-////			int tabCount = 0;
-////			int propStart = 0;
-////			String xml = stringWriter.toString();
-////			for(int i = 0; i < xml.length() - 1; i++) {
-////				if (xml.charAt(i) == '<' && xml.charAt(i + 1) != '/') {
-////					propStart = i;
-////					tabCount++;
-////					sb.append("\t".repeat(tabCount));
-////					sb.append(stringWriter.toString().charAt(i));
-////				}
-////			}
-//			while
-//
-//			return stringWriter.toString().r;
-//		} catch (JAXBException e) {
-//			System.out.println(e);
-//		}
-//		return null;
-//	}
-
 
 	private static String generateUUID(String content) {
 		return nameUUIDFrom(content).toString();
@@ -162,7 +133,7 @@ public abstract class IdentifiedObjectDto implements Serializable {
 
 	private String getEntryPrefix(String title) {
 		return "\t<entry>\n" +
-			"\t\t<id>"+ uuid +"</id> \n" +
+			"\t\t<id>urn:uuid:"+ uuid +"</id> \n" +
 			(selfLinkHref == null || selfLinkHref.isBlank() ?
 				"\t\t<link rel=\"self\" href=\""+ selfLinkHref +"\" type=\"espi-entry/Subscription\" />\n" : "") +
 			(upLinkHref == null || upLinkHref.isBlank() ?
