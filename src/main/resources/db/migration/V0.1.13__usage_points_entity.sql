@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS usage.service_delivery_points (
+                                                           uuid UUID PRIMARY KEY,
+                                                           customerAgreement TEXT,
+                                                           name TEXT,
+                                                           tariffProfile TEXT
+);
+
 CREATE TABLE IF NOT EXISTS usage.usage_points (
                                                    uuid UUID PRIMARY KEY,
                                                    description TEXT,
@@ -13,5 +20,24 @@ CREATE TABLE IF NOT EXISTS usage.usage_points (
                                                    retail_customer_id UUID REFERENCES  usage.retail_customer ON DELETE CASCADE,
                                                    serviceCategory_kind BIGINT,
                                                    serviceDeliveryPoint_id UUID REFERENCES usage.service_delivery_points ON DELETE CASCADE,
-                                                   subscription_id UUID
-)
+                                                   subscription_id UUID,
+                                                   am_i_billing_ready TEXT,
+                                                   check_billing BOOLEAN,
+                                                   connection_state TEXT,
+                                                   estimated_load TEXT,
+                                                   grounded BOOLEAN,
+                                                   is_sdp BOOLEAN,
+                                                   is_virtual BOOLEAN,
+                                                   minimal_usage_expected BOOLEAN,
+                                                   nominal_service_voltage TEXT,
+                                                   outage_region TEXT,
+                                                   phase_code TEXT,
+                                                   rated_current TEXT,
+                                                   rated_power TEXT,
+                                                   read_cycle TEXT,
+                                                   read_route TEXT,
+                                                   service_delivery_remark TEXT,
+                                                   service_priority TEXT,
+                                                   pnode_refs TEXT,
+                                                   aggregate_node_refs TEXT
+);
