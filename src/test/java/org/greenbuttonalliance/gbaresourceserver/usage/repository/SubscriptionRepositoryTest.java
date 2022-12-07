@@ -16,32 +16,32 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
-	import com.github.f4b6a3.uuid.UuidCreator;
-	import lombok.RequiredArgsConstructor;
-	import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
-	import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
-	import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
-	import org.greenbuttonalliance.gbaresourceserver.usage.service.ApplicationInformationService;
-	import org.junit.jupiter.api.Assertions;
-	import org.junit.jupiter.api.Assumptions;
-	import org.junit.jupiter.api.BeforeEach;
-	import org.junit.jupiter.api.Test;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-	import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import com.github.f4b6a3.uuid.UuidCreator;
+import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.service.ApplicationInformationService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-	import java.time.LocalDateTime;
-	import java.time.format.DateTimeFormatter;
-	import java.util.Arrays;
-	import java.util.Collections;
-	import java.util.HashSet;
-	import java.util.List;
-	import java.util.Optional;
-	import java.util.Set;
-	import java.util.UUID;
-	import java.util.function.Function;
-	import java.util.stream.Collectors;
-	import java.util.stream.Stream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -121,12 +121,17 @@ public class SubscriptionRepositoryTest {
 	}
 
 	// TODO buildTestData()
-		// TODO List<Subscription> subscription = Arrays.asList(...)
-		// TODO ApplicationInformation testApplication = ApplicationInformation.builder()...
-		// TODO hydrate UUIDs and entity mappings subscription.forEach(ib -> { ...
+	// TODO List<Subscription> subscription = Arrays.asList(...)
+	// TODO ApplicationInformation testApplication = ApplicationInformation.builder()...
+	// TODO hydrate UUIDs and entity mappings subscription.forEach(ib -> { ...
 
 	private static List<MeterReading> buildTestData() {
-		List<Subscription> subscription = Arrays.asList(
+		List<Subscription> subscription;
+		DateTimeInterval NullPointerException = null;
+		ApplicationInformation test = null;
+		RetailCustomer testRetailCustomer = null;
+
+		subscription = Arrays.asList(
 			Subscription.builder()
 				.description("Fifteen Minute Electricity Consumption")
 				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
@@ -143,42 +148,47 @@ public class SubscriptionRepositoryTest {
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.authorizationServerAuthorizationEndpoint()
-					.authorizationServerRegistrationEndpoint()
-					.authorizationServerTokenEndpoint()
-					.authorizationServerUri()
-					.clientId()
-					.clientIdIssuedAt()
-					.clientName()
-					.clientSecret()
-					.clientSecretExpiresAt()
-					.clientUri()
-					.contacts()
-					.dataCustodianApplicationStatus()
-					.dataCustodianBulkRequestUri()
-					.dataCustodianId()
-					.dataCustodianResourceEndpoint()
+					.authorizationServerAuthorizationEndpoint("testing: authorizationServerAuthorizationEndpoint")
+					.authorizationServerRegistrationEndpoint("testing: authorizationServerRegistrationEndpoint")
+					.authorizationServerTokenEndpoint("testing: authorizationServerTokenEndpoint")
+					.authorizationServerUri("testing: authorizationServerUri")
+					.clientId("testing: clientId")
+					.clientIdIssuedAt(9223372036854775807L)
+					.clientName("testing: clientName")
+					.clientSecret("testing: clientSecret")
+					.clientSecretExpiresAt(9223372036854775807L)
+					.clientUri("testing: clientUri")
+					.contacts(Collections.singleton("testing: contacts"))
+					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.valueOf("testing: dataCustodianApplicationStatus"))
+					.dataCustodianBulkRequestUri("testing: dataCustodianBulkRequestUri")
+					.dataCustodianId("testing: dataCustodianId")
+					.dataCustodianResourceEndpoint("testing: dataCustodianResourceEndpoint")
 					/* deprecated .thirdPartyScopeSelectionScreenUri */
-					.thirdPartyUserPortalScreenUri()
-					.logoUri()
-					.policyUri()
-					.thirdPartyApplicationDescription()
-					.thirdPartyApplicationStatus()
-					.thirdPartyApplicationType()
-					.thirdPartyApplicationUse()
-					.thirdPartyPhone()
-					.thirdPartyNotifyUri()
-					.redirectUris()
-					.tosUri()
-					.softwareId()
-					.softwareVersion()
-					.tokenEndpointAuthMethod()
-					.responseType()
-					.registrationClientUri()
-					.registrationAccessToken()
+					.thirdPartyUserPortalScreenUri("testing: dataCustodianthirdPartyUserPortalScreenUri")
+					.logoUri("testing: logoUri")
+					.policyUri("testing: policyUri")
+					.thirdPartyApplicationDescription("testing: thirdPartyApplicationDescription")
+					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.valueOf("testing: thirdPartyApplicationStatus"))
+					.thirdPartyApplicationType(ThirdPartyApplicationType.valueOf("testing: thirdPartyApplicationType"))
+					.thirdPartyApplicationUse(ThirdPartyApplicationUse.valueOf("testing: thirdPartyApplicationUse"))
+					.thirdPartyPhone("testing: thirdPartyPhone")
+					.thirdPartyNotifyUri("testing: thirdPartyNotifyUri")
+					.redirectUris(Collections.singleton("testing: redirectUris"))
+					.tosUri("testing: tosUri")
+					.softwareId("testing: softwareId")
+					.softwareVersion("testing: softwareVersion")
+					.tokenEndpointAuthMethod(TokenEndpointMethod.valueOf("testing: tokenEndpointAuthMethod"))
+					/* is there a reason why this is a string and not an int? */
+					.responseType(ResponseType.valueOf("testing: responseType"))
+					.registrationClientUri("testing: registrationClientUri")
+					.registrationAccessToken("testing: registrationAccessToken")
 					/* deprecated .dataCustodianScopeSelectionScreenUri */
-					.grantTypes()
-					.scopes()
+					.grantTypes(new HashSet<>(Arrays.asList(
+						GrantType.AUTHORIZATION_CODE
+					)))
+					.scopes(new HashSet<>(Arrays.asList(
+						"Scope4"
+					)))
 					.build())
 				.retail_customer(RetailCustomer.builder()
 					.description("Type of Meter Reading Data")
@@ -187,12 +197,12 @@ public class SubscriptionRepositoryTest {
 					.selfLinkRel("self")
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
 					.upLinkRel("up")
-					.enabled()
-					.firstName()
-					.lastName()
-					.password()
-					.role()
-					.username()
+					.enabled(Boolean.TRUE)
+					.firstName("testing: firstName")
+					.lastName("testing: lastName")
+					.password("testing: password")
+					.role("testing: role")
+					.username("testing: username")
 					.build())
 				.build(),
 			Subscription.builder()
@@ -211,42 +221,47 @@ public class SubscriptionRepositoryTest {
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.authorizationServerAuthorizationEndpoint()
-					.authorizationServerRegistrationEndpoint()
-					.authorizationServerTokenEndpoint()
-					.authorizationServerUri()
-					.clientId()
-					.clientIdIssuedAt()
-					.clientName()
-					.clientSecret()
-					.clientSecretExpiresAt()
-					.clientUri()
-					.contacts()
-					.dataCustodianApplicationStatus()
-					.dataCustodianBulkRequestUri()
-					.dataCustodianId()
-					.dataCustodianResourceEndpoint()
+					.authorizationServerAuthorizationEndpoint("testing: authorizationServerAuthorizationEndpoint")
+					.authorizationServerRegistrationEndpoint("testing: authorizationServerRegistrationEndpoint")
+					.authorizationServerTokenEndpoint("testing: authorizationServerTokenEndpoint")
+					.authorizationServerUri("testing: authorizationServerUri")
+					.clientId("testing: clientId")
+					.clientIdIssuedAt(9223372036854775807L)
+					.clientName("testing: clientName")
+					.clientSecret("testing: clientSecret")
+					.clientSecretExpiresAt(9223372036854775807L)
+					.clientUri("testing: clientUri")
+					.contacts(Collections.singleton("testing: contacts"))
+					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.valueOf("testing: dataCustodianApplicationStatus"))
+					.dataCustodianBulkRequestUri("testing: dataCustodianBulkRequestUri")
+					.dataCustodianId("testing: dataCustodianId")
+					.dataCustodianResourceEndpoint("testing: dataCustodianResourceEndpoint")
 					/* deprecated .thirdPartyScopeSelectionScreenUri */
-					.thirdPartyUserPortalScreenUri()
-					.logoUri()
-					.policyUri()
-					.thirdPartyApplicationDescription()
-					.thirdPartyApplicationStatus()
-					.thirdPartyApplicationType()
-					.thirdPartyApplicationUse()
-					.thirdPartyPhone()
-					.thirdPartyNotifyUri()
-					.redirectUris()
-					.tosUri()
-					.softwareId()
-					.softwareVersion()
-					.tokenEndpointAuthMethod()
-					.responseType()
-					.registrationClientUri()
-					.registrationAccessToken()
+					.thirdPartyUserPortalScreenUri("testing: dataCustodianthirdPartyUserPortalScreenUri")
+					.logoUri("testing: logoUri")
+					.policyUri("testing: policyUri")
+					.thirdPartyApplicationDescription("testing: thirdPartyApplicationDescription")
+					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.valueOf("testing: thirdPartyApplicationStatus"))
+					.thirdPartyApplicationType(ThirdPartyApplicationType.valueOf("testing: thirdPartyApplicationType"))
+					.thirdPartyApplicationUse(ThirdPartyApplicationUse.valueOf("testing: thirdPartyApplicationUse"))
+					.thirdPartyPhone("testing: thirdPartyPhone")
+					.thirdPartyNotifyUri("testing: thirdPartyNotifyUri")
+					.redirectUris(Collections.singleton("testing: redirectUris"))
+					.tosUri("testing: tosUri")
+					.softwareId("testing: softwareId")
+					.softwareVersion("testing: softwareVersion")
+					.tokenEndpointAuthMethod(TokenEndpointMethod.valueOf("testing: tokenEndpointAuthMethod"))
+					/* is there a reason why this is a string and not an int? */
+					.responseType(ResponseType.valueOf("testing: responseType"))
+					.registrationClientUri("testing: registrationClientUri")
+					.registrationAccessToken("testing: registrationAccessToken")
 					/* deprecated .dataCustodianScopeSelectionScreenUri */
-					.grantTypes()
-					.scopes()
+					.grantTypes(new HashSet<>(Arrays.asList(
+						GrantType.AUTHORIZATION_CODE
+					)))
+					.scopes(new HashSet<>(Arrays.asList(
+						"Scope4"
+					)))
 					.build())
 				.retail_customer(RetailCustomer.builder()
 					.description("Type of Meter Reading Data")
@@ -255,12 +270,12 @@ public class SubscriptionRepositoryTest {
 					.selfLinkRel("self")
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
 					.upLinkRel("up")
-					.enabled()
-					.firstName()
-					.lastName()
-					.password()
-					.role()
-					.username()
+					.enabled(Boolean.TRUE)
+					.firstName("testing: firstName")
+					.lastName("testing: lastName")
+					.password("testing: password")
+					.role("testing: role")
+					.username("testing: username")
 					.build())
 				.build(),
 			Subscription.builder()
@@ -271,12 +286,12 @@ public class SubscriptionRepositoryTest {
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
-				.hashedId()
-				.lastUpdate()
-				.applicationInformation()
-				.authorization_id()
-				.retail_customer()
-				.usagepoint_id()
+				.hashedId("testing: hashedId")
+				.lastUpdate(NullPointerException)
+				.applicationInformation(test)
+				.authorization_id(9223372036854775807L)
+				.retail_customer(testRetailCustomer)
+				.usagepoint_id(12345)
 				.build()
 		);
 
