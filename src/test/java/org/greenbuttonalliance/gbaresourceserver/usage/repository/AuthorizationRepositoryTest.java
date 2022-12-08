@@ -19,6 +19,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,7 +122,7 @@ public class AuthorizationRepositoryTest {
 				.tokenType(54)
 				.applicationInformationId(UUID.randomUUID())
 				.retailCustomerId(UUID.randomUUID())
-				.subscriptionId(UUID.randomUUID())
+				.subscriptionId(Subscription.builder().build())
 				.build()
 		);
 

@@ -6,13 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "subsciption", schema = "usage") // the table name is plural?
+@Table(name = "subscription", schema = "usage") // the table name is plural?
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -30,16 +33,17 @@ public class Subscription extends IdentifiedObject {
 	private DateTimeInterval lastUpdate;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "application_information", nullable = false)
-	private ApplicationInformation applicationInformation; //TO _DO change teh id names
+	@JoinColumn(name = "application_information_id", nullable = false)
+	private ApplicationInformation applicationInformation;
 
-	@Column(name = "authorization_id")
-	private Long authorization_id;
+	@OneToOne(optional = false)
+	@JoinColumn (name = "authorization_id")
+	private Authorization authorizationId;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "retail_customer", nullable = false)
-	private RetailCustomer retail_customer;
+	@JoinColumn(name = "retail_customer_id", nullable = false, insertable = false, updatable = false)
+	private RetailCustomer retailCustomerId;
 
-	@Column(name = "usagepoint_id")
-	private int usagepoint_id;
+	@Column(name = "usage_point_id")
+	private int usagePointId;
 }

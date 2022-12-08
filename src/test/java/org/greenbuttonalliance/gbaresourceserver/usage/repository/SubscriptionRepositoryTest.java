@@ -106,7 +106,7 @@ public class SubscriptionRepositoryTest {
 		/* Test bidirectional mappings all the way from IntervalBlock <--> Application Information (IntervalReading) <--> Application Information Scopes (ReadingQuality) here since IntervalReading and ReadingQuality don't have
 		their own repositories for which we're testing their individual mappings */
 		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformation = mr -> Optional.ofNullable(mr.getApplicationInformation());
-		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = mr -> Optional.ofNullable(mr.getRetail_customer());
+		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = mr -> Optional.ofNullable(mr.getRetailCustomerId());
 
 		// TODO test connection from Subscription -> ApplicationInformation -> ApplicationInformationScopes
 		// TODO test connection from Subscription -> UsagePoint
@@ -125,7 +125,7 @@ public class SubscriptionRepositoryTest {
 	// TODO ApplicationInformation testApplication = ApplicationInformation.builder()...
 	// TODO hydrate UUIDs and entity mappings subscription.forEach(ib -> { ...
 
-	private static List<MeterReading> buildTestData() {
+	private static List<Subscription> buildTestData() {
 		List<Subscription> subscription;
 		DateTimeInterval NullPointerException = null;
 		ApplicationInformation test = null;
@@ -159,7 +159,7 @@ public class SubscriptionRepositoryTest {
 					.clientSecretExpiresAt(9223372036854775807L)
 					.clientUri("testing: clientUri")
 					.contacts(Collections.singleton("testing: contacts"))
-					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.valueOf("testing: dataCustodianApplicationStatus"))
+					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.REVIEW)
 					.dataCustodianBulkRequestUri("testing: dataCustodianBulkRequestUri")
 					.dataCustodianId("testing: dataCustodianId")
 					.dataCustodianResourceEndpoint("testing: dataCustodianResourceEndpoint")
@@ -168,18 +168,18 @@ public class SubscriptionRepositoryTest {
 					.logoUri("testing: logoUri")
 					.policyUri("testing: policyUri")
 					.thirdPartyApplicationDescription("testing: thirdPartyApplicationDescription")
-					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.valueOf("testing: thirdPartyApplicationStatus"))
-					.thirdPartyApplicationType(ThirdPartyApplicationType.valueOf("testing: thirdPartyApplicationType"))
-					.thirdPartyApplicationUse(ThirdPartyApplicationUse.valueOf("testing: thirdPartyApplicationUse"))
+					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
+					.thirdPartyApplicationType(ThirdPartyApplicationType.WEB)
+					.thirdPartyApplicationUse(ThirdPartyApplicationUse.LAW_ENFORCEMENT)
 					.thirdPartyPhone("testing: thirdPartyPhone")
 					.thirdPartyNotifyUri("testing: thirdPartyNotifyUri")
 					.redirectUris(Collections.singleton("testing: redirectUris"))
 					.tosUri("testing: tosUri")
 					.softwareId("testing: softwareId")
 					.softwareVersion("testing: softwareVersion")
-					.tokenEndpointAuthMethod(TokenEndpointMethod.valueOf("testing: tokenEndpointAuthMethod"))
+					.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
 					/* is there a reason why this is a string and not an int? */
-					.responseType(ResponseType.valueOf("testing: responseType"))
+					.responseType(ResponseType.CODE)
 					.registrationClientUri("testing: registrationClientUri")
 					.registrationAccessToken("testing: registrationAccessToken")
 					/* deprecated .dataCustodianScopeSelectionScreenUri */
@@ -190,7 +190,7 @@ public class SubscriptionRepositoryTest {
 						"Scope4"
 					)))
 					.build())
-				.retail_customer(RetailCustomer.builder()
+				.retailCustomerId(RetailCustomer.builder()
 					.description("Type of Meter Reading Data")
 					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.selfLinkHref(PRESENT_SELF_LINK)
@@ -232,7 +232,7 @@ public class SubscriptionRepositoryTest {
 					.clientSecretExpiresAt(9223372036854775807L)
 					.clientUri("testing: clientUri")
 					.contacts(Collections.singleton("testing: contacts"))
-					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.valueOf("testing: dataCustodianApplicationStatus"))
+					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.ON_HOLD)
 					.dataCustodianBulkRequestUri("testing: dataCustodianBulkRequestUri")
 					.dataCustodianId("testing: dataCustodianId")
 					.dataCustodianResourceEndpoint("testing: dataCustodianResourceEndpoint")
@@ -241,18 +241,18 @@ public class SubscriptionRepositoryTest {
 					.logoUri("testing: logoUri")
 					.policyUri("testing: policyUri")
 					.thirdPartyApplicationDescription("testing: thirdPartyApplicationDescription")
-					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.valueOf("testing: thirdPartyApplicationStatus"))
-					.thirdPartyApplicationType(ThirdPartyApplicationType.valueOf("testing: thirdPartyApplicationType"))
-					.thirdPartyApplicationUse(ThirdPartyApplicationUse.valueOf("testing: thirdPartyApplicationUse"))
+					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
+					.thirdPartyApplicationType(ThirdPartyApplicationType.DESKTOP)
+					.thirdPartyApplicationUse(ThirdPartyApplicationUse.ENERGY_MANAGEMENT)
 					.thirdPartyPhone("testing: thirdPartyPhone")
 					.thirdPartyNotifyUri("testing: thirdPartyNotifyUri")
 					.redirectUris(Collections.singleton("testing: redirectUris"))
 					.tosUri("testing: tosUri")
 					.softwareId("testing: softwareId")
 					.softwareVersion("testing: softwareVersion")
-					.tokenEndpointAuthMethod(TokenEndpointMethod.valueOf("testing: tokenEndpointAuthMethod"))
+					.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
 					/* is there a reason why this is a string and not an int? */
-					.responseType(ResponseType.valueOf("testing: responseType"))
+					.responseType(ResponseType.CODE)
 					.registrationClientUri("testing: registrationClientUri")
 					.registrationAccessToken("testing: registrationAccessToken")
 					/* deprecated .dataCustodianScopeSelectionScreenUri */
@@ -263,7 +263,7 @@ public class SubscriptionRepositoryTest {
 						"Scope4"
 					)))
 					.build())
-				.retail_customer(RetailCustomer.builder()
+				.retailCustomerId(RetailCustomer.builder()
 					.description("Type of Meter Reading Data")
 					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.selfLinkHref(PRESENT_SELF_LINK)
@@ -289,9 +289,9 @@ public class SubscriptionRepositoryTest {
 				.hashedId("testing: hashedId")
 				.lastUpdate(NullPointerException)
 				.applicationInformation(test)
-				.authorization_id(9223372036854775807L)
-				.retail_customer(testRetailCustomer)
-				.usagepoint_id(12345)
+				.authorizationId(Authorization.builder().build())
+				.retailCustomerId(testRetailCustomer)
+				.usagePointId(12345)
 				.build()
 		);
 
@@ -303,7 +303,6 @@ public class SubscriptionRepositoryTest {
 
 			Optional.ofNullable(mr.getApplicationInformation()).ifPresent(rt -> {
 				rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
-				rt.setSubscription(mr); // this might be failing bc there isn't a OneToOne relationship in ApplicationInformation.java
 			});
 
 			// TODO hydrate UsagePoint reference once entity is available

@@ -24,6 +24,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.math.BigInteger;
@@ -103,6 +105,7 @@ public class Authorization extends IdentifiedObject {
 	@Column(name = "retail_customer_id")
 	private UUID retailCustomerId;
 
-	@Column(name = "subscription_id")
-	private UUID subscriptionId;
+	@OneToOne(optional = false)
+	@JoinColumn(name = "subscription_id")
+	private Subscription subscriptionId;
 }
