@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ApnodeType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
@@ -24,7 +23,7 @@ import org.hibernate.annotations.ColumnTransformer;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class pnodeRef {
+public class PnodeRef {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

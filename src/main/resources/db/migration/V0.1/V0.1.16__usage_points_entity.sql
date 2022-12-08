@@ -100,32 +100,43 @@ CREATE TABLE IF NOT EXISTS usage.usage_point (
                                                    up_link_href TEXT,
                                                    up_link_rel TEXT,
                                                    updated TIMESTAMP,
+                                                   role_flags BYTEA,
+                                                   --service_category
                                                    status SMALLINT,
-                                                   uri TEXT,
-                                                   localTimeParameters_id UUID REFERENCES  usage.time_configuration ON DELETE CASCADE,
-                                                   retail_customer_id UUID REFERENCES  usage.retail_customer ON DELETE CASCADE,
-                                                   serviceCategory_kind BIGINT,
-                                                   serviceDeliveryPoint_id UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
-                                                   subscription_id UUID,
-                                                   am_i_billing_ready TEXT,
+                                                   service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
+                                                   am_i_billing_ready usage.am_i_billing_ready_kind,
                                                    check_billing BOOLEAN,
-                                                   connection_state TEXT,
-                                                   estimated_load TEXT,
+                                                   connection_state usage.usage_point_connected_kind,
+                                                   estimated_load_power_of_ten_multiplier public.unit_multiplier_kind,
+                                                   estimated_load_time_stamp BIGINT,
+                                                   estimated_load_uom public.unit_symbol_kind,
+                                                   estimated_load_value BIGINT,
+                                                   estimated_load_reading_type_ref TEXT,
                                                    grounded BOOLEAN,
                                                    is_sdp BOOLEAN,
                                                    is_virtual BOOLEAN,
                                                    minimal_usage_expected BOOLEAN,
-                                                   nominal_service_voltage TEXT,
+                                                   nominal_service_voltage_power_of_ten_multiplier public.unit_multiplier_kind,
+                                                   nominal_service_voltage_time_stamp BIGINT,
+                                                   nominal_service_voltage_uom public.unit_symbol_kind,
+                                                   nominal_service_voltage_value BIGINT,
+                                                   nominal_service_voltage_reading_type_ref TEXT,
                                                    outage_region TEXT,
-                                                   phase_code TEXT,
-                                                   rated_current TEXT,
-                                                   rated_power TEXT,
+                                                   phase_code usage.phase_code_kind,
+                                                   rated_current_power_of_ten_multiplier public.unit_multiplier_kind,
+                                                   rated_current_time_stamp BIGINT,
+                                                   rated_current_uom public.unit_symbol_kind,
+                                                   rated_current_value BIGINT,
+                                                   rated_current_reading_type_ref TEXT,
+                                                   rated_power_power_of_ten_multiplier public.unit_multiplier_kind,
+                                                   rated_power_time_stamp BIGINT,
+                                                   rated_power_uom public.unit_symbol_kind,
+                                                   rated_power_value BIGINT,
+                                                   rated_power_reading_type_ref TEXT,
                                                    read_cycle TEXT,
                                                    read_route TEXT,
                                                    service_delivery_remark TEXT,
-                                                   service_priority TEXT,
-                                                   pnode_refs TEXT,
-                                                   aggregate_node_refs TEXT
+                                                   service_priority TEXT
 );
 
 CREATE TABLE IF NOT EXISTS usage.service_delivery_point_tariff_rider_ref (
@@ -146,4 +157,19 @@ CREATE TABLE IF NOT EXISTS usage.usage_point_pnode_ref (
                                                                            usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE,
                                                                            pnode_ref_id BIGINT REFERENCES usage.pnode_ref ON DELETE CASCADE,
                                                                            PRIMARY KEY (usage_point_uuid, pnode_ref_id)
+);
+
+CREATE TABLE IF NOT EXISTS usage.aggregate_node_ref (
+                                             id BIGSERIAL PRIMARY KEY,
+                                             anode_type usage.anode_type,
+                                             ref TEXT,
+                                             start_effective_date BIGINT,
+                                             end_effective_date BIGINT,
+                                             pnode_id BIGINT REFERENCES usage.pnode_ref
+);
+
+CREATE TABLE IF NOT EXISTS usage.usage_point_aggregate_node_ref (
+                                                                           usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE,
+                                                                           aggregate_node_ref_id BIGINT REFERENCES usage.aggregate_node_ref ON DELETE CASCADE,
+                                                                           PRIMARY KEY (usage_point_uuid, aggregate_node_ref_id)
 );
