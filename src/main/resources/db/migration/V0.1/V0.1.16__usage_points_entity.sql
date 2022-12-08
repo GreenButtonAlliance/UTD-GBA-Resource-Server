@@ -127,3 +127,8 @@ CREATE TABLE IF NOT EXISTS usage.usage_points (
                                                    pnode_refs TEXT,
                                                    aggregate_node_refs TEXT
 );
+CREATE TABLE IF NOT EXISTS usage.service_delivery_point_tariff_rider_ref (
+                                                                    service_delivery_point_uuid UUID REFERENCES usage.service_delivery_points ON DELETE CASCADE,
+                                                                    tariff_rider_ref_id BIGINT REFERENCES usage.tariff_rider_ref ON DELETE CASCADE,
+                                                                    PRIMARY KEY (service_delivery_point_uuid, tariff_rider_ref_id)
+);
