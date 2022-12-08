@@ -16,9 +16,14 @@
 
 package org.greenbuttonalliance.gbaresourceserver.common.model;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,19 +32,27 @@ import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 import org.hibernate.annotations.ColumnTransformer;
 
-@Embeddable
+@Entity
+@Table(name = "tariff_rider_ref", schema = "usage")
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class TariffRiderRef {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "rider_type")
 	private String riderType;
 
+	@Column(name = "enrollment_status")
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.enrollment_status)", read = "enrollment_status::TEXT")
 	private EnrollmentStatus enrollmentStatus;
 
+	@Column(name = "effective_date")
 	private Long effectiveDate; //in epoch-seconds
 }

@@ -27,6 +27,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -225,13 +226,10 @@ public class UsageSummary extends IdentifiedObject{
 	@Column(name = "read_cycle")
 	private String readCycle;
 
-	@ElementCollection()
-	@CollectionTable(name = "tariff_rider_ref", schema = "usage", joinColumns = {@JoinColumn(name = "usage_summary_uuid", nullable = false)})
-	@AttributeOverrides({
-		@AttributeOverride(name = "riderType", column = @Column(name = "rider_type")),
-		@AttributeOverride(name = "enrollmentStatus", column = @Column(name = "enrollment_status")),
-		@AttributeOverride(name = "effectiveDate", column = @Column(name = "effective_date"))
-	})
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = "usage_summaries_tariff_rider_ref", schema = "usage",
+		joinColumns = {@JoinColumn(name = "usage_summary_uuid", nullable = false)},
+		inverseJoinColumns = {@JoinColumn(name = "tariff_rider_ref_id", nullable = false)})
 	private Set<TariffRiderRef> tariffRiderRefs = new HashSet<>();
 
 	@Embedded
