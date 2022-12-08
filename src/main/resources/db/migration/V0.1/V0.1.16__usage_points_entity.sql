@@ -84,11 +84,11 @@ DO $$
   END $$;
 
 
-CREATE TABLE IF NOT EXISTS usage.service_delivery_points (
+CREATE TABLE IF NOT EXISTS usage.service_delivery_point (
                                                            uuid UUID PRIMARY KEY,
-                                                           customerAgreement TEXT,
                                                            name TEXT,
-                                                           tariffProfile TEXT
+                                                           tariff_profile TEXT,
+                                                           customer_agreement TEXT
 );
 
 CREATE TABLE IF NOT EXISTS usage.usage_points (
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_points (
                                                    localTimeParameters_id UUID REFERENCES  usage.time_configuration ON DELETE CASCADE,
                                                    retail_customer_id UUID REFERENCES  usage.retail_customer ON DELETE CASCADE,
                                                    serviceCategory_kind BIGINT,
-                                                   serviceDeliveryPoint_id UUID REFERENCES usage.service_delivery_points ON DELETE CASCADE,
+                                                   serviceDeliveryPoint_id UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
                                                    subscription_id UUID,
                                                    am_i_billing_ready TEXT,
                                                    check_billing BOOLEAN,
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_points (
                                                    aggregate_node_refs TEXT
 );
 CREATE TABLE IF NOT EXISTS usage.service_delivery_point_tariff_rider_ref (
-                                                                    service_delivery_point_uuid UUID REFERENCES usage.service_delivery_points ON DELETE CASCADE,
+                                                                    service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
                                                                     tariff_rider_ref_id BIGINT REFERENCES usage.tariff_rider_ref ON DELETE CASCADE,
                                                                     PRIMARY KEY (service_delivery_point_uuid, tariff_rider_ref_id)
 );
