@@ -15,6 +15,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingRea
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -85,6 +88,21 @@ public class UsagePointRepositoryTest {
 			findByAllSize,
 			testDataSize,
 			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
+		);
+	}
+
+	@Test
+	public void entityMappings_areNotNull() {
+		UsagePoint fullyMappedUsagePoint = usagePointRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedUsagePoint != null);
+
+		Function<UsagePoint, Optional<ServiceDeliveryPoint>> usagePointToServiceDeliveryPoint = up -> Optional.ofNullable(up.getServiceDeliveryPoint());
+
+		Assertions.assertAll(
+			"Entity mapping failures for usage point " + fullyMappedUsagePoint.getUuid(),
+			Stream.of(usagePointToServiceDeliveryPoint)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsagePoint).isPresent()))
 		);
 	}
 
@@ -338,7 +356,9 @@ public class UsagePointRepositoryTest {
 			ServiceDeliveryPoint sdp = up.getServiceDeliveryPoint();
 			count.getAndIncrement();
 			sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
-			//TODO: have sdp add up as well
+			sdp.setUsagePoints(new HashSet<>(
+				Collections.singletonList(up)
+			));
 		});
 
 		return usagePoints;
