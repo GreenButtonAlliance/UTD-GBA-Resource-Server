@@ -2,6 +2,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
@@ -90,6 +91,8 @@ public class ServiceDeliveryPointRepositoryTest {
 		Assumptions.assumeTrue(fullyMappedServiceDeliveryPoint != null);
 
 		Function<ServiceDeliveryPoint, Optional<Set<UsagePoint>>> serviceDeliveryPointToUsagePoints = sdp -> Optional.ofNullable(sdp.getUsagePoints());
+
+		Function<ServiceDeliveryPoint, Optional<Set<TariffRiderRef>>> usagePointToTariffRiderRefs = sdp -> Optional.ofNullable(sdp.getTariffRiderRefs());
 
 		Assertions.assertAll(
 			"Entity mapping failures for service delivery point " + fullyMappedServiceDeliveryPoint.getUuid(),
