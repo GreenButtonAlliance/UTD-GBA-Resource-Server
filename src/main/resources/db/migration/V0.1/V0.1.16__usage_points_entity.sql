@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_point (
   status SMALLINT,
   service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
   time_configuration_uuid UUID REFERENCES usage.time_configuration ON DELETE CASCADE,
+  retail_customer_uuid UUID REFERENCES usage.retail_customer ON DELETE CASCADE,
   am_i_billing_ready usage.am_i_billing_ready_kind,
   check_billing BOOLEAN,
   connection_state usage.usage_point_connected_kind,

@@ -18,8 +18,24 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
+import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.repository.UsagePointRepositoryTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +45,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -88,7 +110,17 @@ public class RetailCustomerRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		// TODO test mapping from RetailCustomer to Subscription and UsagePoint
+		RetailCustomer fullyMappedRetailCustomer = retailCustomerRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedRetailCustomer != null);
+
+		Function<RetailCustomer, Optional<Set<UsagePoint>>> retailCustomerToUsagePoints = rc -> Optional.ofNullable(rc.getUsagePoints());
+
+		Assertions.assertAll(
+			"Entity mapping failures for retail customer " + fullyMappedRetailCustomer.getUuid(),
+			Stream.of(retailCustomerToUsagePoints)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedRetailCustomer).isPresent()))
+		);
 	}
 
 	private static List<RetailCustomer> buildTestData() {
@@ -107,6 +139,10 @@ public class RetailCustomerRepositoryTest {
 				.password("password")
 				.role("hatever")
 				.username("Username")
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePointRepositoryTest.createUsageRepository()
+					)))
 				.build(),
 			RetailCustomer.builder()
 				.description("Hourly Wh Received")
@@ -122,6 +158,10 @@ public class RetailCustomerRepositoryTest {
 				.password("password")
 				.role("whatever")
 				.username("aUsername")
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePointRepositoryTest.createUsageRepository()
+					)))
 				.build(),
 			RetailCustomer.builder()
 				.description("Hourly Wh Delivered")
@@ -137,15 +177,55 @@ public class RetailCustomerRepositoryTest {
 				.password("password")
 				.role("whatever")
 				.username("aUsernam")
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePointRepositoryTest.createUsageRepository()
+					)))
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
 
+		AtomicInteger count = new AtomicInteger();
 		readingTypes.forEach(rt -> {
 			rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
+
+			UsagePoint up = rt.getUsagePoints().stream().toList().get(0);
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setRetailCustomer(rt);
+			up.setServiceDeliveryPoint(ServiceDeliveryPoint.builder()
+				.name("name")
+				.tariffProfile("tariffProfile")
+				.customerAgreement("customerAgreement")
+				.tariffRiderRefs(
+					new HashSet<>(
+						Collections.singletonList(
+							TariffRiderRef.builder()
+								.enrollmentStatus(EnrollmentStatus.ENROLLED)
+								.effectiveDate(1L)
+								.riderType("riderType")
+								.build()
+						)
+					)
+				)
+				.build());
+
+			count.getAndIncrement();
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			ServiceDeliveryPoint serviceDeliveryPoint = up.getServiceDeliveryPoint();
+			serviceDeliveryPoint.setUsagePoints(new HashSet<>(
+				Collections.singletonList(up)
+			));
+
+			TimeConfiguration tc = up.getTimeConfiguration();
+
+
+			tc.setUsagePoints(new HashSet<>(
+				Collections.singletonList(up)
+			));
 			// TODO hydrate MeterReading reference when available
 		});
 		return readingTypes;
 	}
+
 }
