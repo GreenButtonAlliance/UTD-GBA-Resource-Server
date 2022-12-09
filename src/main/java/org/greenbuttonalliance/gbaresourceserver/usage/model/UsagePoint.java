@@ -53,6 +53,10 @@ public class UsagePoint extends IdentifiedObject{
 	@JoinColumn(name = "service_delivery_point_uuid", nullable = false)
 	private ServiceDeliveryPoint serviceDeliveryPoint;
 
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "time_configuration_uuid", nullable = false)
+	private TimeConfiguration timeConfiguration;
+
 	@Column(name = "am_i_billing_ready", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.am_i_billing_ready_kind)", read = "am_i_billing_ready::TEXT")

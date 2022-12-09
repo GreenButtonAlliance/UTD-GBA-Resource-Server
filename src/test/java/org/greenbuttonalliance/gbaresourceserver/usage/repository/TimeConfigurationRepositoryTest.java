@@ -17,8 +17,24 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
+import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +45,14 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -82,8 +103,16 @@ public class TimeConfigurationRepositoryTest {
 			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
 		);
 	}
-	//TODO: Add entityMappings_areNotNull test once Usage point is created
 
+	@Test
+	public void entityMappings_areNotNull() {
+		TimeConfiguration fullyMappedTimeConfiguration = timeConfigurationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedTimeConfiguration != null);
+
+		Function<TimeConfiguration, Optional<Set<UsagePoint>>> timeConfigurationToUsagePoints = tc -> Optional.ofNullable(tc.getUsagePoints());
+
+		Assertions.assertTrue(timeConfigurationToUsagePoints.apply(fullyMappedTimeConfiguration).isPresent());
+	}
 
 	private static List<TimeConfiguration> buildTestData() {
 		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
@@ -97,7 +126,91 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(100L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(10L).build(),
+			.tzOffset(10L)
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePoint.builder()
+							.description("description")
+							.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+							.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/176")
+							.selfLinkRel("self")
+							.upLinkHref("https://{domain}/espi/1_1/resource/UsagePoint")
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+							.roleFlags(new byte[1])
+							.serviceCategory(ServiceKind.HEAT)
+							.status((short) 1)
+							.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
+								.name("name")
+								.tariffProfile("tariffProfile")
+								.customerAgreement("customerAgreement")
+								.tariffRiderRefs(
+									new HashSet<>(
+										Collections.singletonList(
+											TariffRiderRef.builder()
+												.enrollmentStatus(EnrollmentStatus.ENROLLED)
+												.effectiveDate(1L)
+												.riderType("riderType")
+												.build()
+										)
+									)
+								)
+								.build())
+							.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+							.checkBilling(true)
+							.connectionState(UsagePointConnectedKind.CONNECTED)
+							.estimatedLoad(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.grounded(true)
+							.isSdp(true)
+							.isVirtual(true)
+							.minimalUsageExpected(true)
+							.nominalServiceVoltage(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.outageRegion("outageRegion")
+							.phaseCode(PhaseCodeKind.S12N)
+							.ratedCurrent(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.ratedPower(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.readCycle("readCycle")
+							.readRoute("readRoute")
+							.serviceDeliveryRemark("serviceDeliveryRemark")
+							.servicePriority("servicePriority")
+							.pnodeRefs(new HashSet<>(
+								Collections.singletonList(
+									PnodeRef.builder()
+										.id(1L)
+										.build()
+								)
+							))
+							.aggregateNodeRefs(new HashSet<>(
+								Collections.singletonList(
+									AggregateNodeRef.builder()
+										.ref("ref")
+										.build()
+								)
+							))
+							.build()
+					)
+				))
+				.build(),
 		TimeConfiguration.builder()
 			.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
@@ -108,7 +221,91 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(200L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(20L).build(),
+			.tzOffset(20L)
+			.usagePoints(new HashSet<>(
+				Collections.singletonList(
+					UsagePoint.builder()
+						.description("description")
+						.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+						.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/176")
+						.selfLinkRel("self")
+						.upLinkHref("https://{domain}/espi/1_1/resource/UsagePoint")
+						.upLinkRel("up")
+						.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+						.roleFlags(new byte[1])
+						.serviceCategory(ServiceKind.HEAT)
+						.status((short) 1)
+						.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
+							.name("name")
+							.tariffProfile("tariffProfile")
+							.customerAgreement("customerAgreement")
+							.tariffRiderRefs(
+								new HashSet<>(
+									Collections.singletonList(
+										TariffRiderRef.builder()
+											.enrollmentStatus(EnrollmentStatus.ENROLLED)
+											.effectiveDate(1L)
+											.riderType("riderType")
+											.build()
+									)
+								)
+							)
+							.build())
+						.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+						.checkBilling(true)
+						.connectionState(UsagePointConnectedKind.CONNECTED)
+						.estimatedLoad(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.grounded(true)
+						.isSdp(true)
+						.isVirtual(true)
+						.minimalUsageExpected(true)
+						.nominalServiceVoltage(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.outageRegion("outageRegion")
+						.phaseCode(PhaseCodeKind.S12N)
+						.ratedCurrent(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.ratedPower(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.readCycle("readCycle")
+						.readRoute("readRoute")
+						.serviceDeliveryRemark("serviceDeliveryRemark")
+						.servicePriority("servicePriority")
+						.pnodeRefs(new HashSet<>(
+							Collections.singletonList(
+								PnodeRef.builder()
+									.id(1L)
+									.build()
+							)
+						))
+						.aggregateNodeRefs(new HashSet<>(
+							Collections.singletonList(
+								AggregateNodeRef.builder()
+									.ref("ref")
+									.build()
+							)
+						))
+						.build()
+				)
+			))
+			.build(),
 		TimeConfiguration.builder()
 			.published(LocalDateTime.parse("2017-10-15 12:23:04", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
@@ -119,10 +316,120 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(300L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(30L).build()
+			.tzOffset(30L)
+			.usagePoints(new HashSet<>(
+				Collections.singletonList(
+					UsagePoint.builder()
+						.description("description")
+						.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+						.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/176")
+						.selfLinkRel("self")
+						.upLinkHref("https://{domain}/espi/1_1/resource/UsagePoint")
+						.upLinkRel("up")
+						.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
+						.roleFlags(new byte[1])
+						.serviceCategory(ServiceKind.HEAT)
+						.status((short) 1)
+						.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
+							.name("name")
+							.tariffProfile("tariffProfile")
+							.customerAgreement("customerAgreement")
+							.tariffRiderRefs(
+								new HashSet<>(
+									Collections.singletonList(
+										TariffRiderRef.builder()
+											.enrollmentStatus(EnrollmentStatus.ENROLLED)
+											.effectiveDate(1L)
+											.riderType("riderType")
+											.build()
+									)
+								)
+							)
+							.build())
+						.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+						.checkBilling(true)
+						.connectionState(UsagePointConnectedKind.CONNECTED)
+						.estimatedLoad(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.grounded(true)
+						.isSdp(true)
+						.isVirtual(true)
+						.minimalUsageExpected(true)
+						.nominalServiceVoltage(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.outageRegion("outageRegion")
+						.phaseCode(PhaseCodeKind.S12N)
+						.ratedCurrent(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.ratedPower(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.readCycle("readCycle")
+						.readRoute("readRoute")
+						.serviceDeliveryRemark("serviceDeliveryRemark")
+						.servicePriority("servicePriority")
+						.pnodeRefs(new HashSet<>(
+							Collections.singletonList(
+								PnodeRef.builder()
+									.id(1L)
+									.build()
+							)
+						))
+						.aggregateNodeRefs(new HashSet<>(
+							Collections.singletonList(
+								AggregateNodeRef.builder()
+									.ref("ref")
+									.build()
+							)
+						))
+						.build()
+				)
+			))
+			.build()
 		);
+
+		AtomicInteger count = new AtomicInteger();
 		timeConfigurations.forEach(tc->{
 			tc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, tc.getSelfLinkHref()));
+
+			UsagePoint up = tc.getUsagePoints().stream().toList().get(0);
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setTimeConfiguration(tc);
+			up.setServiceDeliveryPoint(ServiceDeliveryPoint.builder()
+				.name("name")
+				.tariffProfile("tariffProfile")
+				.customerAgreement("customerAgreement")
+				.tariffRiderRefs(
+					new HashSet<>(
+						Collections.singletonList(
+							TariffRiderRef.builder()
+								.enrollmentStatus(EnrollmentStatus.ENROLLED)
+								.effectiveDate(1L)
+								.riderType("riderType")
+								.build()
+						)
+					)
+				)
+				.build());
+
+			count.getAndIncrement();
+			ServiceDeliveryPoint serviceDeliveryPoint = up.getServiceDeliveryPoint();
+			serviceDeliveryPoint.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
 		});
 		return timeConfigurations;
 	}
