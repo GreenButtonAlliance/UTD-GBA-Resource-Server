@@ -61,6 +61,9 @@ public class UsagePoint extends IdentifiedObject{
 	@JoinColumn(name = "retail_customer_uuid", nullable = false)
 	private RetailCustomer retailCustomer;
 
+	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
+	private Set<MeterReading> meterReadings = new HashSet<>();
+
 	@Column(name = "am_i_billing_ready", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.am_i_billing_ready_kind)", read = "am_i_billing_ready::TEXT")

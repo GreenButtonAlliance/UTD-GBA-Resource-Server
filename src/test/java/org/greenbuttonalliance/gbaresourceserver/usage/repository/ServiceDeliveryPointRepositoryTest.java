@@ -2,19 +2,10 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -117,7 +107,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -138,7 +128,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -159,7 +149,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(

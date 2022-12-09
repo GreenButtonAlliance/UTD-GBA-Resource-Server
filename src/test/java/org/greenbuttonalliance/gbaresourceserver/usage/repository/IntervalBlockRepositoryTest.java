@@ -18,10 +18,12 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -211,13 +214,27 @@ public class IntervalBlockRepositoryTest {
 			.upLinkRel("up")
 			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
+			.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 			.build();
 		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
 
 		// hydrate UUIDs and entity mappings
 		intervalBlocks.forEach(ib -> {
+			AtomicInteger count = new AtomicInteger();
 			ib.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ib.getSelfLinkHref()));
 			ib.setMeterReading(testMeterReading);
+
+			UsagePoint up = testMeterReading.getUsagePoint();
+
+			up.setMeterReadings(new HashSet<>(
+				Collections.singletonList(
+					testMeterReading
+				)
+			));
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
 			ib.getIntervalReadings().forEach(ir -> {
 				ir.setBlock(ib);
