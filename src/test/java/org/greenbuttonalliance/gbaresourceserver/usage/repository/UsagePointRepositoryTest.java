@@ -12,6 +12,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
@@ -100,7 +101,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.HEAT)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -180,7 +181,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.HEAT)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -260,7 +261,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.HEAT)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
