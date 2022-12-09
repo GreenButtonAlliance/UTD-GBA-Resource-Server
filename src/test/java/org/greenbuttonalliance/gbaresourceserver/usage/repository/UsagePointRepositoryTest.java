@@ -10,6 +10,7 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentSt
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -98,15 +100,19 @@ public class UsagePointRepositoryTest {
 
 		Function<UsagePoint, Optional<ServiceDeliveryPoint>> usagePointToServiceDeliveryPoint = up -> Optional.ofNullable(up.getServiceDeliveryPoint());
 
+		Function<UsagePoint, Optional<TimeConfiguration>> usagePointToTimeConfiguration = up -> Optional.ofNullable(up.getTimeConfiguration());
+
 		Assertions.assertAll(
 			"Entity mapping failures for usage point " + fullyMappedUsagePoint.getUuid(),
-			Stream.of(usagePointToServiceDeliveryPoint)
+			Stream.of(usagePointToServiceDeliveryPoint,
+					usagePointToTimeConfiguration)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsagePoint).isPresent()))
 		);
 	}
 
 	private static List<UsagePoint> buildTestData() {
+		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
 		List<UsagePoint> usagePoints = Arrays.asList(
 			UsagePoint.builder()
 				.description("description")
@@ -134,6 +140,18 @@ public class UsagePointRepositoryTest {
 							)
 						)
 					)
+					.build())
+				.timeConfiguration(TimeConfiguration.builder()
+					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
+					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
+					.dstEndRule(deadbeefs)
+					.dstOffset(200L)
+					.dstStartRule(deadbeefs)
+					.tzOffset(20L)
 					.build())
 				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 				.checkBilling(true)
@@ -215,6 +233,18 @@ public class UsagePointRepositoryTest {
 						)
 					)
 					.build())
+				.timeConfiguration(TimeConfiguration.builder()
+					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
+					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
+					.dstEndRule(deadbeefs)
+					.dstOffset(200L)
+					.dstStartRule(deadbeefs)
+					.tzOffset(20L)
+					.build())
 				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -295,6 +325,18 @@ public class UsagePointRepositoryTest {
 						)
 					)
 					.build())
+				.timeConfiguration(TimeConfiguration.builder()
+					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
+					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/186")
+					.selfLinkRel("self")
+					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.upLinkRel("up")
+					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
+					.dstEndRule(deadbeefs)
+					.dstOffset(200L)
+					.dstStartRule(deadbeefs)
+					.tzOffset(20L)
+					.build())
 				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -352,11 +394,24 @@ public class UsagePointRepositoryTest {
 		// hydrate UUIDs and entity mappings
 		AtomicInteger count = new AtomicInteger();
 		usagePoints.forEach(up -> {
+
 			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
-			ServiceDeliveryPoint sdp = up.getServiceDeliveryPoint();
+
 			count.getAndIncrement();
+
+			ServiceDeliveryPoint sdp = up.getServiceDeliveryPoint();
+
 			sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
+
 			sdp.setUsagePoints(new HashSet<>(
+				Collections.singletonList(up)
+			));
+
+			TimeConfiguration tc = up.getTimeConfiguration();
+
+			tc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+
+			tc.setUsagePoints(new HashSet<>(
 				Collections.singletonList(up)
 			));
 		});

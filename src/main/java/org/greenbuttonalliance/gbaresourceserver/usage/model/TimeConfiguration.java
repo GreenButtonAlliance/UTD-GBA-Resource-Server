@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "time_configuration", schema = "usage")
@@ -38,4 +41,6 @@ public class TimeConfiguration extends IdentifiedObject{
 	private byte[] dstStartRule;
 	@Column(name = "tz_offset")
 	private Long tzOffset;
+	@OneToMany(mappedBy = "timeConfiguration", cascade = CascadeType.ALL)
+	private Set<UsagePoint> usagePoints = new HashSet<>();
 }
