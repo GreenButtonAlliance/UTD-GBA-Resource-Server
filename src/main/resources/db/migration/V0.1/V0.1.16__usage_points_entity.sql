@@ -176,3 +176,5 @@ CREATE TABLE IF NOT EXISTS usage.usage_point_aggregate_node_ref (
 );
 
 ALTER TABLE usage.meter_reading ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;
+
+ALTER TABLE usage.electric_power_quality_summaries ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;

@@ -3,6 +3,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
@@ -10,6 +11,7 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
@@ -120,12 +122,15 @@ public class UsagePointRepositoryTest {
 
 		Function<UsagePoint, Optional<Set<MeterReading>>> usagePointToMeterReadings = up -> Optional.ofNullable(up.getMeterReadings());
 
+		Function<UsagePoint, Optional<Set<ElectricPowerQualitySummary>>> usagePointToElectricPowerQualitySummaries = up -> Optional.ofNullable(up.getElectricPowerQualitySummaries());
+
 		Assertions.assertAll(
 			"Entity mapping failures for usage point " + fullyMappedUsagePoint.getUuid(),
 			Stream.of(usagePointToServiceDeliveryPoint,
 					usagePointToTimeConfiguration,
 					usagePointToRetailCustomer,
-					usagePointToMeterReadings)
+					usagePointToMeterReadings,
+					usagePointToElectricPowerQualitySummaries)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsagePoint).isPresent()))
 		);
@@ -245,6 +250,34 @@ public class UsagePointRepositoryTest {
 										.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.build())
 								.collect(Collectors.toSet()))
+							.build()
+					)
+				))
+				.electricPowerQualitySummaries(new HashSet<>(
+					Collections.singletonList(
+						ElectricPowerQualitySummary.builder()
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.flickerPlt(1L)
+							.flickerPst(2L)
+							.harmonicVoltage(3L)
+							.longInterruptions(4L)
+							.mainsVoltage(5L)
+							.measurementProtocol((short) 6)
+							.powerFrequency(7L)
+							.rapidVoltageChanges(8L)
+							.shortInterruptions(9L)
+							.summaryInterval(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.supplyVoltageDips(12L)
+							.supplyVoltageImbalance(13L)
+							.supplyVoltageVariations(14L)
+							.tempOvervoltage(15L)
 							.build()
 					)
 				))
@@ -415,6 +448,34 @@ public class UsagePointRepositoryTest {
 							.build()
 					)
 				))
+				.electricPowerQualitySummaries(new HashSet<>(
+					Collections.singletonList(
+						ElectricPowerQualitySummary.builder()
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.flickerPlt(1L)
+							.flickerPst(2L)
+							.harmonicVoltage(3L)
+							.longInterruptions(4L)
+							.mainsVoltage(5L)
+							.measurementProtocol((short) 6)
+							.powerFrequency(7L)
+							.rapidVoltageChanges(8L)
+							.shortInterruptions(9L)
+							.summaryInterval(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.supplyVoltageDips(12L)
+							.supplyVoltageImbalance(13L)
+							.supplyVoltageVariations(14L)
+							.tempOvervoltage(15L)
+							.build()
+					)
+				))
 				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -579,6 +640,34 @@ public class UsagePointRepositoryTest {
 										.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.build())
 								.collect(Collectors.toSet()))
+							.build()
+					)
+				))
+				.electricPowerQualitySummaries(new HashSet<>(
+					Collections.singletonList(
+						ElectricPowerQualitySummary.builder()
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.flickerPlt(1L)
+							.flickerPst(2L)
+							.harmonicVoltage(3L)
+							.longInterruptions(4L)
+							.mainsVoltage(5L)
+							.measurementProtocol((short) 6)
+							.powerFrequency(7L)
+							.rapidVoltageChanges(8L)
+							.shortInterruptions(9L)
+							.summaryInterval(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.supplyVoltageDips(12L)
+							.supplyVoltageImbalance(13L)
+							.supplyVoltageVariations(14L)
+							.tempOvervoltage(15L)
 							.build()
 					)
 				))
@@ -768,6 +857,34 @@ public class UsagePointRepositoryTest {
 						.build()
 				)
 			))
+			.electricPowerQualitySummaries(new HashSet<>(
+				Collections.singletonList(
+					ElectricPowerQualitySummary.builder()
+						.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+						.selfLinkHref(PRESENT_SELF_LINK)
+						.selfLinkRel("self")
+						.upLinkHref(upLinkHref)
+						.upLinkRel("up")
+						.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+						.flickerPlt(1L)
+						.flickerPst(2L)
+						.harmonicVoltage(3L)
+						.longInterruptions(4L)
+						.mainsVoltage(5L)
+						.measurementProtocol((short) 6)
+						.powerFrequency(7L)
+						.rapidVoltageChanges(8L)
+						.shortInterruptions(9L)
+						.summaryInterval(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.supplyVoltageDips(12L)
+						.supplyVoltageImbalance(13L)
+						.supplyVoltageVariations(14L)
+						.tempOvervoltage(15L)
+						.build()
+				)
+			))
 			.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 			.checkBilling(true)
 			.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -854,6 +971,10 @@ public class UsagePointRepositoryTest {
 				});
 			});
 		});
+
+		up.getElectricPowerQualitySummaries().forEach(epqs -> {
+			epqs.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, epqs.getSelfLinkHref()));
+		});
 	}
 
 	public static void connectUsagePoint(UsagePoint up) {
@@ -888,6 +1009,10 @@ public class UsagePointRepositoryTest {
 					rt.setMeterReading(mr);
 				});
 			});
+		});
+
+		up.getElectricPowerQualitySummaries().forEach(epqs -> {
+			epqs.setUsagePoint(up);
 		});
 	}
 }
