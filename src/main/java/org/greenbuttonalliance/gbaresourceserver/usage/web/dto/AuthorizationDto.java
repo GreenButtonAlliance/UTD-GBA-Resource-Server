@@ -30,7 +30,7 @@ public class AuthorizationDto extends IdentifiedObjectDto implements Serializabl
 	private String authorizationURI;
 	private Long customerResourceURI;
 
-	//need to fix mapping
+	//need to fix dtos
 	public static AuthorizationDto fromAuthorization(Authorization authorization) {
 		return Optional.ofNullable(authorization)
 			.map(au -> new IdentifiedObjectDtoSubclassFactory<>(AuthorizationDto::new).create(au)
