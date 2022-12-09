@@ -16,7 +16,11 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -55,4 +59,7 @@ public class RetailCustomer extends IdentifiedObject {
 
 	@Column
 	private String username;
+
+	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
+	private Set<UsagePoint> usagePoints = new HashSet<>();
 }
