@@ -131,6 +131,10 @@ public class UsagePointRepositoryTest {
 
 		Function<UsagePoint, Optional<Set<UsageSummary>>> usagePointToUsageSummaries = up -> Optional.ofNullable(up.getUsageSummaries());
 
+		Function<UsagePoint, Optional<Set<PnodeRef>>> usagePointToPnodeRefs = up -> Optional.ofNullable(up.getPnodeRefs());
+
+		Function<UsagePoint, Optional<Set<AggregateNodeRef>>> usagePointToAggregateNodeRefs = up -> Optional.ofNullable(up.getAggregateNodeRefs());
+
 		Assertions.assertAll(
 			"Entity mapping failures for usage point " + fullyMappedUsagePoint.getUuid(),
 			Stream.of(usagePointToServiceDeliveryPoint,
@@ -138,7 +142,9 @@ public class UsagePointRepositoryTest {
 					usagePointToRetailCustomer,
 					usagePointToMeterReadings,
 					usagePointToElectricPowerQualitySummaries,
-					usagePointToUsageSummaries)
+					usagePointToUsageSummaries,
+					usagePointToPnodeRefs,
+					usagePointToAggregateNodeRefs)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsagePoint).isPresent()))
 		);
@@ -1486,7 +1492,7 @@ public class UsagePointRepositoryTest {
 					lis.forEach(li -> {
 							count.getAndIncrement();
 							if(li.getUuid() == null) {
-								li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count.toString() + num));
+								li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
 							}
 							li.setUsageSummary(us);
 						}
