@@ -18,22 +18,11 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
+
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.UsagePointRepositoryTest;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -193,36 +182,13 @@ public class RetailCustomerRepositoryTest {
 			UsagePoint up = rt.getUsagePoints().stream().toList().get(0);
 			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
 			up.setRetailCustomer(rt);
-			up.setServiceDeliveryPoint(ServiceDeliveryPoint.builder()
-				.name("name")
-				.tariffProfile("tariffProfile")
-				.customerAgreement("customerAgreement")
-				.tariffRiderRefs(
-					new HashSet<>(
-						Collections.singletonList(
-							TariffRiderRef.builder()
-								.enrollmentStatus(EnrollmentStatus.ENROLLED)
-								.effectiveDate(1L)
-								.riderType("riderType")
-								.build()
-						)
-					)
-				)
-				.build());
 
 			count.getAndIncrement();
+
 			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
-			ServiceDeliveryPoint serviceDeliveryPoint = up.getServiceDeliveryPoint();
-			serviceDeliveryPoint.setUsagePoints(new HashSet<>(
-				Collections.singletonList(up)
-			));
 
-			TimeConfiguration tc = up.getTimeConfiguration();
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
-
-			tc.setUsagePoints(new HashSet<>(
-				Collections.singletonList(up)
-			));
 			// TODO hydrate MeterReading reference when available
 		});
 		return readingTypes;
