@@ -42,6 +42,9 @@ public class ServiceDeliveryPoint {
 	@Column(name = "customer_agreement")
 	private String customerAgreement;
 
+	@OneToMany(mappedBy = "serviceDeliveryPoint", cascade = CascadeType.ALL)
+	private Set<UsagePoint> usagePoints = new HashSet<>();
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "service_delivery_point_tariff_rider_ref", schema = "usage",
 		joinColumns = {@JoinColumn(name = "service_delivery_point_uuid", nullable = false)},
