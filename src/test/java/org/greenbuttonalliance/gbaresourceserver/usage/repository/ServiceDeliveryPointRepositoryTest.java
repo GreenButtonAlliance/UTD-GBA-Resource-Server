@@ -92,11 +92,12 @@ public class ServiceDeliveryPointRepositoryTest {
 
 		Function<ServiceDeliveryPoint, Optional<Set<UsagePoint>>> serviceDeliveryPointToUsagePoints = sdp -> Optional.ofNullable(sdp.getUsagePoints());
 
-		Function<ServiceDeliveryPoint, Optional<Set<TariffRiderRef>>> usagePointToTariffRiderRefs = sdp -> Optional.ofNullable(sdp.getTariffRiderRefs());
+		Function<ServiceDeliveryPoint, Optional<Set<TariffRiderRef>>> serviceDeliveryPointToTariffRiderRefs = sdp -> Optional.ofNullable(sdp.getTariffRiderRefs());
 
 		Assertions.assertAll(
 			"Entity mapping failures for service delivery point " + fullyMappedServiceDeliveryPoint.getUuid(),
-			Stream.of(serviceDeliveryPointToUsagePoints)
+			Stream.of(serviceDeliveryPointToUsagePoints,
+					serviceDeliveryPointToTariffRiderRefs)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedServiceDeliveryPoint).isPresent()))
 		);
