@@ -22,6 +22,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingRea
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.hibernate.annotations.ColumnTransformer;
@@ -40,7 +41,10 @@ public class UsagePoint extends IdentifiedObject{
 	@Column(name = "role_flags")
 	private byte[] roleFlags;
 
-	//TODO: Add service category
+	@Column(name = "service_category", nullable = false)
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.service_kind)", read = "service_category::TEXT")
+	private ServiceKind serviceCategory;
 
 	@Column
 	private Short status;

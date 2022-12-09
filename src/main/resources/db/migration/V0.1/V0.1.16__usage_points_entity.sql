@@ -11,8 +11,7 @@ DO $$
         'SEWERAGE',
         'RATES',
         'TVLICENSE',
-        'INTERNET',
-        'WEATHER'
+        'INTERNET'
         );
     END IF;
   END $$;
@@ -101,7 +100,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_point (
   up_link_rel TEXT,
   updated TIMESTAMP,
   role_flags BYTEA,
-  --service_category
+  service_category usage.service_kind,
   status SMALLINT,
   service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
   am_i_billing_ready usage.am_i_billing_ready_kind,

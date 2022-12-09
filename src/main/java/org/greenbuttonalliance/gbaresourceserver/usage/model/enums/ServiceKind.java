@@ -28,8 +28,7 @@ public enum ServiceKind {
 	SEWERAGE(6),
 	RATES(7),
 	TVLICENSE(8),
-	INTERNET(9),
-	WEATHER(10);
+	INTERNET(9);
 
 	public final int schemaValue;
 
