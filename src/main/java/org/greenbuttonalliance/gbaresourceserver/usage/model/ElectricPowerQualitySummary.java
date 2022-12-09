@@ -16,9 +16,12 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -78,8 +81,7 @@ public class ElectricPowerQualitySummary extends IdentifiedObject {
 	@Column(name = "temp_overvoltage")
 	private Long tempOvervoltage;
 
-	//TODO: Add this once UsagePoint entity is created
-//	@ManyToOne(optional = false)
-//	@JoinColumn(name = "usage_point_uuid", nullable = false)
-//	private UsagePoint usagePoint;
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "usage_point_uuid", nullable = false)
+	private UsagePoint usagePoint;
 }

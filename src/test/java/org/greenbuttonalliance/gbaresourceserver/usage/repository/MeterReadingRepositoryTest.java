@@ -249,8 +249,8 @@ public class MeterReadingRepositoryTest {
 		);
 
 		// hydrate UUIDs and entity mappings
+		AtomicInteger count = new AtomicInteger();
 		meterReadings.forEach(mr -> {
-			AtomicInteger count = new AtomicInteger();
 
 			mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
 

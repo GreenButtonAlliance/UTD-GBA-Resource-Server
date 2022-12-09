@@ -232,8 +232,9 @@ public class ReadingTypeRepositoryTest {
 		);
 
 		// hydrate UUIDs and entity mappings
+		AtomicInteger count = new AtomicInteger();
 		readingTypes.forEach(rt -> {
-			AtomicInteger count = new AtomicInteger();
+
 			rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
 
 			Optional.ofNullable(rt.getMeterReading()).ifPresent(mr -> {
@@ -247,6 +248,8 @@ public class ReadingTypeRepositoryTest {
 						mr
 					)
 				));
+
+				count.getAndIncrement();
 
 				UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 

@@ -219,8 +219,9 @@ public class IntervalBlockRepositoryTest {
 		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
 
 		// hydrate UUIDs and entity mappings
+		AtomicInteger count = new AtomicInteger();
 		intervalBlocks.forEach(ib -> {
-			AtomicInteger count = new AtomicInteger();
+
 			ib.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ib.getSelfLinkHref()));
 			ib.setMeterReading(testMeterReading);
 
@@ -231,6 +232,8 @@ public class IntervalBlockRepositoryTest {
 					testMeterReading
 				)
 			));
+
+			count.getAndIncrement();
 
 			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
