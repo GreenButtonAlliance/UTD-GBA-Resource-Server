@@ -28,6 +28,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -234,4 +235,8 @@ public class UsageSummary extends IdentifiedObject{
 
 	@Embedded
 	private BillingChargeSource billingChargeSource;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "usage_point_uuid", nullable = false)
+	private UsagePoint usagePoint;
 }

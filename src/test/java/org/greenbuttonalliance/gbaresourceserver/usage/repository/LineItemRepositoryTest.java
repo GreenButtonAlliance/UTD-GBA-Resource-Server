@@ -23,6 +23,7 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
@@ -230,6 +231,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -346,6 +348,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -462,6 +465,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build()
 		);
@@ -474,6 +478,21 @@ public class LineItemRepositoryTest {
 			UsageSummary us = li.getUsageSummary();
 				us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, us.getSelfLinkHref()));
 				us.setLineItems(new HashSet<>(List.of(li)));
+
+			UsagePoint up = us.getUsagePoint();
+
+			up.setUsageSummaries(new HashSet<>(
+				Collections.singletonList(
+					us
+				)
+			));
+
+			count.getAndIncrement();
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
+
 		});
 		return lineItems;
 	}

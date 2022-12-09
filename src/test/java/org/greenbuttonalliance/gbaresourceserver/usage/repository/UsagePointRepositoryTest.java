@@ -3,18 +3,21 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.BillingChargeSource;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
@@ -22,8 +25,10 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
@@ -124,13 +129,16 @@ public class UsagePointRepositoryTest {
 
 		Function<UsagePoint, Optional<Set<ElectricPowerQualitySummary>>> usagePointToElectricPowerQualitySummaries = up -> Optional.ofNullable(up.getElectricPowerQualitySummaries());
 
+		Function<UsagePoint, Optional<Set<UsageSummary>>> usagePointToUsageSummaries = up -> Optional.ofNullable(up.getUsageSummaries());
+
 		Assertions.assertAll(
 			"Entity mapping failures for usage point " + fullyMappedUsagePoint.getUuid(),
 			Stream.of(usagePointToServiceDeliveryPoint,
 					usagePointToTimeConfiguration,
 					usagePointToRetailCustomer,
 					usagePointToMeterReadings,
-					usagePointToElectricPowerQualitySummaries)
+					usagePointToElectricPowerQualitySummaries,
+					usagePointToUsageSummaries)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedUsagePoint).isPresent()))
 		);
@@ -278,6 +286,128 @@ public class UsagePointRepositoryTest {
 							.supplyVoltageImbalance(13L)
 							.supplyVoltageVariations(14L)
 							.tempOvervoltage(15L)
+							.build()
+					)
+				))
+				.usageSummaries(new HashSet<>(
+					Collections.singletonList(
+						UsageSummary.builder()
+							.description("description")
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.billingPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.billLastPeriod(1L)
+							.billToDate(1L)
+							.costAdditionalLastPeriod(1L)
+							.lineItems(new HashSet<>(List.of(
+									LineItem.builder()
+										.amount(1L)
+										.rounding(1L)
+										.dateTime(1L)
+										.note("note")
+										.measurement(new SummaryMeasurement()
+											.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+											.setTimeStamp(1L)
+											.setUom(UnitSymbolKind.M)
+											.setValue(1L)
+											.setReadingTypeRef("readingTypeRef"))
+										.itemKind(ItemKind.INFORMATION)
+										.unitCost(1L)
+										.itemPeriod(new DateTimeInterval()
+											.setDuration(10L)
+											.setStart(11L))
+										.build()
+								)
+								)
+							)
+							.currency(Currency.USD)
+							.overallConsumptionLastPeriod(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentBillingPeriodOverAllConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayLastYearNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.peakDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayLastYearOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.qualityOfReading(QualityOfReading.VALID)
+							.ratchetDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.ratchetDemandPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.statusTimeStamp(1L)
+							.commodity(CommodityKind.CO2)
+							.tariffProfile("tariffProfile")
+							.readCycle("readCycle")
+							.tariffRiderRefs(
+								new HashSet<>(
+									Collections.singletonList(
+										TariffRiderRef.builder()
+											.enrollmentStatus(EnrollmentStatus.ENROLLED)
+											.effectiveDate(1L)
+											.riderType("riderType")
+											.build()
+									)
+								)
+							)
+							.billingChargeSource(new BillingChargeSource()
+								.setAgencyName("agencyName"))
 							.build()
 					)
 				))
@@ -476,6 +606,128 @@ public class UsagePointRepositoryTest {
 							.build()
 					)
 				))
+				.usageSummaries(new HashSet<>(
+					Collections.singletonList(
+						UsageSummary.builder()
+							.description("description")
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.billingPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.billLastPeriod(1L)
+							.billToDate(1L)
+							.costAdditionalLastPeriod(1L)
+							.lineItems(new HashSet<>(List.of(
+									LineItem.builder()
+										.amount(1L)
+										.rounding(1L)
+										.dateTime(1L)
+										.note("note")
+										.measurement(new SummaryMeasurement()
+											.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+											.setTimeStamp(1L)
+											.setUom(UnitSymbolKind.M)
+											.setValue(1L)
+											.setReadingTypeRef("readingTypeRef"))
+										.itemKind(ItemKind.INFORMATION)
+										.unitCost(1L)
+										.itemPeriod(new DateTimeInterval()
+											.setDuration(10L)
+											.setStart(11L))
+										.build()
+								)
+								)
+							)
+							.currency(Currency.USD)
+							.overallConsumptionLastPeriod(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentBillingPeriodOverAllConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayLastYearNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.peakDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayLastYearOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.qualityOfReading(QualityOfReading.VALID)
+							.ratchetDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.ratchetDemandPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.statusTimeStamp(1L)
+							.commodity(CommodityKind.CO2)
+							.tariffProfile("tariffProfile")
+							.readCycle("readCycle")
+							.tariffRiderRefs(
+								new HashSet<>(
+									Collections.singletonList(
+										TariffRiderRef.builder()
+											.enrollmentStatus(EnrollmentStatus.ENROLLED)
+											.effectiveDate(1L)
+											.riderType("riderType")
+											.build()
+									)
+								)
+							)
+							.billingChargeSource(new BillingChargeSource()
+								.setAgencyName("agencyName"))
+							.build()
+					)
+				))
 				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -668,6 +920,128 @@ public class UsagePointRepositoryTest {
 							.supplyVoltageImbalance(13L)
 							.supplyVoltageVariations(14L)
 							.tempOvervoltage(15L)
+							.build()
+					)
+				))
+				.usageSummaries(new HashSet<>(
+					Collections.singletonList(
+						UsageSummary.builder()
+							.description("description")
+							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.selfLinkHref(PRESENT_SELF_LINK)
+							.selfLinkRel("self")
+							.upLinkHref(upLinkHref)
+							.upLinkRel("up")
+							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+							.billingPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.billLastPeriod(1L)
+							.billToDate(1L)
+							.costAdditionalLastPeriod(1L)
+							.lineItems(new HashSet<>(List.of(
+									LineItem.builder()
+										.amount(1L)
+										.rounding(1L)
+										.dateTime(1L)
+										.note("note")
+										.measurement(new SummaryMeasurement()
+											.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+											.setTimeStamp(1L)
+											.setUom(UnitSymbolKind.M)
+											.setValue(1L)
+											.setReadingTypeRef("readingTypeRef"))
+										.itemKind(ItemKind.INFORMATION)
+										.unitCost(1L)
+										.itemPeriod(new DateTimeInterval()
+											.setDuration(10L)
+											.setStart(11L))
+										.build()
+								)
+								)
+							)
+							.currency(Currency.USD)
+							.overallConsumptionLastPeriod(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentBillingPeriodOverAllConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayLastYearNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.currentDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.peakDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayLastYearOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayNetConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.previousDayOverallConsumption(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.qualityOfReading(QualityOfReading.VALID)
+							.ratchetDemand(new SummaryMeasurement()
+								.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+								.setTimeStamp(1L)
+								.setUom(UnitSymbolKind.M)
+								.setValue(1L)
+								.setReadingTypeRef("readingTypeRef"))
+							.ratchetDemandPeriod(new DateTimeInterval()
+								.setDuration(10L)
+								.setStart(11L))
+							.statusTimeStamp(1L)
+							.commodity(CommodityKind.CO2)
+							.tariffProfile("tariffProfile")
+							.readCycle("readCycle")
+							.tariffRiderRefs(
+								new HashSet<>(
+									Collections.singletonList(
+										TariffRiderRef.builder()
+											.enrollmentStatus(EnrollmentStatus.ENROLLED)
+											.effectiveDate(1L)
+											.riderType("riderType")
+											.build()
+									)
+								)
+							)
+							.billingChargeSource(new BillingChargeSource()
+								.setAgencyName("agencyName"))
 							.build()
 					)
 				))
@@ -885,6 +1259,128 @@ public class UsagePointRepositoryTest {
 						.build()
 				)
 			))
+			.usageSummaries(new HashSet<>(
+				Collections.singletonList(
+					UsageSummary.builder()
+						.description("description")
+						.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+						.selfLinkHref(PRESENT_SELF_LINK)
+						.selfLinkRel("self")
+						.upLinkHref(upLinkHref)
+						.upLinkRel("up")
+						.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
+						.billingPeriod(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.billLastPeriod(1L)
+						.billToDate(1L)
+						.costAdditionalLastPeriod(1L)
+						.lineItems(new HashSet<>(List.of(
+								LineItem.builder()
+									.amount(1L)
+									.rounding(1L)
+									.dateTime(1L)
+									.note("note")
+									.measurement(new SummaryMeasurement()
+										.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+										.setTimeStamp(1L)
+										.setUom(UnitSymbolKind.M)
+										.setValue(1L)
+										.setReadingTypeRef("readingTypeRef"))
+									.itemKind(ItemKind.INFORMATION)
+									.unitCost(1L)
+									.itemPeriod(new DateTimeInterval()
+										.setDuration(10L)
+										.setStart(11L))
+									.build()
+							)
+							)
+						)
+						.currency(Currency.USD)
+						.overallConsumptionLastPeriod(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.currentBillingPeriodOverAllConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.currentDayLastYearNetConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.currentDayNetConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.currentDayOverallConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.peakDemand(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.previousDayLastYearOverallConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.previousDayNetConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.previousDayOverallConsumption(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.qualityOfReading(QualityOfReading.VALID)
+						.ratchetDemand(new SummaryMeasurement()
+							.setPowerOfTenMultiplier(UnitMultiplierKind.NONE)
+							.setTimeStamp(1L)
+							.setUom(UnitSymbolKind.M)
+							.setValue(1L)
+							.setReadingTypeRef("readingTypeRef"))
+						.ratchetDemandPeriod(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
+						.statusTimeStamp(1L)
+						.commodity(CommodityKind.CO2)
+						.tariffProfile("tariffProfile")
+						.readCycle("readCycle")
+						.tariffRiderRefs(
+							new HashSet<>(
+								Collections.singletonList(
+									TariffRiderRef.builder()
+										.enrollmentStatus(EnrollmentStatus.ENROLLED)
+										.effectiveDate(1L)
+										.riderType("riderType")
+										.build()
+								)
+							)
+						)
+						.billingChargeSource(new BillingChargeSource()
+							.setAgencyName("agencyName"))
+						.build()
+				)
+			))
 			.amiBillingReady(AmIBillingReadyKind.OPERABLE)
 			.checkBilling(true)
 			.connectionState(UsagePointConnectedKind.CONNECTED)
@@ -944,7 +1440,9 @@ public class UsagePointRepositoryTest {
 
 		ServiceDeliveryPoint sdp = up.getServiceDeliveryPoint();
 
-		sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "SDPTest"+num));
+		if(sdp.getUuid() == null) {
+			sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "SDPTest"+num));
+		}
 
 		TimeConfiguration tc = up.getTimeConfiguration();
 
@@ -956,12 +1454,13 @@ public class UsagePointRepositoryTest {
 
 		Optional.ofNullable(up.getMeterReadings()).ifPresent(mrs -> {
 			mrs.forEach(mr -> {
-				mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
+					mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
+
 
 				Optional.ofNullable(mr.getIntervalBlocks()).ifPresent(ibs ->
 					ibs.forEach(ib -> {
-						ib.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ib.getSelfLinkHref()));
-							ib.setMeterReading(mr);
+								ib.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ib.getSelfLinkHref()));
+								ib.setMeterReading(mr);
 				}
 						));
 
@@ -972,8 +1471,27 @@ public class UsagePointRepositoryTest {
 			});
 		});
 
-		up.getElectricPowerQualitySummaries().forEach(epqs -> {
-			epqs.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, epqs.getSelfLinkHref()));
+		Optional.ofNullable(up.getElectricPowerQualitySummaries()).ifPresent(epqss -> {
+			epqss.forEach(epqs -> {
+					epqs.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, epqs.getSelfLinkHref()));
+			});
+		});
+
+		AtomicInteger count = new AtomicInteger();
+		Optional.ofNullable(up.getUsageSummaries()).ifPresent(uss -> {
+			uss.forEach(us -> {
+					us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, us.getSelfLinkHref()));
+
+				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
+					lis.forEach(li -> {
+							count.getAndIncrement();
+							if(li.getUuid() == null) {
+								li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count.toString() + num));
+							}
+							li.setUsageSummary(us);
+						}
+					));
+			});
 		});
 	}
 
@@ -1013,6 +1531,23 @@ public class UsagePointRepositoryTest {
 
 		up.getElectricPowerQualitySummaries().forEach(epqs -> {
 			epqs.setUsagePoint(up);
+		});
+
+		Optional.ofNullable(up.getUsageSummaries()).ifPresent(uss -> {
+			uss.forEach(us -> {
+				AtomicInteger count = new AtomicInteger();
+				us.setUsagePoint(up);
+
+				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
+					lis.forEach(li -> {
+						if(li.getUuid() == null) {
+							count.getAndIncrement();
+							li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
+						}
+							li.setUsageSummary(us);
+						}
+					));
+			});
 		});
 	}
 }
