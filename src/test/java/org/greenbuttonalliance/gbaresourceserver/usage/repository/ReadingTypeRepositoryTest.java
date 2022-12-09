@@ -20,6 +20,7 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
@@ -41,9 +42,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -153,6 +157,7 @@ public class ReadingTypeRepositoryTest {
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -191,6 +196,7 @@ public class ReadingTypeRepositoryTest {
 					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -227,11 +233,25 @@ public class ReadingTypeRepositoryTest {
 
 		// hydrate UUIDs and entity mappings
 		readingTypes.forEach(rt -> {
+			AtomicInteger count = new AtomicInteger();
 			rt.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rt.getSelfLinkHref()));
 
 			Optional.ofNullable(rt.getMeterReading()).ifPresent(mr -> {
 				mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
 				mr.setReadingType(rt);
+
+				UsagePoint up = mr.getUsagePoint();
+
+				up.setMeterReadings(new HashSet<>(
+					Collections.singletonList(
+						mr
+					)
+				));
+
+				UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+				UsagePointRepositoryTest.connectUsagePoint(up);
+
 			});
 		});
 		return readingTypes;

@@ -206,7 +206,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 					.usagePoints(new HashSet<>(
 						Collections.singletonList(
-							UsagePointRepositoryTest.createUsageRepository()
+							UsagePointRepositoryTest.createUsagePoint()
 						)))
 				.build(),
 			RetailCustomer.builder()
@@ -288,7 +288,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 						.usagePoints(new HashSet<>(
 							Collections.singletonList(
-								UsagePointRepositoryTest.createUsageRepository()
+								UsagePointRepositoryTest.createUsagePoint()
 							)))
 				.build(),
 			RetailCustomer.builder()
@@ -371,7 +371,7 @@ public class RetailCustomerRepositoryTest {
 				)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.build()
 		);

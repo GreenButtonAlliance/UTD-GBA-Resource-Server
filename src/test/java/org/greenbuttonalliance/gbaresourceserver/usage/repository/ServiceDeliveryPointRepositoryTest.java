@@ -3,6 +3,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.junit.jupiter.api.Assertions;
@@ -106,7 +107,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -127,7 +128,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -148,7 +149,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(

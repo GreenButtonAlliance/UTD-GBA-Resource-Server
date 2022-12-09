@@ -174,3 +174,5 @@ CREATE TABLE IF NOT EXISTS usage.usage_point_aggregate_node_ref (
                                                                            aggregate_node_ref_id BIGINT REFERENCES usage.aggregate_node_ref ON DELETE CASCADE,
                                                                            PRIMARY KEY (usage_point_uuid, aggregate_node_ref_id)
 );
+
+ALTER TABLE usage.meter_reading ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;

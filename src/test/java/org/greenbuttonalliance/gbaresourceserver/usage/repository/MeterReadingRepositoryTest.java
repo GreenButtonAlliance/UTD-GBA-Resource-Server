@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
@@ -43,10 +44,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -111,11 +114,13 @@ public class MeterReadingRepositoryTest {
 
 		Function<MeterReading, Optional<ReadingType>> meterReadingToReadingType = mr -> Optional.ofNullable(mr.getReadingType());
 		Function<MeterReading, Optional<Set<IntervalBlock>>> meterReadingToIntervalBlocks = mr -> Optional.ofNullable(mr.getIntervalBlocks());
-		// TODO test mapping to UsagePoint once entity is available
+		Function<MeterReading, Optional<UsagePoint>> meterReadingToUsagePoint = mr -> Optional.ofNullable(mr.getUsagePoint());
 
 		Assertions.assertAll(
 			"Entity mapping failures for meter reading " + fullyMappedMeterReading.getUuid(),
-			Stream.of(meterReadingToReadingType, meterReadingToIntervalBlocks)
+			Stream.of(meterReadingToReadingType,
+					meterReadingToIntervalBlocks,
+					meterReadingToUsagePoint)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedMeterReading).isPresent()))
 		);
@@ -178,6 +183,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
@@ -226,6 +232,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
@@ -237,11 +244,14 @@ public class MeterReadingRepositoryTest {
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
 		meterReadings.forEach(mr -> {
+			AtomicInteger count = new AtomicInteger();
+
 			mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
 
 			mr.getIntervalBlocks().forEach(ib -> {
@@ -254,7 +264,18 @@ public class MeterReadingRepositoryTest {
 				rt.setMeterReading(mr);
 			});
 
-			// TODO hydrate UsagePoint reference once entity is available
+			UsagePoint up = mr.getUsagePoint();
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setMeterReadings(new HashSet<>(
+				Collections.singletonList(
+					mr
+				)));
+
+			count.getAndIncrement();
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 		return meterReadings;
 	}

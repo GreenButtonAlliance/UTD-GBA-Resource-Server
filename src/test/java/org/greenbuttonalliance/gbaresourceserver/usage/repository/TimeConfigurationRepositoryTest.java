@@ -17,22 +17,8 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,7 +115,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(10L)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsageRepository()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.build(),
 		TimeConfiguration.builder()
@@ -145,7 +131,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(20L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsageRepository()
+					UsagePointRepositoryTest.createUsagePoint()
 				)))
 			.build(),
 		TimeConfiguration.builder()
@@ -161,7 +147,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(30L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsageRepository()
+					UsagePointRepositoryTest.createUsagePoint()
 				)))
 			.build()
 		);
