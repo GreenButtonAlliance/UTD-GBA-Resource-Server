@@ -18,14 +18,10 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
@@ -524,36 +520,12 @@ public class RetailCustomerRepositoryTest {
 			UsagePoint up = rc.getUsagePoints().stream().toList().get(0);
 			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
 			up.setRetailCustomer(rc);
-			up.setServiceDeliveryPoint(ServiceDeliveryPoint.builder()
-				.name("name")
-				.tariffProfile("tariffProfile")
-				.customerAgreement("customerAgreement")
-				.tariffRiderRefs(
-					new HashSet<>(
-						Collections.singletonList(
-							TariffRiderRef.builder()
-								.enrollmentStatus(EnrollmentStatus.ENROLLED)
-								.effectiveDate(1L)
-								.riderType("riderType")
-								.build()
-						)
-					)
-				)
-				.build());
 
 			count.getAndIncrement();
 			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
-			ServiceDeliveryPoint serviceDeliveryPoint = up.getServiceDeliveryPoint();
-			serviceDeliveryPoint.setUsagePoints(new HashSet<>(
-				Collections.singletonList(up)
-			));
 
-			TimeConfiguration tc = up.getTimeConfiguration();
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
-
-			tc.setUsagePoints(new HashSet<>(
-				Collections.singletonList(up)
-			));
 			// TODO hydrate MeterReading reference when available
 		});
 		return retailCustomers;

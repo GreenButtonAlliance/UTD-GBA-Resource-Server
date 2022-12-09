@@ -589,7 +589,7 @@ public class UsagePointRepositoryTest {
 
 		ServiceDeliveryPoint sdp = up.getServiceDeliveryPoint();
 
-		sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+num));
+		sdp.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "SDPTest"+num));
 
 		sdp.setUsagePoints(new HashSet<>(
 			Collections.singletonList(up)
@@ -611,5 +611,22 @@ public class UsagePointRepositoryTest {
 			Collections.singletonList(up)
 		));
 
+	}
+
+	public static void connectUsagePoint(UsagePoint up) {
+		ServiceDeliveryPoint serviceDeliveryPoint = up.getServiceDeliveryPoint();
+		serviceDeliveryPoint.setUsagePoints(new HashSet<>(
+			Collections.singletonList(up)
+		));
+
+		TimeConfiguration tc = up.getTimeConfiguration();
+		tc.setUsagePoints(new HashSet<>(
+			Collections.singletonList(up)
+		));
+
+		RetailCustomer rt = up.getRetailCustomer();
+		rt.setUsagePoints(new HashSet<>(
+			Collections.singletonList(up)
+		));
 	}
 }
