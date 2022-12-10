@@ -43,6 +43,6 @@ public class Subscription extends IdentifiedObject {
 	private RetailCustomer retailCustomer;
 
 	// TODO add UsagePoint reference once entity is available
-	@Column(name = "usage_point_id")
-	private int usagePointId;
+//	@Column(name = "usage_point_id")
+//	private int usagePointId;
 }

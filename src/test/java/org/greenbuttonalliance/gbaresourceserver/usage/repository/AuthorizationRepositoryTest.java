@@ -122,7 +122,7 @@ public class AuthorizationRepositoryTest {
 				.tokenType(54)
 				.applicationInformationId(UUID.randomUUID())
 				.retailCustomerId(UUID.randomUUID())
-				.subscriptionId(Subscription.builder().build())
+				.subscription(Subscription.builder().build())
 				.build()
 		);
 
