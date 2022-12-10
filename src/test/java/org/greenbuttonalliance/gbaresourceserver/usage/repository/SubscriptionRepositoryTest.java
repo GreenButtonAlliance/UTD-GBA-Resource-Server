@@ -99,32 +99,24 @@ public class SubscriptionRepositoryTest {
 		);
 	}
 
-//	@Test
-//	public void entityMappings_areNotNull() {
-//		Subscription fullyMappedSubscription = subscriptionRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-//		Assumptions.assumeTrue(fullyMappedSubscription != null);
-//
-//		/* Test bidirectional mappings all the way from IntervalBlock <--> Application Information (IntervalReading) <--> Application Information Scopes (ReadingQuality) here since IntervalReading and ReadingQuality don't have
-//		their own repositories for which we're testing their individual mappings */
-//		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformation = mr -> Optional.ofNullable(mr.getApplicationInformation());
-//		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = mr -> Optional.ofNullable(mr.getRetailCustomerId());
-//
-//		// TODO test connection from Subscription -> ApplicationInformation -> ApplicationInformationScopes
-//		// TODO test connection from Subscription -> UsagePoint
-//		// TODO test for the reverse from ApplicationInformationScopes -> ApplicationInformation -> Subscription
-//
-//		Assertions.assertAll(
-//			"Entity mapping failures for block " + fullyMappedSubscription.getUuid(),
-//			Stream.of(subscriptionToApplicationInformation, subscriptionToRetailCustomer)
-//				.map(mappingFunc ->
-//					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedSubscription).isPresent()))
-//		);
-//	}
+	@Test
+	public void entityMappings_areNotNull() {
+		Subscription fullyMappedSubscription = subscriptionRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedSubscription != null);
 
-	// TODO buildTestData()
-	// TODO List<Subscription> subscription = Arrays.asList(...)
-	// TODO ApplicationInformation testApplication = ApplicationInformation.builder()...
-	// TODO hydrate UUIDs and entity mappings subscription.forEach(ib -> { ...
+		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformation = sub -> Optional.ofNullable(sub.getApplicationInformation());
+		Function<Subscription, Optional<Authorization>> subscriptionToAuthorization = sub -> Optional.ofNullable(sub.getAuthorization());
+		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = sub -> Optional.ofNullable(sub.getRetailCustomer());
+
+		Assertions.assertAll(
+			"Entity mapping failures for subscription " + fullyMappedSubscription.getUuid(),
+			Stream.of(subscriptionToApplicationInformation,
+					subscriptionToAuthorization,
+					subscriptionToRetailCustomer)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedSubscription).isPresent()))
+		);
+	}
 
 	private static List<Subscription> buildTestData() {
 		List<Subscription> subscriptions = Arrays.asList(
