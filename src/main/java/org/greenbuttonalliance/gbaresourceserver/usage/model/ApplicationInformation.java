@@ -36,7 +36,7 @@ import java.util.Set;
 public class ApplicationInformation extends IdentifiedObject {
 
 	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL)
-	private Set<Subscription> subscription = new HashSet<>();
+	private Set<Subscription> subscriptions = new HashSet<>();
 
 	@Column(name = "authorization_server_authorization_endpoint", nullable = false)
 	private String authorizationServerAuthorizationEndpoint;

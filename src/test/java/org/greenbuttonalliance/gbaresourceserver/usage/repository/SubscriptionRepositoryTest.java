@@ -485,7 +485,7 @@ public class SubscriptionRepositoryTest {
 
 			ApplicationInformation ai =  sub.getApplicationInformation();
 			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
-			ai.setSubscription(new HashSet<>(List.of(sub)));
+			ai.setSubscriptions(new HashSet<>(List.of(sub)));
 
 			Authorization auth = sub.getAuthorization();
 			auth.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
