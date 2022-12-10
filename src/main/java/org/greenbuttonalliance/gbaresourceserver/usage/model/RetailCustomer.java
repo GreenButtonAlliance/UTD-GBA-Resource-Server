@@ -35,9 +35,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class RetailCustomer extends IdentifiedObject {
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "retail_customer_id", nullable = false)
-	private Set<Subscription> subscription = new HashSet<>();
+	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
+	private Set<Subscription> subscriptions = new HashSet<>();
 
 	@Column
 	private Boolean enabled;

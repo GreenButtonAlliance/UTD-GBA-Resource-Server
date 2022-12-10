@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS usage.subscription (
                                                 retail_customer_id UUID REFERENCES usage.retail_customer,
                                                 usage_point_id UUID --TODO
 );
-ALTER TABLE usage.authorization ADD CONSTRAINT fk_subscription FOREIGN KEY (subscription_id) REFERENCES usage.subscription (uuid);
+ALTER TABLE usage.authorization ADD CONSTRAINT fk_subscription FOREIGN KEY (subscription_id) REFERENCES usage.subscription;

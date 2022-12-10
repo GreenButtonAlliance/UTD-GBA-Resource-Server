@@ -105,7 +105,7 @@ public class Authorization extends IdentifiedObject {
 	@Column(name = "retail_customer_id")
 	private UUID retailCustomerId;
 
-	@OneToOne(optional = false)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "subscription_id")
-	private Subscription subscriptionId;
+	private Subscription subscription;
 }
