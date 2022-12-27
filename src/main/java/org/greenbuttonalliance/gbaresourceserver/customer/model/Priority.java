@@ -16,14 +16,11 @@
 
 package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,38 +29,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "organisation", schema = "customer")
+@Table(name = "priority", schema = "customer")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Organisation {
+public class Priority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "street_address_id")
-	private StreetAddress streetAddress;
+	@Column(nullable = false)
+	private Long rank;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "postal_address_id")
-	private StreetAddress postalAddress;
+	@Column
+	private String type;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "phone1_id")
-	private TelephoneNumber phone1;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "phone2_id")
-	private TelephoneNumber phone2;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "electronic_address_id")
-	private ElectronicAddress electronicAddress;
-
-	@Column(name = "organisation_name")
-	private String organisationName;
+	@Column
+	private String justification;
 }

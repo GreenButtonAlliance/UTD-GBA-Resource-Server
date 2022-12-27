@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
+package org.greenbuttonalliance.gbaresourceserver.common.model.enums;
 
 import java.util.EnumSet;
 

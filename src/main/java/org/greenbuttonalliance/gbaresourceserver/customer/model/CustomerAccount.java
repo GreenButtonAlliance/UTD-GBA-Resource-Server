@@ -53,14 +53,14 @@ public class CustomerAccount extends Document {
 	@Column(name = "last_bill_amount")
 	private Long lastBillAmount;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "contact_info_id")
 	private Organisation contactInfo;
 
 	@Column(name = "account_id")
 	private String accountId;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "customer_account_id", nullable = false)
 	private Set<AccountNotification> accountNotifications = new HashSet<>();
 }

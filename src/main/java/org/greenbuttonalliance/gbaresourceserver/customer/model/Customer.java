@@ -19,51 +19,57 @@ package org.greenbuttonalliance.gbaresourceserver.customer.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.CustomerKind;
+import org.hibernate.annotations.ColumnTransformer;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "organisation", schema = "customer")
+@Table(name = "customer", schema = "customer")
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Organisation {
+@SuperBuilder
+@RequiredArgsConstructor
+public class Customer extends OrganisationRole {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private UUID uuid;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS customer.customer_kind)", read = "kind::TEXT")
+	private CustomerKind kind;
+
+	@Column(name = "special_need")
+	private String specialNeed;
+
+	@Column
+	private Boolean vip;
+
+	@Column(name = "puc_number")
+	private String pucNumber;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "street_address_id")
-	private StreetAddress streetAddress;
+	@JoinColumn(name = "status_id")
+	private Status status;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "postal_address_id")
-	private StreetAddress postalAddress;
+	@JoinColumn(name = "priority_id")
+	private Priority priority;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "phone1_id")
-	private TelephoneNumber phone1;
+	@Column
+	private String locale;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "phone2_id")
-	private TelephoneNumber phone2;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "electronic_address_id")
-	private ElectronicAddress electronicAddress;
-
-	@Column(name = "organisation_name")
-	private String organisationName;
+	@Column(name = "customer_name")
+	private String customerName;
 }
