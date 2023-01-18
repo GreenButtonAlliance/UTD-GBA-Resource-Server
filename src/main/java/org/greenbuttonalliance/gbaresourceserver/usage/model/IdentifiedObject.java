@@ -73,28 +73,4 @@ public abstract class IdentifiedObject {
 		IdentifiedObject iObj = (IdentifiedObject)obj;
 		return Objects.equals(uuid, iObj.uuid);
 	}
-
-	public abstract String getDataCustodianBulkRequestURI();
-
-	public abstract String getThirdPartyScopeSelectionURI();
-
-	public abstract String getThirdPartyUserPortalScreenURI();
-
-	public abstract String getClient_secret();
-
-	public abstract String getLogo_uri();
-
-	public abstract String getClient_name();
-
-	public abstract String getClient_uri();
-
-	public abstract String getRedirect_uri();
-
-	public abstract String getClient_id();
-
-	public abstract String getTos_uri();
-
-	public abstract String getPolicy_uri();
-
-	public abstract String getSoftware_id();
 }
