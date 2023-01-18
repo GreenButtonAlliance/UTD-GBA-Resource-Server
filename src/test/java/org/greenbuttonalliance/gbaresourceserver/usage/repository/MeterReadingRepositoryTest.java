@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
@@ -21,16 +21,17 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,10 +44,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -111,11 +114,13 @@ public class MeterReadingRepositoryTest {
 
 		Function<MeterReading, Optional<ReadingType>> meterReadingToReadingType = mr -> Optional.ofNullable(mr.getReadingType());
 		Function<MeterReading, Optional<Set<IntervalBlock>>> meterReadingToIntervalBlocks = mr -> Optional.ofNullable(mr.getIntervalBlocks());
-		// TODO test mapping to UsagePoint once entity is available
+		Function<MeterReading, Optional<UsagePoint>> meterReadingToUsagePoint = mr -> Optional.ofNullable(mr.getUsagePoint());
 
 		Assertions.assertAll(
 			"Entity mapping failures for meter reading " + fullyMappedMeterReading.getUuid(),
-			Stream.of(meterReadingToReadingType, meterReadingToIntervalBlocks)
+			Stream.of(meterReadingToReadingType,
+					meterReadingToIntervalBlocks,
+					meterReadingToUsagePoint)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedMeterReading).isPresent()))
 		);
@@ -178,6 +183,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
@@ -226,6 +232,8 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
+
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
@@ -237,11 +245,14 @@ public class MeterReadingRepositoryTest {
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
+		AtomicInteger count = new AtomicInteger();
 		meterReadings.forEach(mr -> {
+
 			mr.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, mr.getSelfLinkHref()));
 
 			mr.getIntervalBlocks().forEach(ib -> {
@@ -254,7 +265,18 @@ public class MeterReadingRepositoryTest {
 				rt.setMeterReading(mr);
 			});
 
-			// TODO hydrate UsagePoint reference once entity is available
+			UsagePoint up = mr.getUsagePoint();
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setMeterReadings(new HashSet<>(
+				Collections.singletonList(
+					mr
+				)));
+
+			count.getAndIncrement();
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 		return meterReadings;
 	}
