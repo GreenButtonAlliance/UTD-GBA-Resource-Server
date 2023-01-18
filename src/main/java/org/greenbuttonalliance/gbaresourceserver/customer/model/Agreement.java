@@ -14,41 +14,27 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "interval_block", schema = "usage")
+@MappedSuperclass
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class IntervalBlock extends IdentifiedObject {
+public abstract class Agreement extends Document {
+
+	@Column(name = "sign_date")
+	private Long signDate; // in epoch-seconds
 
 	@Embedded
-	private DateTimeInterval interval;
-
-	@OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<IntervalReading> intervalReadings = new HashSet<>();
-
-	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "meter_reading_uuid", nullable = false)
-	private MeterReading meterReading;
+	private DateTimeInterval validityInterval;
 }

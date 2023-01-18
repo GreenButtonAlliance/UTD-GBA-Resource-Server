@@ -47,7 +47,7 @@ public class MeterReading extends IdentifiedObject {
 	@JoinColumn(name = "reading_type_uuid")
 	private ReadingType readingType;
 
-	@OneToMany(mappedBy = "meterReading", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "meterReading", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<IntervalBlock> intervalBlocks = new HashSet<>();
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

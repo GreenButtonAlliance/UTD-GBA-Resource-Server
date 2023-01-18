@@ -14,52 +14,42 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.SupplierKind;
+import org.hibernate.annotations.ColumnTransformer;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@Table(name = "retail_customer", schema = "usage")
+@Table(name = "service_supplier", schema = "customer")
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class RetailCustomer extends IdentifiedObject {
+public class ServiceSupplier extends OrganisationRole {
 
-	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
-	private Set<Subscription> subscriptions = new HashSet<>();
-
-	@Column
-	private Boolean enabled;
-
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
+	@Id
+	private UUID uuid;
 
 	@Column
-	private String password;
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS customer.supplier_kind)", read = "kind::TEXT")
+	private SupplierKind kind;
 
-	@Column
-	private String role;
+	@Column(name = "issuer_identification_number")
+	private String issuerIdentificationNumber;
 
-	@Column
-	private String username;
-
-	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
-	private Set<UsagePoint> usagePoints = new HashSet<>();
+	@Column(name = "effective_date")
+	private Long effectiveDate; // in epoch-seconds
 }

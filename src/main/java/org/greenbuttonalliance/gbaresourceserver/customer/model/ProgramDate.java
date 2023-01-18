@@ -14,52 +14,34 @@
  *  limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-@Table(name = "retail_customer", schema = "usage")
+@Table(name = "program_date", schema = "customer")
 @Getter
 @Setter
-@Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class RetailCustomer extends IdentifiedObject {
+public class ProgramDate {
 
-	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
-	private Set<Subscription> subscriptions = new HashSet<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Column
-	private Boolean enabled;
+	@Column(name = "program_date")
+	private Long programDate; // in epoch-seconds
 
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
-
-	@Column
-	private String password;
-
-	@Column
-	private String role;
-
-	@Column
-	private String username;
-
-	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
-	private Set<UsagePoint> usagePoints = new HashSet<>();
+	@Column(name = "program_date_description")
+	private String programDateDescription;
 }

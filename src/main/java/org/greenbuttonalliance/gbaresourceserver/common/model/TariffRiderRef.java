@@ -29,7 +29,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
@@ -50,7 +50,7 @@ public class TariffRiderRef {
 
 	@Column(name = "enrollment_status")
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.enrollment_status)", read = "enrollment_status::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.enrollment_status)", read = "enrollment_status::TEXT")
 	private EnrollmentStatus enrollmentStatus;
 
 	@Column(name = "effective_date")

@@ -17,7 +17,6 @@
 package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
@@ -31,41 +30,9 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-public abstract class Document {
-
-	@Column
-	private String type;
-
-	@Column(name = "author_name")
-	private String authorName;
-
-	@Column(name = "created_date_time")
-	private Long createdDateTime; // in epoch-seconds
-
-	@Column(name = "last_modified_date_time")
-	private Long lastModifiedDateTime; // in epoch-seconds
-
-	@Column(name = "revision_number")
-	private String revisionNumber;
+public abstract class OrganisationRole {
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "electronic_address_id")
-	private ElectronicAddress electronicAddress;
-
-	@Column
-	private String subject;
-
-	@Column
-	private String title;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "doc_status_id")
-	private Status docStatus;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "status_id")
-	private Status status;
-
-	@Column
-	private String comment;
+	@JoinColumn(name = "organisation_id")
+	private Organisation organisation;
 }

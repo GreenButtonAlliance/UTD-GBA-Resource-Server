@@ -41,7 +41,7 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.hibernate.annotations.ColumnTransformer;
 
@@ -73,11 +73,11 @@ public class UsageSummary extends IdentifiedObject{
 	@Column(name = "cost_additional_last_period")
 	private Long costAdditionalLastPeriod;
 
-	@OneToMany(mappedBy = "usageSummary", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usageSummary", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<LineItem> lineItems = new HashSet<>();
 
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.currency)", read = "currency::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.currency)", read = "currency::TEXT")
 	@Column
 	private Currency currency;
 
@@ -89,8 +89,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "overall_consumption_last_period_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "overall_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "overall_consumption_last_period_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "overall_consumption_last_period_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "overall_consumption_last_period_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "overall_consumption_last_period_uom::TEXT")
 	private SummaryMeasurement overallConsumptionLastPeriod;
 
 	@Embedded
@@ -101,8 +101,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "current_billing_period_overall_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "current_billing_period_overall_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "current_billing_period_overall_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "current_billing_period_overall_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "current_billing_period_overall_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "current_billing_period_overall_consumption_uom::TEXT")
 	private SummaryMeasurement currentBillingPeriodOverAllConsumption;
 
 	@Embedded
@@ -113,8 +113,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "current_day_last_year_net_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "current_day_last_year_net_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "current_day_last_year_net_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "current_day_last_year_net_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "current_day_last_year_net_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "current_day_last_year_net_consumption_uom::TEXT")
 	private SummaryMeasurement currentDayLastYearNetConsumption;
 
 	@Embedded
@@ -125,8 +125,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "current_day_net_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "current_day_net_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "current_day_net_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "current_day_net_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "current_day_net_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "current_day_net_consumption_uom::TEXT")
 	private SummaryMeasurement currentDayNetConsumption;
 
 	@Embedded
@@ -137,8 +137,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "current_day_overall_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "current_day_overall_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "current_day_overall_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "current_day_overall_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "current_day_overall_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "current_day_overall_consumption_uom::TEXT")
 	private SummaryMeasurement currentDayOverallConsumption;
 
 	@Embedded
@@ -149,8 +149,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "peak_demand_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "peak_demand_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "peak_demand_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "peak_demand_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "peak_demand_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "peak_demand_uom::TEXT")
 	private SummaryMeasurement peakDemand;
 
 	@Embedded
@@ -161,8 +161,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "previous_day_last_year_overall_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "previous_day_last_year_overall_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "previous_day_last_year_overall_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "previous_day_last_year_overall_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "previous_day_last_year_overall_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "previous_day_last_year_overall_consumption_uom::TEXT")
 	private SummaryMeasurement previousDayLastYearOverallConsumption;
 
 	@Embedded
@@ -173,8 +173,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "previous_day_net_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "previous_day_net_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "previous_day_net_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "previous_day_net_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "previous_day_net_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "previous_day_net_consumption_uom::TEXT")
 	private SummaryMeasurement previousDayNetConsumption;
 
 	@Embedded
@@ -185,8 +185,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "previous_day_overall_consumption_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "previous_day_overall_consumption_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "previous_day_overall_consumption_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "previous_day_overall_consumption_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "previous_day_overall_consumption_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "previous_day_overall_consumption_uom::TEXT")
 	private SummaryMeasurement previousDayOverallConsumption;
 
 	@Enumerated(EnumType.STRING)
@@ -202,8 +202,8 @@ public class UsageSummary extends IdentifiedObject{
 		@AttributeOverride( name = "value", column = @Column(name = "ratchet_demand_value")),
 		@AttributeOverride( name = "readingTypeRef", column = @Column(name = "ratchet_demand_reading_type_ref"))
 	})
-	@ColumnTransformer(write = "CAST(? AS usage.unit_multiplier_kind)", read = "ratchet_demand_potm::TEXT")
-	@ColumnTransformer(write = "CAST(? AS usage.unit_symbol_kind)", read = "ratchet_demand_uom::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_multiplier_kind)", read = "ratchet_demand_potm::TEXT")
+	@ColumnTransformer(write = "CAST(? AS public.unit_symbol_kind)", read = "ratchet_demand_uom::TEXT")
 	private SummaryMeasurement ratchetDemand;
 
 	@Embedded

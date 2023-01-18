@@ -8,6 +8,10 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
@@ -21,9 +25,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
@@ -31,8 +33,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -162,7 +162,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				.serviceCategory(ServiceKind.HEAT)
+				//TODO:Add service category
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -479,7 +479,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				.serviceCategory(ServiceKind.HEAT)
+				//TODO:Add service category
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -796,7 +796,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				.serviceCategory(ServiceKind.HEAT)
+				//TODO:Add service category
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
