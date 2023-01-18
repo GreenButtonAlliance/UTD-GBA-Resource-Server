@@ -1,24 +1,26 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +31,14 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -82,8 +89,16 @@ public class TimeConfigurationRepositoryTest {
 			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
 		);
 	}
-	//TODO: Add entityMappings_areNotNull test once Usage point is created
 
+	@Test
+	public void entityMappings_areNotNull() {
+		TimeConfiguration fullyMappedTimeConfiguration = timeConfigurationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedTimeConfiguration != null);
+
+		Function<TimeConfiguration, Optional<Set<UsagePoint>>> timeConfigurationToUsagePoints = tc -> Optional.ofNullable(tc.getUsagePoints());
+
+		Assertions.assertTrue(timeConfigurationToUsagePoints.apply(fullyMappedTimeConfiguration).isPresent());
+	}
 
 	private static List<TimeConfiguration> buildTestData() {
 		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
@@ -97,7 +112,12 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(100L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(10L).build(),
+			.tzOffset(10L)
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePointRepositoryTest.createUsagePoint()
+					)))
+				.build(),
 		TimeConfiguration.builder()
 			.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
@@ -108,7 +128,12 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(200L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(20L).build(),
+			.tzOffset(20L)
+			.usagePoints(new HashSet<>(
+				Collections.singletonList(
+					UsagePointRepositoryTest.createUsagePoint()
+				)))
+			.build(),
 		TimeConfiguration.builder()
 			.published(LocalDateTime.parse("2017-10-15 12:23:04", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
@@ -119,10 +144,28 @@ public class TimeConfigurationRepositoryTest {
 			.dstEndRule(deadbeefs)
 			.dstOffset(300L)
 			.dstStartRule(deadbeefs)
-			.tzOffset(30L).build()
+			.tzOffset(30L)
+			.usagePoints(new HashSet<>(
+				Collections.singletonList(
+					UsagePointRepositoryTest.createUsagePoint()
+				)))
+			.build()
 		);
+
+		AtomicInteger count = new AtomicInteger();
 		timeConfigurations.forEach(tc->{
 			tc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, tc.getSelfLinkHref()));
+
+			UsagePoint up = tc.getUsagePoints().stream().toList().get(0);
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setTimeConfiguration(tc);
+
+			count.getAndIncrement();
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
+
 		});
 		return timeConfigurations;
 	}
