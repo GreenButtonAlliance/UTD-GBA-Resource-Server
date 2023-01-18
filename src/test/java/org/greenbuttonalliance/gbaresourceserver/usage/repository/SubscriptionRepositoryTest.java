@@ -1,27 +1,35 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
-import org.greenbuttonalliance.gbaresourceserver.usage.service.ApplicationInformationService;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,14 +42,11 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)

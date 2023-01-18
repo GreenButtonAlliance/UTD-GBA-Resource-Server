@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
@@ -21,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -91,10 +98,20 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 		);
 	}
 
-	//TODO: Add test to map to UsagePoints
-//	@Test
-//	public void entityMappings_areNotNull() {
-//	}
+	@Test
+	public void entityMappings_areNotNull() {
+		ElectricPowerQualitySummary fullyMappedElectricPowerQualitySummary = electricPowerQualitySummaryRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedElectricPowerQualitySummary != null);
+
+		Function<ElectricPowerQualitySummary, Optional<UsagePoint>> electricPowerQualitySummaryToUsagePoint = epqs -> Optional.ofNullable(epqs.getUsagePoint());
+
+		Assertions.assertAll(
+			"Entity mapping failures for electric power quality summary " + fullyMappedElectricPowerQualitySummary.getUuid(),
+			Stream.of(electricPowerQualitySummaryToUsagePoint)
+				.map(mappingFunc ->
+					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedElectricPowerQualitySummary).isPresent()))
+		);
+	}
 
 	private static List<ElectricPowerQualitySummary> buildTestData() {
 		List<ElectricPowerQualitySummary> electricPowerQualitySummaries = Arrays.asList(
@@ -121,6 +138,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
@@ -145,6 +163,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
@@ -169,12 +188,28 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
+		AtomicInteger count = new AtomicInteger();
 		electricPowerQualitySummaries.forEach(epqs -> {
+
 			epqs.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, epqs.getSelfLinkHref()));
+
+			UsagePoint up = epqs.getUsagePoint();
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setElectricPowerQualitySummaries(new HashSet<>(
+				Collections.singletonList(
+					epqs
+				)));
+
+			count.getAndIncrement();
+
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 
 		return electricPowerQualitySummaries;

@@ -1,27 +1,29 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
@@ -48,6 +50,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -112,11 +115,12 @@ public class RetailCustomerRepositoryTest {
 		Assumptions.assumeTrue(fullyMappedRetailCustomer != null);
 
 		Function<RetailCustomer, Optional<Set<Subscription>>> retailCustomerToSubscription = rc -> Optional.ofNullable(rc.getSubscriptions());
-		// TODO test mapping to UsagePoint once entity is available
+		Function<RetailCustomer, Optional<Set<UsagePoint>>> retailCustomerToUsagePoints = rc -> Optional.ofNullable(rc.getUsagePoints());
 
 		Assertions.assertAll(
-			"Entity mapping failures for applicationInformation " + fullyMappedRetailCustomer.getUuid(),
-			Stream.of(retailCustomerToSubscription)
+			"Entity mapping failures for retail customer " + fullyMappedRetailCustomer.getUuid(),
+			Stream.of(retailCustomerToUsagePoints,
+					retailCustomerToSubscription)
 				.map(mappingFunc ->
 					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedRetailCustomer).isPresent()))
 		);
@@ -199,10 +203,12 @@ public class RetailCustomerRepositoryTest {
 									.role("whatever")
 									.username("Username")
 									.build())
-//				.usagePointId(1)
 								.build()
-						))
-				)
+						)))
+					.usagePoints(new HashSet<>(
+						Collections.singletonList(
+							UsagePointRepositoryTest.createUsagePoint()
+						)))
 				.build(),
 			RetailCustomer.builder()
 				.description("Hourly Wh Received")
@@ -279,10 +285,12 @@ public class RetailCustomerRepositoryTest {
 									.role("whatever")
 									.username("Username")
 									.build())
-//				.usagePointId(1)
 								.build()
-						))
-				)
+						)))
+						.usagePoints(new HashSet<>(
+							Collections.singletonList(
+								UsagePointRepositoryTest.createUsagePoint()
+							)))
 				.build(),
 			RetailCustomer.builder()
 				.description("Hourly Wh Delivered")
@@ -359,15 +367,18 @@ public class RetailCustomerRepositoryTest {
 									.role("whatever")
 									.username("Username")
 									.build())
-//				.usagePointId(1)
 								.build()
 						))
 				)
+				.usagePoints(new HashSet<>(
+					Collections.singletonList(
+						UsagePointRepositoryTest.createUsagePoint()
+					)))
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
-
+		AtomicInteger count = new AtomicInteger();
 		retailCustomers.forEach(rc -> {
 			rc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rc.getSelfLinkHref()));
 
@@ -491,7 +502,6 @@ public class RetailCustomerRepositoryTest {
 										.role("whatever")
 										.username("Username")
 										.build())
-//				.usagePointId(1)
 									.build()
 							))
 					)
@@ -505,8 +515,21 @@ public class RetailCustomerRepositoryTest {
 				sub.setAuthorization(Authorization.builder().build());
 				sub.getAuthorization().setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
 			});
+
+			rc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, rc.getSelfLinkHref()));
+
+			UsagePoint up = rc.getUsagePoints().stream().toList().get(0);
+			up.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, up.getSelfLinkHref()));
+			up.setRetailCustomer(rc);
+
+			count.getAndIncrement();
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+
+			UsagePointRepositoryTest.connectUsagePoint(up);
+
 			// TODO hydrate MeterReading reference when available
 		});
 		return retailCustomers;
 	}
+
 }
