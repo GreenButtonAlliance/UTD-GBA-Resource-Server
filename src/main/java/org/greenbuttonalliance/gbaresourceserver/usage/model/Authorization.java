@@ -16,16 +16,20 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.math.BigInteger;
@@ -57,7 +61,7 @@ public class Authorization extends IdentifiedObject {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.o_auth_error)", read = "error::TEXT")
+	@ColumnTransformer(write = "CAST(? AS usage.oauth_error)", read = "error::TEXT")
 	private OAuthError error;
 
 	@Column(name = "error_description")

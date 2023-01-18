@@ -162,7 +162,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.ELECTRICITY)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -479,7 +479,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.WATER)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")
@@ -796,7 +796,7 @@ public class UsagePointRepositoryTest {
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
-				//TODO:Add service category
+				.serviceCategory(ServiceKind.ELECTRICITY)
 				.status((short) 1)
 				.serviceDeliveryPoint(ServiceDeliveryPoint.builder()
 					.name("name")

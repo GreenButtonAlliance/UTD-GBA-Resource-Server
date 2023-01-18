@@ -18,8 +18,8 @@ DO $$
 
 DO $$
   BEGIN
-    IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'am_i_billing_ready_kind' AND ns.nspname = 'usage') THEN
-      CREATE TYPE usage.am_i_billing_ready_kind AS ENUM (
+    IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'ami_billing_ready_kind' AND ns.nspname = 'usage') THEN
+      CREATE TYPE usage.ami_billing_ready_kind AS ENUM (
         'AMICAPABLE',
         'AMIDISABLED',
         'BILLINGAPPROVED',
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_point (
   service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
   time_configuration_uuid UUID REFERENCES usage.time_configuration ON DELETE CASCADE,
   retail_customer_uuid UUID REFERENCES usage.retail_customer ON DELETE CASCADE,
-  am_i_billing_ready usage.am_i_billing_ready_kind,
+  ami_billing_ready usage.ami_billing_ready_kind,
   check_billing BOOLEAN,
   connection_state usage.usage_point_connected_kind,
   estimated_load_power_of_ten_multiplier public.unit_multiplier_kind,

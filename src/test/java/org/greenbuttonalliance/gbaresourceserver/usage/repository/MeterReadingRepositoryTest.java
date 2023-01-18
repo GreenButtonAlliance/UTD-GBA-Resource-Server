@@ -232,6 +232,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
+
 				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()

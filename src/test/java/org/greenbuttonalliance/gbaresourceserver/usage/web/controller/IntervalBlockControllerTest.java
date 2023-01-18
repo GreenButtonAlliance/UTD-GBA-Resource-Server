@@ -16,7 +16,6 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
-import java.util.regex.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.junit.jupiter.api.Test;
@@ -28,8 +27,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 /**
@@ -56,7 +58,7 @@ class IntervalBlockControllerTest {
 	}
 
 
-	//Verifies if the number of interval blocks recived is the same as exxpected
+	//Verifies if the number of interval blocks received is the same as expected
 	//To use test update IntervalBlock file the expectedValue
 	@Test
 	void getAll()throws Exception{
@@ -82,7 +84,7 @@ class IntervalBlockControllerTest {
 
 
 
-	//Check if a certin intervalblock exists in the XML output by checking for its UUID
+	//Check if a certain intervalblock exists in the XML output by checking for its UUID
 	//To use test update IntervalBlock file the IntervalBlock
 	@Test
 	void getByUuid()throws Exception{

@@ -1,7 +1,7 @@
 DO $$
   BEGIN
     IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'o_auth_error' AND ns.nspname = 'usage') THEN
-      CREATE TYPE usage.o_auth_error AS ENUM (
+      CREATE TYPE usage.oauth_error AS ENUM (
         'INVALID_REQUEST',
         'INVALID_CLIENT',
         'INVALID_GRANT',
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS usage.authorization (
                                                       ap_duration BIGINT,
                                                       ap_start BIGINT,
                                                       code TEXT,
-                                                      error usage.o_auth_error,
+                                                      error usage.oauth_error,
                                                       error_description TEXT,
                                                       error_uri TEXT,
                                                       expires_in BIGINT,
