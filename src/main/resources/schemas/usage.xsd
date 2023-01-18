@@ -43,7 +43,7 @@ ______________________________________________________
     Author: Donald F. Coffin (Green Button Alliance, Inc.)
 ==========================================================================
 
-    Copyright (c) 2019-2020 Green Button Alliance, Inc.
+    Copyright (c) 2019-2023 Green Button Alliance, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -95,7 +95,6 @@ ESPI OAuth Exchange Class Resource Types
                             <xs:documentation>A description of the application. (e.g. "Third Party Application Description is added as provided by each TP")</xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <!-- TODO: Correct Typo type=ThirdPartyApplicatonStatus s/b type=ThirdPartyApplicationStatus -->
                     <xs:element name="thirdPartyApplicationStatus" type="ThirdPartyApplicatonStatus" minOccurs="0">
                         <xs:annotation>
                             <xs:documentation>A code indicating the current status of the application. (e.g. "1" => Development</xs:documentation>
