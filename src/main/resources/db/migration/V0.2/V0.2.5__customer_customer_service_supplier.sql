@@ -37,29 +37,40 @@ END $$;
 
 -- change schema of a few types to public since we'll be using them on the customer side as well
 DO $$
-BEGIN
-  IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'enrollment_status' AND ns.nspname = 'usage') THEN
-    ALTER TYPE usage.enrollment_status SET SCHEMA public;
-  END IF;
-END $$;
+  BEGIN
+    IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'enrollment_status' AND ns.nspname = 'usage') THEN
+      IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'enrollment_status' AND ns.nspname = 'public') THEN
+        ALTER TYPE usage.enrollment_status SET SCHEMA public;
+      END IF;
+    END IF;
+  END $$;
+
 DO $$
-BEGIN
-  IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_multiplier_kind' AND ns.nspname = 'usage') THEN
-    ALTER TYPE usage.unit_multiplier_kind SET SCHEMA public;
-  END IF;
-END $$;
+  BEGIN
+    IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_multiplier_kind' AND ns.nspname = 'usage') THEN
+      IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_multiplier_kind' AND ns.nspname = 'public') THEN
+        ALTER TYPE usage.unit_multiplier_kind SET SCHEMA public;
+      END IF;
+    END IF;
+  END $$;
+
 DO $$
-BEGIN
-  IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_symbol_kind' AND ns.nspname = 'usage') THEN
-    ALTER TYPE usage.unit_symbol_kind SET SCHEMA public;
-  END IF;
-END $$;
+  BEGIN
+    IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_symbol_kind' AND ns.nspname = 'usage') THEN
+      IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'unit_symbol_kind' AND ns.nspname = 'public') THEN
+        ALTER TYPE usage.unit_symbol_kind SET SCHEMA public;
+      END IF;
+    END IF;
+  END $$;
+
 DO $$
-BEGIN
-  IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'currency' AND ns.nspname = 'usage') THEN
-    ALTER TYPE usage.currency SET SCHEMA public;
-  END IF;
-END $$;
+  BEGIN
+    IF EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'currency' AND ns.nspname = 'usage') THEN
+      IF NOT EXISTS (SELECT FROM pg_type t INNER JOIN pg_namespace ns ON t.typnamespace = ns.oid WHERE t.typname = 'currency' AND ns.nspname = 'public') THEN
+        ALTER TYPE usage.currency SET SCHEMA public;
+      END IF;
+    END IF;
+  END $$;
 
 CREATE TABLE IF NOT EXISTS customer.priority (
   id BIGSERIAL PRIMARY KEY,
