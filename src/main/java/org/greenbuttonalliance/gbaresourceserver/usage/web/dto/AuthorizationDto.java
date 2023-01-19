@@ -33,6 +33,7 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class AuthorizationDto extends IdentifiedObjectDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	private DateTimeIntervalDto authorizedPeriod;
 	private DateTimeIntervalDto publishedPeriod;
 	private AuthorizationStatus status;

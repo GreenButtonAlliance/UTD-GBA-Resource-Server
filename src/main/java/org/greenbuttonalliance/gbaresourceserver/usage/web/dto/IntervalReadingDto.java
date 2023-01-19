@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @Setter
 @Accessors(chain = true)
 public class IntervalReadingDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	private Long cost;
 	private Set<ReadingQualityDto> ReadingQuality = new HashSet<>(); // unusual naming convention to match NAESB schema
 	private DateTimeIntervalDto timePeriod;

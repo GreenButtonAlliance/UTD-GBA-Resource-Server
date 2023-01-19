@@ -40,6 +40,7 @@ import java.util.UUID;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD) //Was XmlAccessType.FIELD
 public abstract class IdentifiedObjectDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	@XmlElement(name = "id")
 	private UUID uuid;
 	private String description;

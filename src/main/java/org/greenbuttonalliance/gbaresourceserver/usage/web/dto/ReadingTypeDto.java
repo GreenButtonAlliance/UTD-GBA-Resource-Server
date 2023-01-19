@@ -40,6 +40,7 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class ReadingTypeDto extends IdentifiedObjectDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	private AccumulationKind accumulationBehavior;
 	private CommodityKind commodity;
 	private Short consumptionTier;

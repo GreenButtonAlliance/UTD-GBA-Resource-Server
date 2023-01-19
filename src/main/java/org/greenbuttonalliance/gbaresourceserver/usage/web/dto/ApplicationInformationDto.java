@@ -37,6 +37,7 @@ import java.util.Optional;
 @XmlRootElement(name = "ApplicationInformation")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationInformationDto extends IdentifiedObjectDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	private String dataCustodianId;
 	private DataCustodianApplicationStatus dataCustodianApplicationStatus;
 	private String thirdPartyApplicationDescription;

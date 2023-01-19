@@ -31,6 +31,7 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class ReadingQualityDto implements Serializable {
+	//TODO add XML Annotations to all data elements
 	private int quality;
 
 	public static ReadingQualityDto fromReadingQuality(ReadingQuality readingQuality) {

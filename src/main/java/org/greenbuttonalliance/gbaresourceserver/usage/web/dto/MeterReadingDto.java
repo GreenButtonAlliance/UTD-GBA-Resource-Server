@@ -27,6 +27,7 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class MeterReadingDto extends IdentifiedObjectDto {
+	//TODO add XML Annotations to all data elements
 //	private DateTimeIntervalDto interval;
 //	private Set<IntervalBlockDto> IntervalReading = new HashSet<>(); // unusual naming convention to match NAESB schema
 

@@ -27,5 +27,5 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-class AssetContainer extends Asset{
+public class AssetContainer extends Asset{
 }
