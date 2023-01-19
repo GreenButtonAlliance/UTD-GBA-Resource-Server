@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2022 Green Button Alliance, Inc.
+ * Copyright (c) 2022-2023 Green Button Alliance, Inc.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
@@ -68,12 +68,41 @@ public abstract class IdentifiedObjectDto implements Serializable {
 			mar.setProperty(Marshaller.JAXB_FRAGMENT, true);
 			StringWriter stringWriter = new StringWriter();
 			mar.marshal(this, stringWriter);
-			return stringWriter.toString() + "\n";
+			return stringWriter.toString();
 		} catch (JAXBException e) {
 			System.out.println(e);
 		}
 		return null;
 	}
+//
+//	public String getContent() {
+//		try {
+//			JAXBContext context = JAXBContext.newInstance(this.getClass());
+//			Marshaller mar = context.createMarshaller();
+//			StringWriter stringWriter = new StringWriter();
+//			mar.marshal(this, stringWriter);
+////			System.out.println(stringWriter.toString());
+////			StringBuilder sb = new StringBuilder();
+////			int tabCount = 0;
+////			int propStart = 0;
+////			String xml = stringWriter.toString();
+////			for(int i = 0; i < xml.length() - 1; i++) {
+////				if (xml.charAt(i) == '<' && xml.charAt(i + 1) != '/') {
+////					propStart = i;
+////					tabCount++;
+////					sb.append("\t".repeat(tabCount));
+////					sb.append(stringWriter.toString().charAt(i));
+////				}
+////			}
+//			while
+//
+//			return stringWriter.toString().r;
+//		} catch (JAXBException e) {
+//			System.out.println(e);
+//		}
+//		return null;
+//	}
+
 
 	private static String generateUUID(String content) {
 		return nameUUIDFrom(content).toString();
@@ -133,7 +162,7 @@ public abstract class IdentifiedObjectDto implements Serializable {
 
 	private String getEntryPrefix(String title) {
 		return "\t<entry>\n" +
-			"\t\t<id>urn:uuid:"+ uuid +"</id> \n" +
+			"\t\t<id>"+ uuid +"</id> \n" +
 			(selfLinkHref == null || selfLinkHref.isBlank() ?
 				"\t\t<link rel=\"self\" href=\""+ selfLinkHref +"\" type=\"espi-entry/Subscription\" />\n" : "") +
 			(upLinkHref == null || upLinkHref.isBlank() ?

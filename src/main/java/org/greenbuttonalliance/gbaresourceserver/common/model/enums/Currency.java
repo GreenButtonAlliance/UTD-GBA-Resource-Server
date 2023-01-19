@@ -14,29 +14,36 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
+package org.greenbuttonalliance.gbaresourceserver.common.model.enums;
 
 import java.util.EnumSet;
 
-public enum TimePeriodOfInterest {
-	NONE(0),
-	BILLING_PERIOD(8),
-	DAILY(11),
-	MONTHLY(13),
-	SEASONAL(22),
-	WEEKLY(24),
-	SPECIFIED_PERIOD(32);
+public enum Currency {
+	USD(840),
+	EUR(978),
+	AUD(36),
+	CAD(124),
+	CHF(756),
+	CNY(156),
+	DKK(208),
+	GBP(826),
+	JPY(392),
+	NOK(578),
+	RUB(643),
+	SEK(752),
+	INR(356),
+	OTHER(0);
 
 	public final int schemaValue;
 
-	TimePeriodOfInterest(int schemaValue) {
+	Currency(int schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static TimePeriodOfInterest getTimePeriodFromSchemaValue(int schemaValue) {
-		return EnumSet.allOf(TimePeriodOfInterest.class).stream()
-			.filter(tpoi -> tpoi.schemaValue == schemaValue)
+	public static Currency getCurrencyFromSchemaValue(int schemaValue) {
+		return EnumSet.allOf(Currency.class).stream()
+			.filter(c -> c.schemaValue == schemaValue)
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + TimePeriodOfInterest.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + Currency.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }
