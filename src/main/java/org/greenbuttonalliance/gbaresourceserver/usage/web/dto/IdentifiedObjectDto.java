@@ -42,12 +42,26 @@ import java.util.UUID;
 public abstract class IdentifiedObjectDto implements Serializable {
 	@XmlElement(name = "id")
 	private UUID uuid;
+
+	@XmlTransient
 	private String description;
+
+	@XmlTransient
 	private String selfLinkHref;
+
+	@XmlTransient
 	private String selfLinkRel;
+
+	@XmlTransient
 	private String upLinkHref;
+
+	@XmlTransient
 	private String upLinkRel;
+
+	@XmlTransient
 	private LocalDateTime published;
+
+	@XmlTransient
 	private LocalDateTime updated;
 
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
