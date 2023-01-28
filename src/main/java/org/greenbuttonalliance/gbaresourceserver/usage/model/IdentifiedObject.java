@@ -20,6 +20,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -35,31 +37,37 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
+@NoArgsConstructor
 @RequiredArgsConstructor
 public abstract class IdentifiedObject {
 
 	@Id
 	private UUID uuid;
 
-	@Column
+	@Column(nullable = false)
 	private String description;
 
-	@Column
+	@Column(nullable = false)
 	private LocalDateTime published;
 
-	@Column(name = "self_link_href")
+	@NonNull
+	@Column(name = "self_link_href", nullable = false)
 	private String selfLinkHref;
 
-	@Column(name = "self_link_rel")
+	@NonNull
+	@Column(name = "self_link_rel", nullable = false)
 	private String selfLinkRel;
 
-	@Column(name = "up_link_href")
+	@NonNull
+	@Column(name = "up_link_href", nullable = false)
 	private String upLinkHref;
 
-	@Column(name = "up_link_rel")
+	@NonNull
+	@Column(name = "up_link_rel", nullable = false)
 	private String upLinkRel;
 
-	@Column
+	@NonNull
+	@Column(nullable = false)
 	private LocalDateTime updated;
 
 	@Override

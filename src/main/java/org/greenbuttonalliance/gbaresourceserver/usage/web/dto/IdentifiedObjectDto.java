@@ -161,14 +161,12 @@ public abstract class IdentifiedObjectDto implements Serializable {
 	}
 
 	private String getEntryPrefix(String title) {
+		//TODO: Refactor how the Atom "related" link entries are handled
 		return "\t<entry>\n" +
-			"\t\t<id>"+ uuid +"</id> \n" +
-			(selfLinkHref == null || selfLinkHref.isBlank() ?
-				"\t\t<link rel=\"self\" href=\""+ selfLinkHref +"\" type=\"espi-entry/Subscription\" />\n" : "") +
-			(upLinkHref == null || upLinkHref.isBlank() ?
-				"\t\t<link rel=\"up\" href=\""+ upLinkHref +"\" type=\"espi-feed/UsagePoint\" />\n" : "") +
-			(upLinkRel == null || upLinkRel.isBlank() ?
-				"\t\t<link rel=\"related\" href=\"" + upLinkRel +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" : "") +
+			"\t\t<id>urn:uuid:"+ uuid +"</id> \n" +
+			"\t\t<link rel=\"self\" href=\""+ selfLinkHref +"\" type=\"espi-entry/" + title + "/>\n" +
+			"\t\t<link rel=\"up\" href=\""+ upLinkHref +"\" type=\"espi-feed/" + title + "/>\n" +
+//				"\t\t<link rel=\"related\" href=\"" + upLinkRel +"\" type=\"espi-entry/ElectricPowerQualitySummary\"  />\n" +
 			"\t\t<published>"+dtf.format(published)+"</published>\n" +
 			"\t\t<updated>"+dtf.format(updated)+"</updated>\n" +
 			"\t\t<title>"+ title +"</title>\n" +
