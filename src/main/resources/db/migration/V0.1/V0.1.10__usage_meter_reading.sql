@@ -10,12 +10,15 @@ CREATE TABLE IF NOT EXISTS usage.meter_reading (
   reading_type_uuid UUID REFERENCES usage.reading_type ON DELETE CASCADE
 );
 
+-- TODO: Add usage.meter_reading initialization to V0.1.99_usage_interval_sample_data.sql
 -- Only need this sample data to add not-null constraint to interval_block -> meter_reading reference while preserving existing interval_block data
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT FROM usage.meter_reading mr WHERE mr.uuid = 'F77FBF34-A09E-4EBC-9606-FF1A59A17CAE') THEN
     INSERT INTO usage.meter_reading
-    VALUES ('F77FBF34-A09E-4EBC-9606-FF1A59A17CAE', 'Fifteen Minute Electricity Consumption', '2012-10-24 04:00:00', 'https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01', 'self', 'https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01', 'up', '2012-10-24 04:00:00', NULL);
+    VALUES ('F77FBF34-A09E-4EBC-9606-FF1A59A17CAE', 'Fifteen Minute Electricity Consumption', '2012-10-24 04:00:00',
+            'https://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01',
+            'self', 'https://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01', 'up', '2012-10-24 04:00:00', NULL);
   END IF;
 END $$;
 
