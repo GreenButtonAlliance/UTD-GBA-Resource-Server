@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

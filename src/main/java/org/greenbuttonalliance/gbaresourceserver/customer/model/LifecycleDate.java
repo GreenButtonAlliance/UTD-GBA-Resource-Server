@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -30,17 +30,23 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PerCent {
-	@Column
-	private int percent;
+public class LifecycleDate {
 
-	public void setPercent(int percent) {
-		if(percent >= 0 && percent <= 100) {
-			this.percent = percent;
-		}
+	@Column(name = "manufactured_date")
+	private Long manufacturedDate; // in seconds
 
-		else {
-			throw new IllegalArgumentException("percent must be between 0 and 100 inclusive.");
-		}
-	}
+	@Column(name = "purchase_date")
+	private Long purchaseDate; // in seconds
+
+	@Column(name = "received_date")
+	private Long receivedDate; // in seconds
+
+	@Column(name = "installation_date")
+	private Long installationDate; // in seconds
+
+	@Column(name = "removal_date")
+	private Long removalDate; // in seconds
+
+	@Column(name = "retired_date")
+	private Long retiredDate; // in seconds
 }

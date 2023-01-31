@@ -18,7 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
 import java.util.EnumSet;
 
-public enum AmIBillingReadyKind {
+public enum AmiBillingReadyKind {
 	AMICAPABLE("amiCapable"),
 	AMIDISABLED("amiDisabled"),
 	BILLINGAPPROVED("billingApproved"),
@@ -29,14 +29,14 @@ public enum AmIBillingReadyKind {
 
 	public final String schemaValue;
 
-	AmIBillingReadyKind(String schemaValue) {
+	AmiBillingReadyKind(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static AmIBillingReadyKind getAmIBillingReadyKindFromSchemaValue(String schemaValue) {
-		return EnumSet.allOf(AmIBillingReadyKind.class).stream()
+	public static AmiBillingReadyKind getAmIBillingReadyKindFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(AmiBillingReadyKind.class).stream()
 			.filter(aibrk -> aibrk.schemaValue == schemaValue)
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + AmIBillingReadyKind.class.getCanonicalName() + " with schemaValue " + schemaValue));
+			.orElseThrow(() -> new IllegalArgumentException("No " + AmiBillingReadyKind.class.getCanonicalName() + " with schemaValue " + schemaValue));
 	}
 }

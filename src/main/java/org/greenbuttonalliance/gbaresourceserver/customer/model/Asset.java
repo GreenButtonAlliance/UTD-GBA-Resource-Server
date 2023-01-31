@@ -28,9 +28,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AcceptanceTest;
-import org.greenbuttonalliance.gbaresourceserver.common.model.LifecycleDate;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PerCent;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
 
 

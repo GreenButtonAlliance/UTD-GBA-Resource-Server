@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Embeddable
 @Getter
 @Setter
 @Accessors(chain = true)
-public class BillingChargeSource {
+public class TariffRiderRefs {
 
-	@Column
-	private String agencyName;
+	private Set<org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef> TariffRiderRef = new HashSet<>();
 }

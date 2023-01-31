@@ -18,12 +18,12 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.BillingChargeSource;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.AggregateNodeRef;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.BillingChargeSource;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.PnodeRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
-import org.greenbuttonalliance.gbaresourceserver.common.model.TariffRiderRef;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
@@ -39,7 +39,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
@@ -433,7 +433,7 @@ public class UsagePointRepositoryTest {
 							.build()
 					)
 				))
-				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+				.amiBillingReady(AmiBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
 				.estimatedLoad(new SummaryMeasurement()
@@ -750,7 +750,7 @@ public class UsagePointRepositoryTest {
 							.build()
 					)
 				))
-				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+				.amiBillingReady(AmiBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
 				.estimatedLoad(new SummaryMeasurement()
@@ -1067,7 +1067,7 @@ public class UsagePointRepositoryTest {
 							.build()
 					)
 				))
-				.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+				.amiBillingReady(AmiBillingReadyKind.OPERABLE)
 				.checkBilling(true)
 				.connectionState(UsagePointConnectedKind.CONNECTED)
 				.estimatedLoad(new SummaryMeasurement()
@@ -1403,7 +1403,7 @@ public class UsagePointRepositoryTest {
 						.build()
 				)
 			))
-			.amiBillingReady(AmIBillingReadyKind.OPERABLE)
+			.amiBillingReady(AmiBillingReadyKind.OPERABLE)
 			.checkBilling(true)
 			.connectionState(UsagePointConnectedKind.CONNECTED)
 			.estimatedLoad(new SummaryMeasurement()

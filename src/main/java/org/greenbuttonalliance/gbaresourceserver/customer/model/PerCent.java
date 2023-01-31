@@ -14,21 +14,33 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.common.model;
+package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Embeddable
 @Getter
 @Setter
-@Accessors(chain = true)
-public class TariffRiderRefs {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PerCent {
+	@Column
+	private int percent;
 
-	private Set<TariffRiderRef> TariffRiderRef = new HashSet<>();
+	public void setPercent(int percent) {
+		if(percent >= 0 && percent <= 100) {
+			this.percent = percent;
+		}
+
+		else {
+			throw new IllegalArgumentException("percent must be between 0 and 100 inclusive.");
+		}
+	}
 }

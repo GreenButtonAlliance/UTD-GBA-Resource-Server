@@ -34,10 +34,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmIBillingReadyKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.common.model.PnodeRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
@@ -89,7 +87,7 @@ public class UsagePoint extends IdentifiedObject{
 	@Column(name = "ami_billing_ready", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.ami_billing_ready_kind)", read = "ami_billing_ready::TEXT")
-	private AmIBillingReadyKind amiBillingReady;
+	private AmiBillingReadyKind amiBillingReady;
 
 	@Column(name = "check_billing")
 	private Boolean checkBilling;
