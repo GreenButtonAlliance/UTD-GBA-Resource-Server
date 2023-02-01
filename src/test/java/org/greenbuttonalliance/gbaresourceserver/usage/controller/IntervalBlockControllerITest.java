@@ -17,6 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.greenbuttonalliance.gbaresourceserver.usage.controller.IntervalBlockController;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
