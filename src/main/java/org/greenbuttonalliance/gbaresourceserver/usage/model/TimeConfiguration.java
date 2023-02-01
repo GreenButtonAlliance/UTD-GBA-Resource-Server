@@ -15,8 +15,13 @@
  */
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -34,13 +39,17 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class TimeConfiguration extends IdentifiedObject {
 	//note: using the correct naming scheme for columns matters, auto generated code and queries assume you follow the correct scheme
-	@Column(name= "dst_end_rule")
+	@NonNull
+	@Column(name= "dst_end_rule", nullable=false)
 	private byte[] dstEndRule;
-	@Column(name = "dst_offset")
+	@NonNull
+	@Column(name = "dst_offset", nullable=false)
 	private Long dstOffset;
-	@Column(name = "dst_start_rule")
+	@NonNull
+	@Column(name = "dst_start_rule", nullable=false)
 	private byte[] dstStartRule;
-	@Column(name = "tz_offset")
+	@NonNull
+	@Column(name = "tz_offset", nullable=false)
 	private Long tzOffset;
 	@OneToMany(mappedBy = "timeConfiguration", cascade = CascadeType.ALL)
 	private Set<UsagePoint> usagePoints = new HashSet<>();

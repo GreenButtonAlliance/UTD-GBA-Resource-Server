@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -198,7 +199,8 @@ public class UsageSummary extends IdentifiedObject {
 	})
 	private DateTimeInterval ratchetDemandPeriod;
 
-	@Column(name = "status_time_stamp")
+	@NonNull
+	@Column(name = "status_time_stamp", nullable = false)
 	private Long statusTimeStamp; //in epoch-seconds
 
 	@Enumerated(EnumType.STRING)

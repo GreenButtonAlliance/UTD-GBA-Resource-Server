@@ -61,4 +61,7 @@ public class ElectronicAddress {
 
 	@Column(name = "user_id")
 	private String userId;
+
+	@Column
+	private String password;
 }

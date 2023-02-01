@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.NotificationMethodKind;
 import org.hibernate.annotations.ColumnTransformer;
@@ -45,14 +46,21 @@ public class AccountNotification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "method_kind")
+	@NonNull
+	@Column(name = "method_kind", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS customer.notification_method_kind)", read = "method_kind::TEXT")
 	private NotificationMethodKind methodKind;
 
-	@Column(name = "notification_time")
+	@NonNull
+	@Column(name = "notification_time", nullable = false)
 	private Long time;
 
-	@Column(name = "customer_notification_kind")
+	@NonNull
+	@Column(nullable = false)
+	private String note;
+
+	@NonNull
+	@Column(name = "customer_notification_kind", nullable = false)
 	private String customerNotificationKind;
 }

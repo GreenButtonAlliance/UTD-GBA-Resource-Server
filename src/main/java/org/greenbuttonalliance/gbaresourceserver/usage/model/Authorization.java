@@ -16,25 +16,26 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.hibernate.annotations.ColumnTransformer;
-
-import java.math.BigInteger;
-import java.util.UUID;
 
 @Entity
 @Table(name = "authorization", schema = "usage")
@@ -42,23 +43,34 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Authorization extends IdentifiedObject {
 
-	@Column(name = "access_token")
-	private String accessToken;
+	@Embedded
+	private DateTimeInterval authorizedPeriod;
 
-	@Column(name = "authorization_uri")
-	private String authorizationUri;
+	@Embedded
+	private DateTimeInterval	publishedPeriod;
 
-	@Column(name = "ap_duration")
-	private BigInteger apDuration;
+	@NonNull
+	@Column(nullable = false)
+	private AuthorizationStatus status;
 
-	@Column(name = "ap_start")
-	private BigInteger apStart;
+	@NonNull
+	@Column(name = "expires_at", nullable = false)
+	private Long expiresAt;  // in epoch-seconds
 
-	@Column
-	private String code;
+	@Column(name = "grant_type")
+	private GrantType grantType;
+
+	@NonNull
+	@Column(nullable = false)
+	private String scope;
+
+	@NonNull
+	@Column(name = "token_type", nullable = false)
+	private TokenType tokenType;
 
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -71,46 +83,17 @@ public class Authorization extends IdentifiedObject {
 	@Column(name = "error_uri")
 	private String errorUri;
 
-	@Column(name = "expires_in")
-	private BigInteger expiresIn;
-
-	@Column(name = "grant_type")
-	private int grantType;
-
-	@Column(name = "pp_duration")
-	private BigInteger ppDuration;
-
-	@Column(name = "pp_start")
-	private BigInteger ppStart;
-
-	@Column(name = "refresh_token")
-	private String refreshToken;
-
-	@Column(name = "resource_uri")
+	@NonNull
+	@Column(name = "resource_uri", nullable = false)
 	private String resourceUri;
 
-	@Column(name = "response_type")
-	private int responseType;
+	@Column(name = "access_token")
+	private String accessToken;
 
-	@Column
-	private String scope;
+	@NonNull
+	@Column(name = "authorization_uri", nullable = false)
+	private String authorizationUri;
 
-	@Column
-	private String state;
-
-	@Column(name = "third_party")
-	private String thirdParty;
-
-	@Column(name = "token_type")
-	private int tokenType;
-
-	@Column(name = "application_information_id")
-	private UUID applicationInformationId;
-
-	@Column(name = "retail_customer_id")
-	private UUID retailCustomerId;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "subscription_id")
-	private Subscription subscription;
+	@Column(name = "customer_resource_uri")
+	private String customerResourceUri;
 }

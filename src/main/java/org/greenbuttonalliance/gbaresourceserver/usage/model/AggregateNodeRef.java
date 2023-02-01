@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AnodeType;
 import org.hibernate.annotations.ColumnTransformer;
@@ -48,11 +49,13 @@ public class AggregateNodeRef {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NonNull
 	@Column(name = "anode_type")
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.anode_type)", read = "anode_type::TEXT")
 	private AnodeType anodeType;
 
+	@NonNull
 	@Column
 	private String ref;
 

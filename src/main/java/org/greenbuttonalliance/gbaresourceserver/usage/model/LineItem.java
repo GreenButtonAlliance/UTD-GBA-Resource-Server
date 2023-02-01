@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
@@ -50,7 +51,8 @@ public class LineItem {
 	@Column(name = "date_time")
 	private Long dateTime; //in epoch-seconds
 
-	@Column
+	@NonNull
+	@Column(nullable = false)
 	private String note;
 
 	@Embedded
@@ -63,7 +65,8 @@ public class LineItem {
 
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.item_kind)", read = "item_kind::TEXT")
-	@Column(name = "item_kind")
+	@NonNull
+	@Column(name = "item_kind", nullable = false)
 	private ItemKind itemKind;
 
 	@Column(name = "unit_cost")

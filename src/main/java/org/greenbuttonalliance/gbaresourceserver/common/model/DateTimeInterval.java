@@ -19,6 +19,7 @@ package org.greenbuttonalliance.gbaresourceserver.common.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -28,9 +29,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class DateTimeInterval {
 
-	@Column
+	@NonNull
+	@Column(nullable = false)
 	private Long start; // in epoch-seconds
 
-	@Column
+	@NonNull
+	@Column(nullable = false)
 	private Long duration; // in seconds
 }

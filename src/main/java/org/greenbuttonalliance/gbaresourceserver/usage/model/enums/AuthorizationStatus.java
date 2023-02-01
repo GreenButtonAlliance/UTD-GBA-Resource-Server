@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
+ * Copyright (c) 2023 Green Button Alliance, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,25 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model.enums;
 
 import java.util.EnumSet;
 
-public enum GrantType {
-	AUTHORIZATION_CODE("authorization_code"),
-	CLIENT_CREDENTIALS("client_credentials"),
-	REFRESH_TOKEN("refresh_token");
+/**
+ * @author Donald F. Coffin
+ */
+public enum AuthorizationStatus {
+	REVOKED("revoked"),
+	ACTIVE("active"),
+	DENIED("denied");
 
 	public final String schemaValue;
 
-	GrantType(String schemaValue) {
+	AuthorizationStatus(String schemaValue) {
 		this.schemaValue = schemaValue;
 	}
 
-	public static GrantType getGrantTypeFromSchemaValue(String schemaValue) {
-		return EnumSet.allOf(GrantType.class).stream()
+	public static AuthorizationStatus getAuthorizationStatusFromSchemaValue(String schemaValue) {
+		return EnumSet.allOf(AuthorizationStatus.class).stream()
 			.filter(gt -> gt.schemaValue.equals(schemaValue))
 			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("No " + GrantType.class.getCanonicalName() +
+			.orElseThrow(() -> new IllegalArgumentException("No " + AuthorizationStatus.class.getCanonicalName() +
 				" with schemaValue " + schemaValue));
 	}
 }

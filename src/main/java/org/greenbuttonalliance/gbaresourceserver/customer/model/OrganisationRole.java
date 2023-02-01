@@ -24,13 +24,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 @MappedSuperclass
 @Getter
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-public abstract class OrganisationRole {
+public abstract class OrganisationRole extends IdentifiedObject {
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "organisation_id")

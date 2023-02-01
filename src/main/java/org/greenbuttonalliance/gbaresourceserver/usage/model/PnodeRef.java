@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ApnodeType;
 import org.hibernate.annotations.ColumnTransformer;
@@ -45,12 +46,14 @@ public class PnodeRef {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "apnode_type")
+	@NonNull
+	@Column(name = "apnode_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.apnode_type)", read = "apnode_type::TEXT")
 	private ApnodeType apnodeType;
 
-	@Column
+	@NonNull
+	@Column(nullable = false)
 	private String ref;
 
 	@Column(name = "start_effective_date")

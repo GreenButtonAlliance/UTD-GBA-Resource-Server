@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.hibernate.annotations.ColumnTransformer;
@@ -45,14 +46,17 @@ public class TariffRiderRef {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "rider_type")
+	@NonNull
+	@Column(name = "rider_type", nullable = false)
 	private String riderType;
 
-	@Column(name = "enrollment_status")
+	@NonNull
+	@Column(name = "enrollment_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS public.enrollment_status)", read = "enrollment_status::TEXT")
 	private EnrollmentStatus enrollmentStatus;
 
-	@Column(name = "effective_date")
+	@NonNull
+	@Column(name = "effective_date", nullable = false)
 	private Long effectiveDate; //in epoch-seconds
 }

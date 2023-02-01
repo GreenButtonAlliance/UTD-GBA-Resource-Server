@@ -68,24 +68,7 @@ public class UsagePoint extends IdentifiedObject {
 	@JoinColumn(name = "service_delivery_point_uuid", nullable = false)
 	private ServiceDeliveryPoint serviceDeliveryPoint;
 
-	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "time_configuration_uuid", nullable = false)
-	private TimeConfiguration timeConfiguration;
-
-	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "retail_customer_uuid", nullable = false)
-	private RetailCustomer retailCustomer;
-
-	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
-	private Set<MeterReading> meterReadings = new HashSet<>();
-
-	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
-	private Set<ElectricPowerQualitySummary> electricPowerQualitySummaries = new HashSet<>();
-
-	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
-	private Set<UsageSummary> usageSummaries = new HashSet<>();
-
-	@Column(name = "ami_billing_ready", nullable = false)
+	@Column(name = "ami_billing_ready")
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.ami_billing_ready_kind)", read = "ami_billing_ready::TEXT")
 	private AmiBillingReadyKind amiBillingReady;
@@ -181,4 +164,21 @@ public class UsagePoint extends IdentifiedObject {
 		joinColumns = {@JoinColumn(name = "usage_point_uuid", nullable = false)},
 		inverseJoinColumns = {@JoinColumn(name = "aggregate_node_ref_id", nullable = false)})
 	private Set<AggregateNodeRef> aggregateNodeRefs = new HashSet<>();
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "time_configuration_uuid", nullable = false)
+	private TimeConfiguration timeConfiguration;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "retail_customer_uuid", nullable = false)
+	private RetailCustomer retailCustomer;
+
+	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
+	private Set<MeterReading> meterReadings = new HashSet<>();
+
+	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
+	private Set<ElectricPowerQualitySummary> electricPowerQualitySummaries = new HashSet<>();
+
+	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
+	private Set<UsageSummary> usageSummaries = new HashSet<>();
 }

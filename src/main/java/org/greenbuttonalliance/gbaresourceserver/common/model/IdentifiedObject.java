@@ -44,9 +44,11 @@ public abstract class IdentifiedObject {
 	@Id
 	private UUID uuid;
 
+	@NonNull
 	@Column(nullable = false)
 	private String description;
 
+	@NonNull
 	@Column(nullable = false)
 	private LocalDateTime published;
 
