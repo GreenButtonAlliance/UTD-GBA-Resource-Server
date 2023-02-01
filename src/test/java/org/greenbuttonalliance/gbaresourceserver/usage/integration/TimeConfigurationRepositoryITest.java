@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
+import org.greenbuttonalliance.gbaresourceserver.usage.repository.TimeConfigurationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;

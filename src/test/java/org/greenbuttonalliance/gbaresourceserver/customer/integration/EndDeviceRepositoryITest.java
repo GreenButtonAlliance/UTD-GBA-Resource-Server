@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.repository;
+package org.greenbuttonalliance.gbaresourceserver.customer.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.AcceptanceTest;
@@ -23,6 +23,7 @@ import org.greenbuttonalliance.gbaresourceserver.customer.model.PerCent;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ElectronicAddress;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.EndDevice;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.Status;
+import org.greenbuttonalliance.gbaresourceserver.customer.repository.EndDeviceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;

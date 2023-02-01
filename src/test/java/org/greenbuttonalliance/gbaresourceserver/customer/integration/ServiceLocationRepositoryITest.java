@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.repository;
+package org.greenbuttonalliance.gbaresourceserver.customer.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.*;
+import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceLocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception;
+package org.greenbuttonalliance.gbaresourceserver.usage.controller.exception;
 
 /**
  * This interface is for exceptions who want to log a concise internal error message (i.e. not a full stack trace) and return an external error message as a web response when thrown inside a controller.

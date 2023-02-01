@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.web.controller.exception;
+package org.greenbuttonalliance.gbaresourceserver.usage.controller.exception;
 
 import java.util.UUID;
 

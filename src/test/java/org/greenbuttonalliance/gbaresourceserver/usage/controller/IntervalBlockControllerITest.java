@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.web.controller;
+package org.greenbuttonalliance.gbaresourceserver.usage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenbuttonalliance.gbaresourceserver.usage.controller.IntervalBlockController;

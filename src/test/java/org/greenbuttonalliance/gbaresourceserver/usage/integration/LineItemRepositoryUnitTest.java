@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Green Button Alliance, Inc.
+ * Copyright (c) 2023-2023 Green Button Alliance, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 /**
  * @author Donald F. Coffin

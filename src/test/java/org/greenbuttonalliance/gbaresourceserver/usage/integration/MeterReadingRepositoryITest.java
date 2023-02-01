@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.repository;
+package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.repository.MeterReadingRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
