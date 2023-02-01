@@ -29,6 +29,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 @Entity
 @Table(name = "electric_power_quality_summaries", schema = "usage")

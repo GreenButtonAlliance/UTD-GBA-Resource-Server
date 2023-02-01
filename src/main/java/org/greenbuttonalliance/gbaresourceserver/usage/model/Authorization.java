@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
 import org.hibernate.annotations.ColumnTransformer;
 

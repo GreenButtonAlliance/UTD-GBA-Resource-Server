@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
+ * Copyright (c) 2023 Green Button Alliance, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
-import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface LineItemRepository extends JpaRepository<LineItem, Long> {
+/**
+ * @author Donald F. Coffin
+ */
+public class LineItemRepositoryUnitTest {
 }

@@ -16,31 +16,17 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.hibernate.annotations.ColumnTransformer;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "line_item", schema = "usage")
@@ -53,17 +39,15 @@ import java.util.UUID;
 public class LineItem {
 
 	@Id
-	private UUID uuid;
+	private Long id;
 
 	@Column
-	@NonNull
 	private Long amount;
 
 	@Column
 	private Long rounding;
 
 	@Column(name = "date_time")
-	@NonNull
 	private Long dateTime; //in epoch-seconds
 
 	@Column

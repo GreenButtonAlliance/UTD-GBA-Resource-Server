@@ -23,6 +23,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
@@ -39,7 +40,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class UsageSummary extends IdentifiedObject{
+public class UsageSummary extends IdentifiedObject {
 
 	@Embedded
 	@AttributeOverrides({

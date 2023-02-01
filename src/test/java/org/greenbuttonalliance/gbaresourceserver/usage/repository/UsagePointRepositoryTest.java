@@ -1504,15 +1504,18 @@ public class UsagePointRepositoryTest {
 			uss.forEach(us -> {
 					us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, us.getSelfLinkHref()));
 
+//				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
+//					lis.forEach(li -> {
+//							count.getAndIncrement();
+//							if(li.getUuid() == null) {
+//								li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
+//							}
+//							li.setUsageSummary(us);
+//						}
+//					));
 				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
-					lis.forEach(li -> {
-							count.getAndIncrement();
-							if(li.getUuid() == null) {
-								li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
-							}
-							li.setUsageSummary(us);
-						}
-					));
+					lis.forEach(li ->
+						li.setUsageSummary(us)));
 			});
 		});
 	}
@@ -1560,15 +1563,19 @@ public class UsagePointRepositoryTest {
 				AtomicInteger count = new AtomicInteger();
 				us.setUsagePoint(up);
 
+//				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
+//					lis.forEach(li -> {
+//						if(li.getUuid() == null) {
+//							count.getAndIncrement();
+//							li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
+//						}
+//							li.setUsageSummary(us);
+//						}
+//					));
 				Optional.ofNullable(us.getLineItems()).ifPresent(lis ->
 					lis.forEach(li -> {
-						if(li.getUuid() == null) {
-							count.getAndIncrement();
-							li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "LITest" + count));
-						}
-							li.setUsageSummary(us);
-						}
-					));
+						li.setUsageSummary(us);
+					}));
 			});
 		});
 	}

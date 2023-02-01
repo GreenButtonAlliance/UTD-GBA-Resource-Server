@@ -600,7 +600,7 @@ public class UsageSummaryRepositoryTest {
 
 				count.getAndIncrement();
 
-				li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
+//				li.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, "UUID"+count));
 				li.setUsageSummary(us);
 			});
 

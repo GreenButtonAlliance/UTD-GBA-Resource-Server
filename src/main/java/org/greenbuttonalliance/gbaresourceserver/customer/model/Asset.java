@@ -28,7 +28,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 
 @MappedSuperclass

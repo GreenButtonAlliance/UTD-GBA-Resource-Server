@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
@@ -51,7 +52,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @SuperBuilder
 @RequiredArgsConstructor
-public class UsagePoint extends IdentifiedObject{
+public class UsagePoint extends IdentifiedObject {
 	@Column(name = "role_flags")
 	private byte[] roleFlags;
 

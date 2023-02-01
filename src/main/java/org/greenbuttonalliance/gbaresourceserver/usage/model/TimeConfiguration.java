@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +32,7 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 @RequiredArgsConstructor
-public class TimeConfiguration extends IdentifiedObject{
+public class TimeConfiguration extends IdentifiedObject {
 	//note: using the correct naming scheme for columns matters, auto generated code and queries assume you follow the correct scheme
 	@Column(name= "dst_end_rule")
 	private byte[] dstEndRule;

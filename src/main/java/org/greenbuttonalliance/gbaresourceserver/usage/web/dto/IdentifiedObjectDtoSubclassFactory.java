@@ -17,7 +17,7 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
 import lombok.AllArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.IdentifiedObject;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 import java.util.Optional;
 import java.util.function.Supplier;

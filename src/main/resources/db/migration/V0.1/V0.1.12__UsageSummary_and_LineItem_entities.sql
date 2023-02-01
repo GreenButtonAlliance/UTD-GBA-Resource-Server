@@ -105,10 +105,10 @@ CREATE TABLE IF NOT EXISTS usage.usage_summaries (
   );
 
 CREATE TABLE IF NOT EXISTS usage.line_item (
-  uuid UUID PRIMARY KEY NOT NULL,
-  amount BIGINT NOT NULL,
+  id BIGINT PRIMARY KEY NOT NULL,
+  amount BIGINT,
   rounding BIGINT,
-  date_time BIGINT NOT NULL,
+  date_time BIGINT,
   note TEXT,
   power_of_ten_multiplier usage.unit_multiplier_kind,
   time_stamp BIGINT,
