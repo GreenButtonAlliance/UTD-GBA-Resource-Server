@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest(controllers = IntervalBlockController.class)
 @ExtendWith(SpringExtension.class)
-class IntervalBlockControllerTest {
+class IntervalBlockControllerITest {
 
 	@Autowired
 	private MockMvc mockMvc;

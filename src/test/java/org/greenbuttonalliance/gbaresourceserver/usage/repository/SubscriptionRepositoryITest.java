@@ -52,7 +52,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SubscriptionRepositoryTest {
+public class SubscriptionRepositoryITest {
 
 	private final SubscriptionRepository subscriptionRepository;
 

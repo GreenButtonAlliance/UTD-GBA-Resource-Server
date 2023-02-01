@@ -52,7 +52,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class AuthorizationRepositoryTest {
+public class AuthorizationRepositoryITest {
 	private final AuthorizationRepository authorizationRepository;
 
 	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/Authorization/1";

@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ServiceDeliveryPointRepositoryTest {
+public class ServiceDeliveryPointRepositoryITest {
 
 	private final ServiceDeliveryPointRepository serviceDeliveryPointRepository;
 
@@ -126,7 +126,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						UsagePointRepositoryITest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -147,7 +147,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						UsagePointRepositoryITest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -168,7 +168,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						UsagePointRepositoryITest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -198,9 +198,9 @@ public class ServiceDeliveryPointRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 		});
 		return serviceDeliveryPoints;
 	}

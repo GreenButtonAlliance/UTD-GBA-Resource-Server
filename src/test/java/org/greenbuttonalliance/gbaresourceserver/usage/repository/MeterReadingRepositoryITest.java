@@ -57,7 +57,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class MeterReadingRepositoryTest {
+public class MeterReadingRepositoryITest {
 	private final MeterReadingRepository meterReadingRepository;
 
 	// for testing findById
@@ -183,7 +183,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
@@ -233,7 +233,7 @@ public class MeterReadingRepositoryTest {
 						.build())
 					.collect(Collectors.toSet()))
 
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
@@ -245,7 +245,7 @@ public class MeterReadingRepositoryTest {
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build()
 		);
 
@@ -274,9 +274,9 @@ public class MeterReadingRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 		});
 		return meterReadings;
 	}

@@ -54,7 +54,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ReadingTypeRepositoryTest {
+public class ReadingTypeRepositoryITest {
 	private final ReadingTypeRepository readingTypeRepository;
 
 	// for testing findById
@@ -157,7 +157,7 @@ public class ReadingTypeRepositoryTest {
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -196,7 +196,7 @@ public class ReadingTypeRepositoryTest {
 					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -251,9 +251,9 @@ public class ReadingTypeRepositoryTest {
 
 				count.getAndIncrement();
 
-				UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+				UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-				UsagePointRepositoryTest.connectUsagePoint(up);
+				UsagePointRepositoryITest.connectUsagePoint(up);
 
 			});
 		});

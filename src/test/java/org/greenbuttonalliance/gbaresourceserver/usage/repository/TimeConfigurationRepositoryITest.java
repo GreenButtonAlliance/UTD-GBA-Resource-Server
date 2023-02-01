@@ -43,7 +43,7 @@ import java.util.function.Function;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TimeConfigurationRepositoryTest {
+public class TimeConfigurationRepositoryITest {
 	private final TimeConfigurationRepository timeConfigurationRepository;
 	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
@@ -115,7 +115,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(10L)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						UsagePointRepositoryITest.createUsagePoint()
 					)))
 				.build(),
 		TimeConfiguration.builder()
@@ -131,7 +131,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(20L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsagePoint()
+					UsagePointRepositoryITest.createUsagePoint()
 				)))
 			.build(),
 		TimeConfiguration.builder()
@@ -147,7 +147,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(30L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsagePoint()
+					UsagePointRepositoryITest.createUsagePoint()
 				)))
 			.build()
 		);
@@ -162,9 +162,9 @@ public class TimeConfigurationRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 
 		});
 		return timeConfigurations;

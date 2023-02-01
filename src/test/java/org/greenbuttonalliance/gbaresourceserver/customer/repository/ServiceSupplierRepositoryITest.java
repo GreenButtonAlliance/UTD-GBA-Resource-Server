@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ServiceSupplierRepositoryTest {
+public class ServiceSupplierRepositoryITest {
 	@Autowired
 	private ServiceSupplierRepository serviceSupplierRepository;
 

@@ -42,7 +42,7 @@ import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class EndDeviceRepositoryTest {
+public class EndDeviceRepositoryITest {
 
 	@Autowired
 	private EndDeviceRepository endDeviceRepository;

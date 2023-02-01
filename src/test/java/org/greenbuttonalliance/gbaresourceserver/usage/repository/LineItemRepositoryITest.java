@@ -229,7 +229,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -347,7 +347,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -465,7 +465,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 					.build())
 				.build()
 		);
@@ -489,9 +489,9 @@ public class LineItemRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 
 		});
 		return lineItems;

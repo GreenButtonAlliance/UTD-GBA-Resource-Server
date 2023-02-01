@@ -50,7 +50,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class IntervalBlockRepositoryTest {
+public class IntervalBlockRepositoryITest {
 	private final IntervalBlockRepository intervalBlockRepository;
 
 	// for testing findById
@@ -213,7 +213,7 @@ public class IntervalBlockRepositoryTest {
 			.upLinkRel("up")
 			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
-			.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+			.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 			.build();
 		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
 
@@ -234,9 +234,9 @@ public class IntervalBlockRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 
 			ib.getIntervalReadings().forEach(ir -> {
 				ir.setBlock(ib);

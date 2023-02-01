@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CustomerAgreementRepositoryTest {
+public class CustomerAgreementRepositoryITest {
 	@Autowired
 	private CustomerAgreementRepository customerAgreementRepository;
 

@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ServiceLocationRepositoryTest {
+public class ServiceLocationRepositoryITest {
 	@Autowired
 	private ServiceLocationRepository serviceLocationRepository;
 	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";

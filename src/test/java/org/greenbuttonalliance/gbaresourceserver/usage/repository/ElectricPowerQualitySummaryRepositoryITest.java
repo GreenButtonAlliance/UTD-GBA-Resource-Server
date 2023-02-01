@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ElectricPowerQualitySummaryRepositoryTest {
+public class ElectricPowerQualitySummaryRepositoryITest {
 
 	private final ElectricPowerQualitySummaryRepository electricPowerQualitySummaryRepository;
 
@@ -138,7 +138,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
@@ -163,7 +163,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
@@ -188,7 +188,7 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build()
 		);
 
@@ -207,9 +207,9 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 		});
 
 		return electricPowerQualitySummaries;

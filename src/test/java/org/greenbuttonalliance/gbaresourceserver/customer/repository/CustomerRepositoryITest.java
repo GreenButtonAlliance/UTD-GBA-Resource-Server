@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CustomerRepositoryTest {
+public class CustomerRepositoryITest {
 	@Autowired
 	private CustomerRepository customerRepository;
 

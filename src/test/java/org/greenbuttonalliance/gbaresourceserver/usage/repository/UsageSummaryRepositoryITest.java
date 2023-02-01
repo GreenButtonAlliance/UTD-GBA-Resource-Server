@@ -56,7 +56,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UsageSummaryRepositoryTest {
+public class UsageSummaryRepositoryITest {
 
 	private final UsageSummaryRepository usageSummaryRepository;
 
@@ -279,7 +279,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 
 			UsageSummary.builder()
@@ -435,7 +435,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build(),
 
 			UsageSummary.builder()
@@ -587,7 +587,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
 				.build()
 		);
 
@@ -613,9 +613,9 @@ public class UsageSummaryRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 
 			});
 

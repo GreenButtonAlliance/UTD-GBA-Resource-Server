@@ -76,7 +76,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UsagePointRepositoryTest {
+public class UsagePointRepositoryITest {
 	private final UsagePointRepository usagePointRepository;
 
 	// for testing findById

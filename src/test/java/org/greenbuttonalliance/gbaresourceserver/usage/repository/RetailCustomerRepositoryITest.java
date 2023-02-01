@@ -57,7 +57,7 @@ import java.util.stream.Stream;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class RetailCustomerRepositoryTest {
+public class RetailCustomerRepositoryITest {
 	private final RetailCustomerRepository retailCustomerRepository;
 
 	// for testing findById
@@ -207,7 +207,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 					.usagePoints(new HashSet<>(
 						Collections.singletonList(
-							UsagePointRepositoryTest.createUsagePoint()
+							UsagePointRepositoryITest.createUsagePoint()
 						)))
 				.build(),
 			RetailCustomer.builder()
@@ -289,7 +289,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 						.usagePoints(new HashSet<>(
 							Collections.singletonList(
-								UsagePointRepositoryTest.createUsagePoint()
+								UsagePointRepositoryITest.createUsagePoint()
 							)))
 				.build(),
 			RetailCustomer.builder()
@@ -372,7 +372,7 @@ public class RetailCustomerRepositoryTest {
 				)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						UsagePointRepositoryITest.createUsagePoint()
 					)))
 				.build()
 		);
@@ -523,9 +523,9 @@ public class RetailCustomerRepositoryTest {
 			up.setRetailCustomer(rc);
 
 			count.getAndIncrement();
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			UsagePointRepositoryITest.connectUsagePoint(up);
 
 			// TODO hydrate MeterReading reference when available
 		});
