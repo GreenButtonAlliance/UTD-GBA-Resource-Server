@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -102,22 +103,21 @@ public class LineItemRepositoryITest {
 		);
 	}
 
-//	@Test
-//	public void entityMappings_areNotNull() {
+	@Test
+	public void entityMappings_areNotNull() {
 //		LineItem fullyMappedLineItem = lineItemRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT)).orElse(null);
-//		Optional<LineItem> fullyMappedLineItem = lineItemRepository.findById(PRESENT);
+		Optional<LineItem> fullyMappedLineItem = lineItemRepository.findById(PRESENT);
 //		Assumptions.assumeTrue(fullyMappedLineItem != null);
-//
-//		Function<LineItem, Optional<UsageSummary>> lineItemToUsageSummary = li -> Optional.ofNullable(li.getUsageSummary());
-//
+
+		Function<LineItem, Optional<UsageSummary>> lineItemToUsageSummary = li -> Optional.ofNullable(li.getUsageSummary());
+
 //		Assertions.assertTrue(lineItemToUsageSummary.apply(fullyMappedLineItem).isPresent());
-//	}
+	}
 
 	private static List<LineItem> buildTestData() {
 		AtomicLong lineItemId = new AtomicLong(PRESENT);
 		List<LineItem> lineItems = Arrays.asList(
 			LineItem.builder()
-				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -235,7 +235,6 @@ public class LineItemRepositoryITest {
 				.build(),
 
 			LineItem.builder()
-				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -353,7 +352,6 @@ public class LineItemRepositoryITest {
 				.build(),
 
 			LineItem.builder()
-				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -474,8 +472,8 @@ public class LineItemRepositoryITest {
 		// hydrate UUIDs and entity mappings
 		AtomicInteger count = new AtomicInteger();
 		lineItems.forEach(li -> {
-			count.getAndIncrement();
-			li.setId(100000L);
+//			count.getAndIncrement();
+//			li.setId(100000L);
 			UsageSummary us = li.getUsageSummary();
 				us.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, us.getSelfLinkHref()));
 				us.setLineItems(new HashSet<>(List.of(li)));

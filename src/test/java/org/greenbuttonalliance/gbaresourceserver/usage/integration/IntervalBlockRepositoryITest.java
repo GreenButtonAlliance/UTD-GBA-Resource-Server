@@ -55,7 +55,8 @@ public class IntervalBlockRepositoryITest {
 	private final IntervalBlockRepository intervalBlockRepository;
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
+	private static final String PRESENT_SELF_LINK = "https://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066" +
+		"/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

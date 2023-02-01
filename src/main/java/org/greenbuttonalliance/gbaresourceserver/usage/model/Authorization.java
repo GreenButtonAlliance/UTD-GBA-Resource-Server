@@ -16,6 +16,8 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -48,9 +50,17 @@ import org.hibernate.annotations.ColumnTransformer;
 public class Authorization extends IdentifiedObject {
 
 	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "start", column = @Column(name = "authorized_period_start")),
+			@AttributeOverride(name = "duration", column = @Column(name = "authorized_period_duration")),
+	})
 	private DateTimeInterval authorizedPeriod;
 
 	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "start", column = @Column(name = "published_period_start")),
+			@AttributeOverride(name = "duration", column = @Column(name = "published_period_duration")),
+	})
 	private DateTimeInterval	publishedPeriod;
 
 	@NonNull
@@ -86,9 +96,6 @@ public class Authorization extends IdentifiedObject {
 	@NonNull
 	@Column(name = "resource_uri", nullable = false)
 	private String resourceUri;
-
-	@Column(name = "access_token")
-	private String accessToken;
 
 	@NonNull
 	@Column(name = "authorization_uri", nullable = false)
