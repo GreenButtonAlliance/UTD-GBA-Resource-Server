@@ -22,7 +22,7 @@ import java.util.EnumSet;
  * @author Donald F. Coffin
  */
 public enum TokenType {
-	BEARER("Bearer")
+	BEARER("Bearer");
 
 	public final String schemaValue;
 

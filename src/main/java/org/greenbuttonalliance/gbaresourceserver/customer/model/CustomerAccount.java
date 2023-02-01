@@ -19,7 +19,6 @@ package org.greenbuttonalliance.gbaresourceserver.customer.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -31,7 +30,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "customer_account", schema = "customer")
@@ -40,9 +38,6 @@ import java.util.UUID;
 @SuperBuilder
 @RequiredArgsConstructor
 public class CustomerAccount extends Document {
-
-	@Id
-	private UUID uuid;
 
 	@Column(name = "billing_cycle")
 	private String billingCycle;

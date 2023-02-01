@@ -24,7 +24,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -38,7 +37,6 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class ElectricPowerQualitySummary extends IdentifiedObject {
 

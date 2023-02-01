@@ -21,7 +21,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -32,8 +31,6 @@ import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.CustomerKind;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "customer", schema = "customer")
 @Getter
@@ -41,9 +38,6 @@ import java.util.UUID;
 @SuperBuilder
 @RequiredArgsConstructor
 public class Customer extends OrganisationRole {
-
-	@Id
-	private UUID uuid;
 
 	@Column
 	@Enumerated(EnumType.STRING)

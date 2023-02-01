@@ -16,18 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -37,7 +26,6 @@ import org.hibernate.annotations.ColumnTransformer;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "customer_agreement", schema = "customer")
@@ -46,9 +34,6 @@ import java.util.UUID;
 @SuperBuilder
 @RequiredArgsConstructor
 public class CustomerAgreement extends Agreement {
-
-	@Id
-	private UUID uuid;
 
 	@Column(name = "load_mgmt")
 	private String loadMgmt;
