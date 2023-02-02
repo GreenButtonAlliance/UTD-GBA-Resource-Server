@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-@DataJpaTest(showSql = false)
+@DataJpaTest(showSql = true)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LineItemRepositoryITest {
@@ -118,6 +118,7 @@ public class LineItemRepositoryITest {
 		AtomicLong lineItemId = new AtomicLong(PRESENT);
 		List<LineItem> lineItems = Arrays.asList(
 			LineItem.builder()
+				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -136,9 +137,9 @@ public class LineItemRepositoryITest {
 				.usageSummary(UsageSummary.builder()
 					.description("description")
 					.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
-					.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/174")
+					.selfLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary/174")
 					.selfLinkRel("self")
-					.upLinkHref("https://{domain}/espi/1_1/resource/UsageSummary")
+					.upLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 					.billingPeriod(new DateTimeInterval()
@@ -235,6 +236,7 @@ public class LineItemRepositoryITest {
 				.build(),
 
 			LineItem.builder()
+				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -253,9 +255,9 @@ public class LineItemRepositoryITest {
 				.usageSummary(UsageSummary.builder()
 					.description("description")
 					.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
-					.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/175")
+					.selfLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary/175")
 					.selfLinkRel("self")
-					.upLinkHref("https://{domain}/espi/1_1/resource/UsageSummary")
+					.upLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 					.billingPeriod(new DateTimeInterval()
@@ -352,6 +354,7 @@ public class LineItemRepositoryITest {
 				.build(),
 
 			LineItem.builder()
+				.id(lineItemId.getAndIncrement())
 				.amount(1L)
 				.rounding(1L)
 				.dateTime(1L)
@@ -370,9 +373,9 @@ public class LineItemRepositoryITest {
 				.usageSummary(UsageSummary.builder()
 					.description("description")
 					.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
-					.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/176")
+					.selfLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary/176")
 					.selfLinkRel("self")
-					.upLinkHref("https://{domain}/espi/1_1/resource/UsageSummary")
+					.upLinkHref("https://localhost:8080/espi/1_1/resource/UsageSummary")
 					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 					.billingPeriod(new DateTimeInterval()

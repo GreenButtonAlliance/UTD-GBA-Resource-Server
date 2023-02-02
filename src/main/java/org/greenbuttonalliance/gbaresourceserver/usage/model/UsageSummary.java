@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,7 @@ import java.util.Set;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class UsageSummary extends IdentifiedObject {
 

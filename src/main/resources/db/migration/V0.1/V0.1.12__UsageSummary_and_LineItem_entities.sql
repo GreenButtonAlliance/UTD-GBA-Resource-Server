@@ -122,6 +122,10 @@ CREATE TABLE IF NOT EXISTS usage.line_item (
   usage_summary_uuid UUID NOT NULL REFERENCES usage.usage_summaries ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS usage.line_item_sequence (
+  line_item_seq BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS usage.tariff_rider_ref (
   usage_summary_uuid UUID REFERENCES usage.usage_summaries ON DELETE CASCADE,
   rider_type TEXT,

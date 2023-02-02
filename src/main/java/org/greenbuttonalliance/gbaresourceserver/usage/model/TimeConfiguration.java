@@ -21,6 +21,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ import java.util.Set;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class TimeConfiguration extends IdentifiedObject {
 	//note: using the correct naming scheme for columns matters, auto generated code and queries assume you follow the correct scheme

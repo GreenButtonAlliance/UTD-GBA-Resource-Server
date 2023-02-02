@@ -40,10 +40,11 @@ import org.hibernate.annotations.ColumnTransformer;
 public class LineItem {
 
 	@Id
-	@SequenceGenerator(name = "lineItem_seq",
-		sequenceName = "lineItem_sequence",
+	@SequenceGenerator(name = "line_item_seq",
+		sequenceName = "line_item_sequence",
 		initialValue = 100001, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lineItem_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "line_item_seq")
+	@NonNull
 	@Column(name = "id", nullable = false)
 	private Long id;
 
@@ -79,20 +80,6 @@ public class LineItem {
 
 	@Embedded
 	private DateTimeInterval itemPeriod;
-
-	public LineItem(Long amount, Long rounding, Long dateTime, @NonNull String note,
-					SummaryMeasurement measurement, @NonNull ItemKind itemKind, Long unitCost,
-					DateTimeInterval itemPeriod, UsageSummary usageSummary) {
-		this.amount = amount;
-		this.rounding = rounding;
-		this.dateTime = dateTime;
-		this.note = note;
-		this.measurement = measurement;
-		this.itemKind = itemKind;
-		this.unitCost = unitCost;
-		this.itemPeriod = itemPeriod;
-		this.usageSummary = usageSummary;
-	}
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "usage_summary_uuid", nullable = false)

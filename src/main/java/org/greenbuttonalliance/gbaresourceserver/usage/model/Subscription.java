@@ -16,6 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
+import com.sun.istack.NotNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,15 +52,16 @@ public class Subscription extends IdentifiedObject {
 	@JoinColumn(name = "application_information_id", nullable = false)
 	private ApplicationInformation applicationInformation;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn (name = "authorization_id")
 	private Authorization authorization;
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@NotNull
 	@JoinColumn(name = "retail_customer_id", nullable = false)
 	private RetailCustomer retailCustomer;
 
 	// TODO add UsagePoint reference once entity is available
-//	@Column(name = "usage_point_id")
+//	@Column(name = "usage_point_id", nullable = false)
 //	private int usagePointId;
 }

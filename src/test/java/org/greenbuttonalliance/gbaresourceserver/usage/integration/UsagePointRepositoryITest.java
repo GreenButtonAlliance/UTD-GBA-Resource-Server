@@ -38,18 +38,7 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoin
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.UsagePointRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -475,13 +464,16 @@ public class UsagePointRepositoryITest {
 					Collections.singletonList(
 						PnodeRef.builder()
 							.id(1L)
+							.apnodeType(ApnodeType.AG)
+							.ref("Pnode_1")
 							.build()
 					)
 				))
 				.aggregateNodeRefs(new HashSet<>(
 					Collections.singletonList(
 						AggregateNodeRef.builder()
-							.ref("ref")
+							.anodeType(AnodeType.AGR)
+							.ref("Anode_1")
 							.build()
 					)
 				))
@@ -791,14 +783,17 @@ public class UsagePointRepositoryITest {
 				.pnodeRefs(new HashSet<>(
 					Collections.singletonList(
 						PnodeRef.builder()
-							.id(1L)
+							.id(2L)
+							.apnodeType(ApnodeType.AG)
+							.ref("Pnode_2")
 							.build()
 					)
 				))
 				.aggregateNodeRefs(new HashSet<>(
 					Collections.singletonList(
 						AggregateNodeRef.builder()
-							.ref("ref")
+							.anodeType(AnodeType.AGR)
+							.ref("Anode_2")
 							.build()
 					)
 				))
@@ -1108,14 +1103,17 @@ public class UsagePointRepositoryITest {
 				.pnodeRefs(new HashSet<>(
 					Collections.singletonList(
 						PnodeRef.builder()
-							.id(1L)
+							.id(3L)
+							.apnodeType(ApnodeType.AG)
+							.ref("Pnode_3")
 							.build()
 					)
 				))
 				.aggregateNodeRefs(new HashSet<>(
 					Collections.singletonList(
 						AggregateNodeRef.builder()
-							.ref("ref")
+							.anodeType(AnodeType.AGR)
+							.ref("Anode_3")
 							.build()
 					)
 				))
@@ -1168,6 +1166,7 @@ public class UsagePointRepositoryITest {
 				)
 				.build())
 			.timeConfiguration(TimeConfiguration.builder()
+				.description("description")
 				.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
 				.selfLinkRel("self")
@@ -1300,6 +1299,7 @@ public class UsagePointRepositoryITest {
 						.costAdditionalLastPeriod(1L)
 						.lineItems(new HashSet<>(List.of(
 								LineItem.builder()
+									.id(200000L)
 									.amount(1L)
 									.rounding(1L)
 									.dateTime(1L)
@@ -1444,14 +1444,17 @@ public class UsagePointRepositoryITest {
 			.pnodeRefs(new HashSet<>(
 				Collections.singletonList(
 					PnodeRef.builder()
-						.id(1L)
+						.id(4L)
+						.apnodeType(ApnodeType.AG)
+						.ref("Pnode_4")
 						.build()
 				)
 			))
 			.aggregateNodeRefs(new HashSet<>(
 				Collections.singletonList(
 					AggregateNodeRef.builder()
-						.ref("ref")
+						.anodeType(AnodeType.AGR)
+						.ref("Anode_4")
 						.build()
 				)
 			))

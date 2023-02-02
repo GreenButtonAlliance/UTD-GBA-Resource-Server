@@ -18,18 +18,12 @@ package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.ApplicationInformationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -57,7 +51,10 @@ import java.util.stream.Stream;
 public class ApplicationInformationRepositoryITest {
 	private final ApplicationInformationRepository applicationInformationRepository;
 
-	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";
+	private static final String PRESENT_SELF_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource" +
+			"/ApplicationInformation/135497";
+	private static final String UP_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource" +
+			"/ApplicationInformation";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final String DUMMY_STRING = "test1";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -127,7 +124,7 @@ public class ApplicationInformationRepositoryITest {
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.selfLinkRel("self")
-				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+				.upLinkHref("UP_LINK")
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
@@ -148,7 +145,6 @@ public class ApplicationInformationRepositoryITest {
 				.dataCustodianBulkRequestUri(DUMMY_STRING)
 				.dataCustodianId(DUMMY_STRING)
 				.dataCustodianResourceEndpoint(DUMMY_STRING)
-				.thirdPartyScopeSelectionScreenUri(null)
 				.thirdPartyUserPortalScreenUri(null)
 				.logoUri(null)
 				.policyUri(null)
@@ -158,8 +154,8 @@ public class ApplicationInformationRepositoryITest {
 				.thirdPartyApplicationUse(ThirdPartyApplicationUse.COMPARISONS)
 				.thirdPartyPhone(null)
 				.thirdPartyNotifyUri(DUMMY_STRING)
-				.redirectUris(new HashSet<>(Arrays.asList(
-					"Redirect1"
+				.redirectUris(new HashSet<>(List.of(
+						"Redirect1"
 				)))
 				.tosUri(null)
 				.softwareId(DUMMY_STRING)
@@ -168,10 +164,8 @@ public class ApplicationInformationRepositoryITest {
 				.responseType(ResponseType.CODE)
 				.registrationClientUri(DUMMY_STRING)
 				.registrationAccessToken(DUMMY_STRING)
-				.thirdPartyScopeSelectionScreenUri(null)
-				.dataCustodianScopeSelectionScreenUri(null)
-				.grantTypes(new HashSet<>(Arrays.asList(
-					GrantType.AUTHORIZATION_CODE
+				.grantTypes(new HashSet<>(List.of(
+						GrantType.AUTHORIZATION_CODE
 				)))
 				.scopes(new HashSet<>(Arrays.asList(
 					"Scope1",
@@ -183,9 +177,9 @@ public class ApplicationInformationRepositoryITest {
 						Subscription.builder()
 							.description("description")
 							.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-							.selfLinkHref("https://{domain}/espi/1_1/resource/Subscription/176")
+							.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/176")
 							.selfLinkRel("self")
-							.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/Subscription")
+							.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
 							.upLinkRel("up")
 							.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.hashedId("hashedId")
@@ -197,29 +191,27 @@ public class ApplicationInformationRepositoryITest {
 									.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 									.selfLinkHref(PRESENT_SELF_LINK)
 									.selfLinkRel("self")
-									.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+									.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
+											"/Authorization")
 									.upLinkRel("up")
 									.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-									.accessToken("accessToken")
-									.authorizationUri(null)
-									// TODO: Replace apduration and apstart with DateTimeInterval duration & start
-//									.apduration(BigInteger.valueOf(21))
-//									.apStart(BigInteger.valueOf(654))
-//									.code("code")
-									.error(OAuthError.INVALID_CLIENT)
-									.errorDescription("errorDescription")
-									.errorUri("errorUri")
-//									.expiresIn(BigInteger.valueOf(32164))
-//									.grantType(1)
-//									.ppDuration(BigInteger.valueOf(23123))
-//									.ppStart(BigInteger.valueOf(3241654))
-//									.refreshToken("23123124646")
-									.resourceUri("resourceUri")
-//									.responseType(24)
-									.scope("scope")
-//									.state("state")
-//									.thirdParty("thirdParty")
-//									.tokenType(54)
+										.authorizedPeriod(new DateTimeInterval()
+												.setDuration(21L)
+												.setStart(654L))
+										.publishedPeriod(new DateTimeInterval()
+												.setDuration(23123L)
+												.setStart(3241654L))
+										.status(AuthorizationStatus.ACTIVE)
+										.expiresAt(32164L)
+										.grantType(GrantType.AUTHORIZATION_CODE)
+										.scope("scope")
+										.tokenType(TokenType.BEARER)
+										.error(OAuthError.INVALID_CLIENT)
+										.errorDescription("errorDescription")
+										.errorUri("errorUri")
+										.resourceUri("resourceUri")
+										.authorizationUri("authorizationUri")
+										.customerResourceUri("customerResourceUri")
 //									.applicationInformationId(UUID.randomUUID())
 //									.retailCustomerId(UUID.randomUUID())
 //									.subscription(Subscription.builder().build())
@@ -230,7 +222,7 @@ public class ApplicationInformationRepositoryITest {
 								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref(PRESENT_SELF_LINK)
 								.selfLinkRel("self")
-								.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+								.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
 								.upLinkRel("up")
 								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.enabled(Boolean.TRUE)
@@ -248,9 +240,9 @@ public class ApplicationInformationRepositoryITest {
 			ApplicationInformation.builder()
 				.description(DUMMY_STRING)
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/284915")
 				.selfLinkRel("self")
-				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+				.upLinkHref(UP_LINK)
 				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
@@ -271,7 +263,6 @@ public class ApplicationInformationRepositoryITest {
 				.dataCustodianBulkRequestUri(DUMMY_STRING)
 				.dataCustodianId(DUMMY_STRING)
 				.dataCustodianResourceEndpoint(DUMMY_STRING)
-//				.thirdPartyScopeSelectionScreenUri(null)
 				.thirdPartyUserPortalScreenUri(null)
 				.logoUri(null)
 				.policyUri(null)
@@ -292,22 +283,20 @@ public class ApplicationInformationRepositoryITest {
 				.responseType(ResponseType.CODE)
 				.registrationClientUri(DUMMY_STRING)
 				.registrationAccessToken(DUMMY_STRING)
-				.thirdPartyScopeSelectionScreenUri(null)
-				.dataCustodianScopeSelectionScreenUri(null)
-				.grantTypes(new HashSet<>(Arrays.asList(
-					GrantType.AUTHORIZATION_CODE
+				.grantTypes(new HashSet<>(List.of(
+						GrantType.AUTHORIZATION_CODE
 				)))
-				.scopes(new HashSet<>(Arrays.asList(
-					"Scope4"
+				.scopes(new HashSet<>(List.of(
+						"Scope4"
 				)))
 				.subscriptions(new HashSet<>(
 						Collections.singletonList(
 							Subscription.builder()
 								.description("description")
 								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-								.selfLinkHref("https://{domain}/espi/1_1/resource/Subscription/176")
+								.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/176")
 								.selfLinkRel("self")
-								.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/Subscription")
+								.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
 								.upLinkRel("up")
 								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.hashedId("hashedId")
@@ -319,28 +308,27 @@ public class ApplicationInformationRepositoryITest {
 										.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 										.selfLinkHref(PRESENT_SELF_LINK)
 										.selfLinkRel("self")
-										.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+										.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
+												"/Authorization")
 										.upLinkRel("up")
 										.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-										.accessToken("accessToken")
-										.authorizationUri(null)
-//										.apDuration(BigInteger.valueOf(21))
-//										.apStart(BigInteger.valueOf(654))
-//										.code("code")
-										.error(OAuthError.INVALID_CLIENT)
-										.errorDescription("errorDescription")
-										.errorUri("errorUri")
-//										.expiresIn(BigInteger.valueOf(32164))
-//										.grantType(1)
-//										.ppDuration(BigInteger.valueOf(23123))
-//										.ppStart(BigInteger.valueOf(3241654))
-//										.refreshToken("23123124646")
-										.resourceUri("resourceUri")
-//										.responseType(24)
-										.scope("scope")
-//										.state("state")
-//										.thirdParty("thirdParty")
-//										.tokenType(54)
+											.authorizedPeriod(new DateTimeInterval()
+													.setDuration(21L)
+													.setStart(654L))
+											.publishedPeriod(new DateTimeInterval()
+													.setDuration(23123L)
+													.setStart(3241654L))
+											.status(AuthorizationStatus.ACTIVE)
+											.expiresAt(32164L)
+											.grantType(GrantType.AUTHORIZATION_CODE)
+											.scope("scope")
+											.tokenType(TokenType.BEARER)
+											.error(OAuthError.INVALID_CLIENT)
+											.errorDescription("errorDescription")
+											.errorUri("errorUri")
+											.resourceUri("resourceUri")
+											.authorizationUri("authorizationUri")
+											.customerResourceUri("customerResourceUri")
 //										.applicationInformationId(UUID.randomUUID())
 //										.retailCustomerId(UUID.randomUUID())
 //										.subscription(Subscription.builder().build())
@@ -351,7 +339,7 @@ public class ApplicationInformationRepositoryITest {
 									.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 									.selfLinkHref(PRESENT_SELF_LINK)
 									.selfLinkRel("self")
-									.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+									.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
 									.upLinkRel("up")
 									.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 									.enabled(Boolean.TRUE)

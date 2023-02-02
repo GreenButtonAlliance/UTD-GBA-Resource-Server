@@ -44,8 +44,7 @@ public abstract class IdentifiedObject {
 	@Id
 	private UUID uuid;
 
-	@NonNull
-	@Column(nullable = false)
+	@Column
 	private String description;
 
 	@NonNull
