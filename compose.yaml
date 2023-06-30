@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=gballiance'
+      - 'POSTGRES_USER=gballiance'
+      - 'POSTGRES_PASSWORD=utdfall2022'
+    ports:
+      - '5432'

@@ -25,5 +25,4 @@ class GbaResourceServerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
