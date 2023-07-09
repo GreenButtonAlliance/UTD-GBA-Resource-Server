@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,6 +50,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
+@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockRepositoryITest {

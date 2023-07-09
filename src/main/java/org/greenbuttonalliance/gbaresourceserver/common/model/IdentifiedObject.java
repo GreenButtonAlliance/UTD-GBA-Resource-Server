@@ -21,7 +21,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -37,7 +36,7 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public abstract class IdentifiedObject {
 
@@ -47,27 +46,21 @@ public abstract class IdentifiedObject {
 	@Column
 	private String description;
 
-	@NonNull
 	@Column(nullable = false)
 	private LocalDateTime published;
 
-	@NonNull
 	@Column(name = "self_link_href", nullable = false)
 	private String selfLinkHref;
 
-	@NonNull
 	@Column(name = "self_link_rel", nullable = false)
 	private String selfLinkRel;
 
-	@NonNull
 	@Column(name = "up_link_href", nullable = false)
 	private String upLinkHref;
 
-	@NonNull
 	@Column(name = "up_link_rel", nullable = false)
 	private String upLinkRel;
 
-	@NonNull
 	@Column(nullable = false)
 	private LocalDateTime updated;
 
