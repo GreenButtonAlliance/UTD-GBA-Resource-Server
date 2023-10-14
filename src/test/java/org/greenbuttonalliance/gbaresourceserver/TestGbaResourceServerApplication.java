@@ -18,9 +18,6 @@ package org.greenbuttonalliance.gbaresourceserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Bean;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * @author Donald F. Coffin, Green Button Alliance, Inc.
@@ -29,11 +26,11 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @TestConfiguration(proxyBeanMethods = false)
 public class TestGbaResourceServerApplication {
 
-	@Bean
-	@ServiceConnection
-	PostgreSQLContainer<?> postgreSQLContainer() {
-		return new PostgreSQLContainer<>("postgres:latest");
-	}
+//	@Bean
+//	@ServiceConnection
+//	PostgreSQLContainer<?> postgreSQLContainer() {
+//		return new PostgreSQLContainer<>("postgres:latest");
+//	}
 
 	public static void main(String[] args) {
 		SpringApplication.from(GbaResourceServerApplication::main).with(TestGbaResourceServerApplication.class).run(args);

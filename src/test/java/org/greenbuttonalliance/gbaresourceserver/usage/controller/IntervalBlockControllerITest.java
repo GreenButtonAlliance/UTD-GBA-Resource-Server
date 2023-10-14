@@ -17,7 +17,6 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.greenbuttonalliance.gbaresourceserver.usage.controller.IntervalBlockController;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +32,6 @@ import java.util.regex.Pattern;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 /**
  * @author Donald F. Coffin
@@ -80,7 +78,9 @@ class IntervalBlockControllerITest {
 			actualValue++;
 		}
 
+		//TODO: Add assertion test
 		System.out.println(expectedValue == actualValue);
+
 	}
 
 
@@ -94,6 +94,7 @@ class IntervalBlockControllerITest {
 				.contentType("application/xml"))
 			.andReturn();
 
+		//TODO: Add assertion test
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
 		System.out.println(actualResponseBody.contains(expectedUUID));
 	}

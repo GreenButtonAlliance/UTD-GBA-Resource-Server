@@ -16,11 +16,19 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
@@ -36,20 +44,20 @@ import org.hibernate.annotations.ColumnTransformer;
 import java.util.HashSet;
 import java.util.Set;
 
+//@Builder
 @Entity
 @Table(name = "application_information", schema = "usage")
 @Getter
 @Setter
 @SuperBuilder
+@AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class ApplicationInformation extends IdentifiedObject {
 
-	@NonNull
 	@Column(name = "data_custodian_id", nullable = false)
 	private String dataCustodianId;
 
-	@NonNull
 	@Column(name = "data_custodian_application_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.data_custodian_application_status)", read = "data_custodian_application_status::TEXT")
@@ -79,44 +87,40 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "authorization_server_uri")
 	private String authorizationServerUri;
 
-	@NonNull
 	@Column(name = "third_party_notify_uri", nullable = false)
 	private String thirdPartyNotifyUri;
 
-	@NonNull
 	@Column(name = "authorization_server_authorization_endpoint", nullable = false)
 	private String authorizationServerAuthorizationEndpoint;
 
 	@Column(name = "authorization_server_registration_endpoint")
 	private String authorizationServerRegistrationEndpoint;
 
-	@NonNull
 	@Column(name = "authorization_server_token_endpoint", nullable = false)
 	private String authorizationServerTokenEndpoint;
 
-	@NonNull
 	@Column(name = "data_custodian_bulk_request_uri", nullable = false)
 	private String dataCustodianBulkRequestUri;
 
-	@NonNull
 	@Column(name = "data_custodian_resource_endpoint", nullable = false)
 	private String dataCustodianResourceEndpoint;
 
-	@Deprecated
+	/**
+	 * @deprecated Since 3.3, for removal in 4.0. Use {@link #clientUri} instead.
+	 */
+	@Deprecated(since = "3.3", forRemoval = true)
 	@Column(name = "third_party_scope_selection_screen_uri")
 	private String thirdPartyScopeSelectionScreenUri;
 
 	@Column(name = "third_party_user_portal_screen_uri")
 	private String thirdPartyUserPortalScreenUri;
 
-	@NonNull
 	@Column(name = "client_secret", nullable = false)
 	private String clientSecret;
 
 	@Column(name = "logo_uri")
 	private String logoUri;
 
-	@NonNull
 	@Column(name = "client_name", nullable = false)
 	private String clientName;
 
@@ -125,11 +129,9 @@ public class ApplicationInformation extends IdentifiedObject {
 
 	@ElementCollection
 	@CollectionTable(name = "application_information_redirect_uri", schema = "usage", joinColumns = {@JoinColumn(name = "application_information_uuid", nullable = false)})
-	@NonNull
 	@Column(name = "redirect_uri", nullable = false)
 	private Set<String> redirectUris = new HashSet<>();
 
-	@NonNull
 	@Column(name = "client_id", nullable = false)
 	private String clientId;
 
@@ -139,19 +141,15 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "policy_uri")
 	private String policyUri;
 
-	@NonNull
 	@Column(name = "software_id", nullable = false)
 	private String softwareId;
 
-	@NonNull
 	@Column(name = "software_version", nullable = false)
 	private String softwareVersion;
 
-	@NonNull
 	@Column(name = "client_id_issued_at", nullable = false)
 	private Long clientIdIssuedAt; // in epoch-seconds
 
-	@NonNull
 	@Column(name = "client_secret_expires_at", nullable = false)
 	private Long clientSecretExpiresAt; // in epoch-seconds
 
@@ -161,7 +159,6 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "contact")
 	private Set<String> contacts = new HashSet<>();
 
-	@NonNull
 	@Column(name = "token_endpoint_auth_method", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.token_endpoint_method)", read = "token_endpoint_auth_method::TEXT")
@@ -169,33 +166,31 @@ public class ApplicationInformation extends IdentifiedObject {
 
 	@ElementCollection
 	@CollectionTable(name = "application_information_scope", schema = "usage", joinColumns = {@JoinColumn(name = "application_information_uuid", nullable = false)})
-	@NonNull
 	@Column(name = "scope", nullable = false)
 	private Set<String> scopes = new HashSet<>();
 
 	@ElementCollection
 	@CollectionTable(name = "application_information_grant_type", schema = "usage", joinColumns = {@JoinColumn(name = "application_information_uuid", nullable = false)})
-	@NonNull
 	@Column(name = "grant_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.grant_type)", read = "grant_type::TEXT")
 	private Set<GrantType> grantTypes = new HashSet<>();
 
-	@NonNull
 	@Column(name = "response_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	@ColumnTransformer(write = "CAST(? AS usage.response_type)", read = "response_type::TEXT")
 	private ResponseType responseType;
 
-	@NonNull
 	@Column(name = "registration_client_uri", nullable = false)
 	private String registrationClientUri;
 
-	@NonNull
 	@Column(name = "registration_access_token", nullable = false)
 	private String registrationAccessToken;
 
-	@Deprecated
+	/**
+	 * @deprecated Since 3.3, for removal in 4.0. No replacement.
+	 */
+	@Deprecated(since = "3.3", forRemoval=true)
 	@Column(name = "data_custodian_scope_selection_screen_uri")
 	private String dataCustodianScopeSelectionScreenUri;
 

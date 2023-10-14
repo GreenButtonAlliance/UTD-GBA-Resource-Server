@@ -20,7 +20,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -36,7 +35,6 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
-@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public abstract class IdentifiedObject {
 

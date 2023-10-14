@@ -26,8 +26,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -46,7 +44,7 @@ import org.hibernate.annotations.ColumnTransformer;
 @Accessors(chain = true)
 @SuperBuilder
 @NoArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class Authorization extends IdentifiedObject {
 
 	@Embedded
@@ -63,23 +61,21 @@ public class Authorization extends IdentifiedObject {
 	})
 	private DateTimeInterval	publishedPeriod;
 
-	@NonNull
 	@Column(nullable = false)
 	private AuthorizationStatus status;
 
-	@NonNull
 	@Column(name = "expires_at", nullable = false)
 	private Long expiresAt;  // in epoch-seconds
 
 	@Column(name = "grant_type")
 	private GrantType grantType;
 
-	@NonNull
 	@Column(nullable = false)
 	private String scope;
 
-	@NonNull
-	@Column(name = "token_type", nullable = false)
+	@Column
+	@Enumerated(EnumType.STRING)
+	@ColumnTransformer(write = "CAST(? AS usage.token_type)", read = "token_type::TEXT")
 	private TokenType tokenType;
 
 	@Column
@@ -93,11 +89,9 @@ public class Authorization extends IdentifiedObject {
 	@Column(name = "error_uri")
 	private String errorUri;
 
-	@NonNull
 	@Column(name = "resource_uri", nullable = false)
 	private String resourceUri;
 
-	@NonNull
 	@Column(name = "authorization_uri", nullable = false)
 	private String authorizationUri;
 

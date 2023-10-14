@@ -6,4 +6,4 @@ services:
       - 'POSTGRES_USER=gballiance'
       - 'POSTGRES_PASSWORD=utdfall2022'
     ports:
-      - '5432'
+      - '5432:5432'
