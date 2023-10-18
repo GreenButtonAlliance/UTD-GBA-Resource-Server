@@ -19,10 +19,15 @@ package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -30,6 +35,8 @@ import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+
+import static java.lang.System.*;
 
 /**
  * Just a starting point for the API team, feel free to modify/delete as needed
@@ -39,7 +46,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD) //Was XmlAccessType.FIELD
-public abstract class IdentifiedObjectDto implements Serializable {
+public abstract class IdentifiedObjectDto extends IdentifiedObject implements Serializable {
 	@XmlElement(name = "id")
 	private UUID uuid;
 
@@ -49,14 +56,14 @@ public abstract class IdentifiedObjectDto implements Serializable {
 	@XmlTransient
 	private String selfLinkHref;
 
-	@XmlTransient
-	private String selfLinkRel;
+//	@XmlTransient
+//	private String selfLinkRel;
 
 	@XmlTransient
 	private String upLinkHref;
 
-	@XmlTransient
-	private String upLinkRel;
+//	@XmlTransient
+//	private String upLinkRel;
 
 	@XmlTransient
 	private LocalDateTime published;
@@ -84,7 +91,7 @@ public abstract class IdentifiedObjectDto implements Serializable {
 			mar.marshal(this, stringWriter);
 			return stringWriter.toString();
 		} catch (JAXBException e) {
-			System.out.println(e);
+			out.println(e);
 		}
 		return null;
 	}
@@ -131,7 +138,7 @@ public abstract class IdentifiedObjectDto implements Serializable {
 			sha1 = MessageDigest.getInstance("SHA-1");
 			sha1.update(name.getBytes("UTF-8"));
 		} catch (Exception e) {
-			System.out.println("Error generating UUID from name\n" + e);
+			out.println("Error generating UUID from name\n" + e);
 			return null;
 		}
 

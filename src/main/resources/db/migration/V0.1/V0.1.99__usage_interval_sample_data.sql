@@ -5,18 +5,18 @@ BEGIN
     VALUES ('55df1aa4-c63f-5cd5-abd4-59164c448ee0', NULL, '2012-03-02 05:00:00',
             'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/100000' ||
             '/IntervalBlock/100000',
-            'self', 'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading' ||
-            '/100000/IntervalBlock', 'up', '2012-03-02 05:00:00', NULL, NULL,
+            'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading' ||
+            '/100000/IntervalBlock', '2012-03-02 05:00:00', NULL, NULL,
             '23292f44-eb82-53e1-92d8-db64aaad9705'),
            ('e6d44d83-a357-58df-b8fb-296cebf4fca0', NULL, '2012-03-03 05:00:00',
             'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/100000' ||
-            '/IntervalBlock/100001', 'self', 'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint' ||
-            '/5446AF3F/MeterReading/100000/IntervalBlock', 'up', '2012-03-03 05:00:00', NULL, NULL,
+            '/IntervalBlock/100001', 'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint' ||
+                                     '/5446AF3F/MeterReading/100000/IntervalBlock', '2012-03-03 05:00:00', NULL, NULL,
             '23292f44-eb82-53e1-92d8-db64aaad9705'),
            ('549cca03-0083-5fd5-ab90-1fbadf535fd6', NULL, '2012-03-04 05:00:00',
             'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/100000' ||
-            '/IntervalBlock/100002', 'self', 'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint' ||
-            '/5446AF3F/MeterReading/100000/IntervalBlock', 'up', '2012-03-04 05:00:00', NULL, NULL,
+            '/IntervalBlock/100002', 'http://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint' ||
+                                     '/5446AF3F/MeterReading/100000/IntervalBlock', '2012-03-04 05:00:00', NULL, NULL,
             '23292f44-eb82-53e1-92d8-db64aaad9705');
 
     INSERT INTO usage.interval_reading

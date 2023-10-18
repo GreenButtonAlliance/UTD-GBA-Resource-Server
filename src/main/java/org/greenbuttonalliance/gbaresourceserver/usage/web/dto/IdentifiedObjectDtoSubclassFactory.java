@@ -36,9 +36,7 @@ public class IdentifiedObjectDtoSubclassFactory<Dto extends IdentifiedObjectDto>
 				.setDescription(b.getDescription())
 				.setPublished(b.getPublished())
 				.setSelfLinkHref(b.getSelfLinkHref())
-				.setSelfLinkRel(b.getSelfLinkRel())
 				.setUpLinkHref(b.getUpLinkHref())
-				.setUpLinkRel(b.getUpLinkRel())
 				.setUpdated(b.getUpdated()));
 		return dto;
 	}

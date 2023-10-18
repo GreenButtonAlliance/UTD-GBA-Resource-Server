@@ -50,14 +50,8 @@ public abstract class IdentifiedObject {
 	@Column(name = "self_link_href", nullable = false)
 	private String selfLinkHref;
 
-	@Column(name = "self_link_rel", nullable = false)
-	private String selfLinkRel;
-
 	@Column(name = "up_link_href", nullable = false)
 	private String upLinkHref;
-
-	@Column(name = "up_link_rel", nullable = false)
-	private String upLinkRel;
 
 	@Column(nullable = false)
 	private LocalDateTime updated;
