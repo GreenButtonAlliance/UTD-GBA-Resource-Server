@@ -1,6 +1,5 @@
-DROP SCHEMA usage CASCADE;
-DROP SCHEMA customer CASCADE;
-DELETE FROM public.flyway_schema_history;
+DROP SCHEMA IF EXISTS usage CASCADE;
+DROP SCHEMA IF EXISTS customer CASCADE;
 DROP TYPE IF EXISTS public.enrollment_status;
 DROP TYPE IF EXISTS public.currency;
 DROP TYPE IF EXISTS public.unit_multiplier_kind;
