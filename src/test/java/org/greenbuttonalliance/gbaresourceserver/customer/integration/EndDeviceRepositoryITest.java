@@ -18,10 +18,10 @@ package org.greenbuttonalliance.gbaresourceserver.customer.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.AcceptanceTest;
-import org.greenbuttonalliance.gbaresourceserver.customer.model.LifecycleDate;
-import org.greenbuttonalliance.gbaresourceserver.customer.model.PerCent;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ElectronicAddress;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.EndDevice;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.LifecycleDate;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.PerCent;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.Status;
 import org.greenbuttonalliance.gbaresourceserver.customer.repository.EndDeviceRepository;
 import org.junit.jupiter.api.Assertions;
@@ -122,9 +122,7 @@ public class EndDeviceRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")
@@ -158,9 +156,7 @@ public class EndDeviceRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/EndDevice/175")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")
@@ -194,9 +190,7 @@ public class EndDeviceRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/EndDevice/176")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")

@@ -18,20 +18,20 @@ package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.MeterReadingRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -133,17 +133,13 @@ public class MeterReadingRepositoryITest {
 				.description("Fifteen Minute Electricity Consumption")
 				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.readingType(ReadingType.builder()
 					.description("Type of Meter Reading Data")
 					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.selfLinkHref(PRESENT_SELF_LINK)
-					.selfLinkRel("self")
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.accumulationBehavior(AccumulationKind.DELTA_DATA)
 					.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
@@ -170,17 +166,13 @@ public class MeterReadingRepositoryITest {
 					IntervalBlock.builder()
 						.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
-						.selfLinkRel("self")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.upLinkRel("up")
 						.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 						.build(),
 					IntervalBlock.builder()
 						.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
-						.selfLinkRel("self")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.upLinkRel("up")
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
@@ -190,17 +182,13 @@ public class MeterReadingRepositoryITest {
 				.description("Hourly Wh Received")
 				.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
-				.selfLinkRel("self")
 				.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.readingType(ReadingType.builder()
 					.description("Hourly Wh Received")
 					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/1")
-					.selfLinkRel("self")
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-					.upLinkRel("up")
 					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.accumulationBehavior(AccumulationKind.DELTA_DATA)
 					.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
@@ -227,9 +215,7 @@ public class MeterReadingRepositoryITest {
 					IntervalBlock.builder()
 						.published(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
-						.selfLinkRel("self")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.upLinkRel("up")
 						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
@@ -240,9 +226,7 @@ public class MeterReadingRepositoryITest {
 				.description("Hourly Wh Delivered")
 				.published(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/2")
-				.selfLinkRel("self")
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())

@@ -18,15 +18,15 @@ package org.greenbuttonalliance.gbaresourceserver.usage.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.BillingChargeSource;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.BillingChargeSource;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
@@ -131,9 +131,7 @@ public class UsageSummaryRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
@@ -287,9 +285,7 @@ public class UsageSummaryRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/175")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
@@ -443,9 +439,7 @@ public class UsageSummaryRepositoryITest {
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/176")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)

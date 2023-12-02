@@ -17,7 +17,14 @@
 package org.greenbuttonalliance.gbaresourceserver.customer.integration;
 
 import com.github.f4b6a3.uuid.UuidCreator;
-import org.greenbuttonalliance.gbaresourceserver.customer.model.*;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.ElectronicAddress;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.PositionPoint;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.ServiceLocation;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.Status;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.StreetAddress;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.StreetDetail;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.TelephoneNumber;
+import org.greenbuttonalliance.gbaresourceserver.customer.model.TownDetail;
 import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceLocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -26,10 +33,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.util.function.Function;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @DataJpaTest(showSql = false)
@@ -135,9 +147,7 @@ public class ServiceLocationRepositoryITest {
 				.description("test")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.type("Lorem")
 				.mainAddress(
@@ -283,9 +293,7 @@ public class ServiceLocationRepositoryITest {
 				.description("test")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
-				.selfLinkRel("self")
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_2/resource/ApplicationInformation")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.type("Lorem")
 				.mainAddress(
@@ -432,8 +440,6 @@ public class ServiceLocationRepositoryITest {
 			}
 
 		);
-
-
 
 		return serviceLocations;
 	}

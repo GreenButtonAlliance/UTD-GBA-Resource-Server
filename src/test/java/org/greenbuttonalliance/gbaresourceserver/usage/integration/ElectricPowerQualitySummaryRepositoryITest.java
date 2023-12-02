@@ -20,7 +20,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
-
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.ElectricPowerQualitySummaryRepository;
 import org.junit.jupiter.api.Assertions;
@@ -119,9 +118,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)
@@ -144,9 +141,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/175")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)
@@ -169,9 +164,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/176")
-				.selfLinkRel("self")
 				.upLinkHref(upLinkHref)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)

@@ -23,7 +23,16 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformat
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.ApplicationInformationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -123,9 +132,7 @@ public class ApplicationInformationRepositoryITest {
 				.description("Green Button Alliance Data Custodian Admin Application")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref("UP_LINK")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
 				.authorizationServerRegistrationEndpoint(null)
@@ -178,9 +185,7 @@ public class ApplicationInformationRepositoryITest {
 							.description("description")
 							.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/176")
-							.selfLinkRel("self")
 							.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
-							.upLinkRel("up")
 							.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.hashedId("hashedId")
 							.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
@@ -190,10 +195,8 @@ public class ApplicationInformationRepositoryITest {
 									.description("Green Button Alliance Data Custodian Authorization")
 									.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 									.selfLinkHref(PRESENT_SELF_LINK)
-									.selfLinkRel("self")
 									.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
 											"/Authorization")
-									.upLinkRel("up")
 									.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 										.authorizedPeriod(new DateTimeInterval()
 												.setDuration(21L)
@@ -221,9 +224,7 @@ public class ApplicationInformationRepositoryITest {
 								.description("Type of Meter Reading Data")
 								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref(PRESENT_SELF_LINK)
-								.selfLinkRel("self")
 								.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
-								.upLinkRel("up")
 								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.enabled(Boolean.TRUE)
 								.firstName("hello")
@@ -241,9 +242,7 @@ public class ApplicationInformationRepositoryITest {
 				.description(DUMMY_STRING)
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/284915")
-				.selfLinkRel("self")
 				.upLinkHref(UP_LINK)
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
 				.authorizationServerRegistrationEndpoint(null)
@@ -295,9 +294,7 @@ public class ApplicationInformationRepositoryITest {
 								.description("description")
 								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/176")
-								.selfLinkRel("self")
 								.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
-								.upLinkRel("up")
 								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.hashedId("hashedId")
 								.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
@@ -307,10 +304,8 @@ public class ApplicationInformationRepositoryITest {
 										.description("Green Button Alliance Data Custodian Authorization")
 										.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 										.selfLinkHref(PRESENT_SELF_LINK)
-										.selfLinkRel("self")
 										.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
 												"/Authorization")
-										.upLinkRel("up")
 										.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 											.authorizedPeriod(new DateTimeInterval()
 													.setDuration(21L)
@@ -338,9 +333,7 @@ public class ApplicationInformationRepositoryITest {
 									.description("Type of Meter Reading Data")
 									.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 									.selfLinkHref(PRESENT_SELF_LINK)
-									.selfLinkRel("self")
 									.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
-									.upLinkRel("up")
 									.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 									.enabled(Boolean.TRUE)
 									.firstName("hello")

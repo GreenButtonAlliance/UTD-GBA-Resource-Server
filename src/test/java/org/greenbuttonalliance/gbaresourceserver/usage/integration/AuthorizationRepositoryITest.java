@@ -21,7 +21,16 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.greenbuttonalliance.gbaresourceserver.usage.repository.AuthorizationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,9 +122,7 @@ public class AuthorizationRepositoryITest {
 				.description("Green Button Alliance Data Custodian Authorization")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.selfLinkRel("self")
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizedPeriod(new DateTimeInterval()
 					.setDuration(21L)
@@ -152,9 +159,7 @@ public class AuthorizationRepositoryITest {
 				.description(DUMMY_STRING)
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
-				.selfLinkRel("self")
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation")
-				.upLinkRel("up")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
 				.authorizationServerRegistrationEndpoint(null)
