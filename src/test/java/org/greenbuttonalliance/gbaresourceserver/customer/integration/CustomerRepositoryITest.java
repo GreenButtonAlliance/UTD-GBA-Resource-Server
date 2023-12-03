@@ -30,6 +30,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +42,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
+
+@Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class CustomerRepositoryITest {
@@ -48,10 +55,20 @@ public class CustomerRepositoryITest {
 	private static final String PRESENT_PUC = "foo";
 	private static final String NOT_PRESENT_PUC = "bar";
 
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+
 	@BeforeEach
 	public void initTestData() {
 		customerRepository.deleteAllInBatch();
 		customerRepository.saveAll(buildTestData());
+	}
+
+	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
 	}
 
 	@Test
