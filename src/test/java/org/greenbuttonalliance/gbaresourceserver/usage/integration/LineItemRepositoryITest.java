@@ -39,6 +39,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,21 +55,33 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-@DataJpaTest(showSql = true)
+import static org.assertj.core.api.Assertions.*;
+
+@Testcontainers
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LineItemRepositoryITest {
 
 	private final LineItemRepository lineItemRepository;
-
 	private static final Long PRESENT = 100000L;
 	private static final Long NOT_PRESENT = 9999999L;
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
 	@BeforeEach
 	public void initTestData() {
 		lineItemRepository.deleteAllInBatch();
 		lineItemRepository.saveAll(buildTestData());
+	}
+
+	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
 	}
 
 	@Test
