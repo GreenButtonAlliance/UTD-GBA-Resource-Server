@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.integration;
+package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.AcceptanceTest;
@@ -23,7 +23,6 @@ import org.greenbuttonalliance.gbaresourceserver.customer.model.EndDevice;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.LifecycleDate;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.PerCent;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.Status;
-import org.greenbuttonalliance.gbaresourceserver.customer.repository.EndDeviceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +49,7 @@ import static org.assertj.core.api.Assertions.*;
 @Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class EndDeviceRepositoryITest {
+public class EndDeviceRepositoryTest {
 
 	@Autowired
 	private EndDeviceRepository endDeviceRepository;

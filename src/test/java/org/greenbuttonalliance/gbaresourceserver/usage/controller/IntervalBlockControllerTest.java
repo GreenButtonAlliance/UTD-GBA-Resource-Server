@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @WebMvcTest(controllers = IntervalBlockController.class)
 @ExtendWith(SpringExtension.class)
-class IntervalBlockControllerITest {
+class IntervalBlockControllerTest {
 
 	@Container
 	@ServiceConnection

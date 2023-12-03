@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirection
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.MeterReadingRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +64,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class MeterReadingRepositoryITest {
+public class MeterReadingRepositoryTest {
 	private final MeterReadingRepository meterReadingRepository;
 
 	// for testing findById
@@ -192,7 +191,7 @@ public class MeterReadingRepositoryITest {
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
@@ -236,7 +235,7 @@ public class MeterReadingRepositoryITest {
 						.build())
 					.collect(Collectors.toSet()))
 
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
@@ -246,7 +245,7 @@ public class MeterReadingRepositoryITest {
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build()
 		);
 
@@ -275,9 +274,9 @@ public class MeterReadingRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 		return meterReadings;
 	}

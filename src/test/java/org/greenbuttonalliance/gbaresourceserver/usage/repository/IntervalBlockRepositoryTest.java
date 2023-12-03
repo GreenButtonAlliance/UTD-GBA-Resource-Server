@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingQuality;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.IntervalBlockRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +57,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class IntervalBlockRepositoryITest {
+public class IntervalBlockRepositoryTest {
 	private final IntervalBlockRepository intervalBlockRepository;
 
 	// for testing findById
@@ -223,7 +222,7 @@ public class IntervalBlockRepositoryITest {
 			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
-			.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+			.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 			.build();
 		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
 
@@ -244,9 +243,9 @@ public class IntervalBlockRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
 			ib.getIntervalReadings().forEach(ir -> {
 				ir.setBlock(ib);

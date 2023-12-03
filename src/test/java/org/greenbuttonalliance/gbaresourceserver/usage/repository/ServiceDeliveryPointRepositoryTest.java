@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentSt
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.ServiceDeliveryPointRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +52,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ServiceDeliveryPointRepositoryITest {
+public class ServiceDeliveryPointRepositoryTest {
 
 	private final ServiceDeliveryPointRepository serviceDeliveryPointRepository;
 
@@ -140,7 +139,7 @@ public class ServiceDeliveryPointRepositoryITest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryITest.createUsagePoint()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -161,7 +160,7 @@ public class ServiceDeliveryPointRepositoryITest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryITest.createUsagePoint()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -182,7 +181,7 @@ public class ServiceDeliveryPointRepositoryITest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryITest.createUsagePoint()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -212,9 +211,9 @@ public class ServiceDeliveryPointRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 		return serviceDeliveryPoints;
 	}

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.TimeConfigurationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +50,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TimeConfigurationRepositoryITest {
+public class TimeConfigurationRepositoryTest {
 	private final TimeConfigurationRepository timeConfigurationRepository;
 	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
@@ -131,7 +130,7 @@ public class TimeConfigurationRepositoryITest {
 			.tzOffset(10L)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryITest.createUsagePoint()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.build(),
 		TimeConfiguration.builder()
@@ -145,7 +144,7 @@ public class TimeConfigurationRepositoryITest {
 			.tzOffset(20L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryITest.createUsagePoint()
+					UsagePointRepositoryTest.createUsagePoint()
 				)))
 			.build(),
 		TimeConfiguration.builder()
@@ -159,7 +158,7 @@ public class TimeConfigurationRepositoryITest {
 			.tzOffset(30L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryITest.createUsagePoint()
+					UsagePointRepositoryTest.createUsagePoint()
 				)))
 			.build()
 		);
@@ -174,9 +173,9 @@ public class TimeConfigurationRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
 		});
 		return timeConfigurations;

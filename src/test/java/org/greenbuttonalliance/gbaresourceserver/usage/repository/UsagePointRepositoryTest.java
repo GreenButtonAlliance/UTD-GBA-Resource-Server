@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfRead
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.UsagePointRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +85,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UsagePointRepositoryITest {
+public class UsagePointRepositoryTest {
 	private final UsagePointRepository usagePointRepository;
 
 	// for testing findById

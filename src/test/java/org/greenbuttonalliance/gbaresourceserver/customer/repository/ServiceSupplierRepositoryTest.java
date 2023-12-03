@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.integration;
+package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.Organisation;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ServiceSupplier;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.enums.SupplierKind;
-import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceSupplierRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +44,7 @@ import static org.assertj.core.api.Assertions.*;
 @Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ServiceSupplierRepositoryITest {
+public class ServiceSupplierRepositoryTest {
 	@Autowired
 	private ServiceSupplierRepository serviceSupplierRepository;
 

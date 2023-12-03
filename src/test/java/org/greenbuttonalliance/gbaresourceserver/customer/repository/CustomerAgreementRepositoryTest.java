@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.integration;
+package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
@@ -27,7 +27,6 @@ import org.greenbuttonalliance.gbaresourceserver.customer.model.CustomerAgreemen
 import org.greenbuttonalliance.gbaresourceserver.customer.model.DemandResponseProgram;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ProgramDate;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.Status;
-import org.greenbuttonalliance.gbaresourceserver.customer.repository.CustomerAgreementRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +53,7 @@ import static org.assertj.core.api.Assertions.*;
 @Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CustomerAgreementRepositoryITest {
+public class CustomerAgreementRepositoryTest {
 	@Autowired
 	private CustomerAgreementRepository customerAgreementRepository;
 

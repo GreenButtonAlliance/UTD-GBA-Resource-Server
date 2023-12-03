@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.customer.integration;
+package org.greenbuttonalliance.gbaresourceserver.customer.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ElectronicAddress;
@@ -25,7 +25,6 @@ import org.greenbuttonalliance.gbaresourceserver.customer.model.StreetAddress;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.StreetDetail;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.TelephoneNumber;
 import org.greenbuttonalliance.gbaresourceserver.customer.model.TownDetail;
-import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceLocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +52,7 @@ import static org.assertj.core.api.Assertions.*;
 @Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ServiceLocationRepositoryITest {
+public class ServiceLocationRepositoryTest {
 	@Autowired
 	private ServiceLocationRepository serviceLocationRepository;
 	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";

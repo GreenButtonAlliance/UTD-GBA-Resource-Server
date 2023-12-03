@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.LineItemRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class LineItemRepositoryITest {
+public class LineItemRepositoryTest {
 
 	private final LineItemRepository lineItemRepository;
 	private static final Long PRESENT = 100000L;
@@ -245,7 +244,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -361,7 +360,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 
@@ -477,7 +476,7 @@ public class LineItemRepositoryITest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build()
 		);
@@ -501,9 +500,9 @@ public class LineItemRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
 		});
 		return lineItems;

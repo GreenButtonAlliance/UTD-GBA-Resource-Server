@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.ElectricPowerQualitySummaryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +51,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ElectricPowerQualitySummaryRepositoryITest {
+public class ElectricPowerQualitySummaryRepositoryTest {
 
 	private final ElectricPowerQualitySummaryRepository electricPowerQualitySummaryRepository;
 	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary";
@@ -151,7 +150,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
@@ -174,7 +173,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
@@ -197,7 +196,7 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 				.supplyVoltageImbalance(13L)
 				.supplyVoltageVariations(14L)
 				.tempOvervoltage(15L)
-				.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 				.build()
 		);
 
@@ -216,9 +215,9 @@ public class ElectricPowerQualitySummaryRepositoryITest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 		});
 
 		return electricPowerQualitySummaries;

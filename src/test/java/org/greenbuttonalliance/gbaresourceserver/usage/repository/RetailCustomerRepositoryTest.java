@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.RetailCustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +65,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class RetailCustomerRepositoryITest {
+public class RetailCustomerRepositoryTest {
 	private final RetailCustomerRepository retailCustomerRepository;
 
 	// for testing findById
@@ -214,7 +213,7 @@ public class RetailCustomerRepositoryITest {
 						)))
 					.usagePoints(new HashSet<>(
 						Collections.singletonList(
-							UsagePointRepositoryITest.createUsagePoint()
+							UsagePointRepositoryTest.createUsagePoint()
 						)))
 				.build(),
 			RetailCustomer.builder()
@@ -286,7 +285,7 @@ public class RetailCustomerRepositoryITest {
 						)))
 						.usagePoints(new HashSet<>(
 							Collections.singletonList(
-								UsagePointRepositoryITest.createUsagePoint()
+								UsagePointRepositoryTest.createUsagePoint()
 							)))
 				.build(),
 			RetailCustomer.builder()
@@ -359,7 +358,7 @@ public class RetailCustomerRepositoryITest {
 				)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryITest.createUsagePoint()
+						UsagePointRepositoryTest.createUsagePoint()
 					)))
 				.build()
 		);
@@ -497,9 +496,9 @@ public class RetailCustomerRepositoryITest {
 			up.setRetailCustomer(rc);
 
 			count.getAndIncrement();
-			UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryITest.connectUsagePoint(up);
+			UsagePointRepositoryTest.connectUsagePoint(up);
 
 			// TODO hydrate MeterReading reference when available
 		});

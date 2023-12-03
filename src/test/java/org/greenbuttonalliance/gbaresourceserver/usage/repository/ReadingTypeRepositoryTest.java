@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenbuttonalliance.gbaresourceserver.usage.integration;
+package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirection
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.repository.ReadingTypeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +61,7 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ReadingTypeRepositoryITest {
+public class ReadingTypeRepositoryTest {
 	private final ReadingTypeRepository readingTypeRepository;
 
 	// for testing findById
@@ -170,7 +169,7 @@ public class ReadingTypeRepositoryITest {
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -205,7 +204,7 @@ public class ReadingTypeRepositoryITest {
 					.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
 					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
 					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryITest.createUsagePoint())
+					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -258,9 +257,9 @@ public class ReadingTypeRepositoryITest {
 
 				count.getAndIncrement();
 
-				UsagePointRepositoryITest.hydrateConnectedUsagePointEntities(up, count.toString());
+				UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
 
-				UsagePointRepositoryITest.connectUsagePoint(up);
+				UsagePointRepositoryTest.connectUsagePoint(up);
 
 			});
 		});
