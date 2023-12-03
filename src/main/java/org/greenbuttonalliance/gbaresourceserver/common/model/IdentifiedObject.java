@@ -41,7 +41,7 @@ public abstract class IdentifiedObject {
 	@Id
 	private UUID uuid;
 
-	@Column(name = "title")
+	@Column(insertable = false, updatable = false)
 	private String description;
 
 	@Column(nullable = false)

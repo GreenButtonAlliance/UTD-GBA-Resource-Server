@@ -61,7 +61,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 @Testcontainers
-@DataJpaTest(showSql = true)
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ApplicationInformationRepositoryITest {
