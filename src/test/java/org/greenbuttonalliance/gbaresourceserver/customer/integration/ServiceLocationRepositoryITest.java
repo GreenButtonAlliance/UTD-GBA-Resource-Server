@@ -33,6 +33,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,6 +48,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
+
+@Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ServiceLocationRepositoryITest {
@@ -54,11 +61,22 @@ public class ServiceLocationRepositoryITest {
 
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+
 	@BeforeEach
 	public void initTestData() {
 		serviceLocationRepository.deleteAllInBatch();
 		serviceLocationRepository.saveAll(buildTestData());
 	}
+
+	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
+	}
+
 	@Test
 	public void findByPresentId_returnsMatching() {
 		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK);
@@ -70,6 +88,7 @@ public class ServiceLocationRepositoryITest {
 			() -> String.format("findById with %s returns entity with ID %s", presentUuid, foundUuid)
 		);
 	}
+
 	@Test
 	public void findByNotPresentId_returnsEmpty() {
 		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, NOT_PRESENT_TITLE);
@@ -80,6 +99,7 @@ public class ServiceLocationRepositoryITest {
 			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, serviceLocation.map(ServiceLocation::getUuid).orElse(null))
 		);
 	}
+
 	@Test
 	public void findAll_returnsAll() {
 		int findByAllSize = serviceLocationRepository.findAll().size();
@@ -91,6 +111,7 @@ public class ServiceLocationRepositoryITest {
 			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
 		);
 	}
+
 	@Test
 	public void entityMappings_areNotNull() {
 		ServiceLocation fullyMappedServiceLocation = serviceLocationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);

@@ -33,6 +33,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
@@ -49,8 +52,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@DataJpaTest(showSql = false)
+import static org.assertj.core.api.Assertions.*;
+
 @Testcontainers
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IntervalBlockRepositoryITest {
@@ -60,13 +65,22 @@ public class IntervalBlockRepositoryITest {
 	private static final String PRESENT_SELF_LINK = "https://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066" +
 		"/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
 	@BeforeEach
 	public void initTestData() {
 		intervalBlockRepository.deleteAllInBatch();
 		intervalBlockRepository.saveAll(buildTestData());
+	}
+
+	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
 	}
 
 	@Test
