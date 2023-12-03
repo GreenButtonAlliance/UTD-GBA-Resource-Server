@@ -23,22 +23,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author Donald F. Coffin
  */
+@Testcontainers
 @WebMvcTest(controllers = IntervalBlockController.class)
 @ExtendWith(SpringExtension.class)
 class IntervalBlockControllerITest {
+
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -50,12 +60,17 @@ class IntervalBlockControllerITest {
 	private IntervalBlockService intervalBlockService;
 
 	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
+	}
+
+	@Test
 	void testStatus()throws Exception{
 		mockMvc.perform(get("/espi/1_1/resource/IntervalBlock")
 				.contentType("application/xml"))
 			.andExpect(status().isOk());
 	}
-
 
 	//Verifies if the number of interval blocks received is the same as expected
 	//To use test update IntervalBlock file the expectedValue
@@ -98,5 +113,4 @@ class IntervalBlockControllerITest {
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
 		System.out.println(actualResponseBody.contains(expectedUUID));
 	}
-
 }
