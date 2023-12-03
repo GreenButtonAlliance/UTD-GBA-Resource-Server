@@ -29,6 +29,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,25 +46,36 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
+
+@Testcontainers
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ElectricPowerQualitySummaryRepositoryITest {
 
 	private final ElectricPowerQualitySummaryRepository electricPowerQualitySummaryRepository;
-
 	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary";
 
 	// for testing findById
 	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/174";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
 	@BeforeEach
 	public void initTestData() {
 		electricPowerQualitySummaryRepository.deleteAllInBatch();
 		electricPowerQualitySummaryRepository.saveAll(buildTestData());
+	}
+
+	@Test
+	void connectionEstablished() {
+		assertThat(postgres.isCreated()).isTrue();
+		assertThat(postgres.isRunning()).isTrue();
 	}
 
 	@Test
