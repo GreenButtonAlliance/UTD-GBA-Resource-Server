@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
@@ -244,7 +245,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 
@@ -360,7 +361,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 
@@ -476,7 +477,7 @@ public class LineItemRepositoryTest {
 					)
 					.billingChargeSource(new BillingChargeSource()
 						.setAgencyName("agencyName"))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build()
 		);
@@ -500,9 +501,9 @@ public class LineItemRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 
 		});
 		return lineItems;

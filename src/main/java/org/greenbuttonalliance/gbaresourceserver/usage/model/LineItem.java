@@ -16,7 +16,21 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,7 +58,6 @@ public class LineItem {
 		sequenceName = "line_item_sequence",
 		initialValue = 100001, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "line_item_seq")
-	@NonNull
 	@Column(name = "id", nullable = false)
 	private Long id;
 

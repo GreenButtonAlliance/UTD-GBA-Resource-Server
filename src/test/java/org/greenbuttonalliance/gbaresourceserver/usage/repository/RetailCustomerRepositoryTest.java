@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
@@ -213,7 +214,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 					.usagePoints(new HashSet<>(
 						Collections.singletonList(
-							UsagePointRepositoryTest.createUsagePoint()
+							TestUtils.createUsagePoint()
 						)))
 				.build(),
 			RetailCustomer.builder()
@@ -285,7 +286,7 @@ public class RetailCustomerRepositoryTest {
 						)))
 						.usagePoints(new HashSet<>(
 							Collections.singletonList(
-								UsagePointRepositoryTest.createUsagePoint()
+								TestUtils.createUsagePoint()
 							)))
 				.build(),
 			RetailCustomer.builder()
@@ -358,7 +359,7 @@ public class RetailCustomerRepositoryTest {
 				)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						TestUtils.createUsagePoint()
 					)))
 				.build()
 		);
@@ -496,9 +497,9 @@ public class RetailCustomerRepositoryTest {
 			up.setRetailCustomer(rc);
 
 			count.getAndIncrement();
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 
 			// TODO hydrate MeterReading reference when available
 		});

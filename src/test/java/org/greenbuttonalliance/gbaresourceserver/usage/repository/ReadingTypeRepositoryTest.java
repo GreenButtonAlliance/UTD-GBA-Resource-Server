@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
@@ -62,11 +63,15 @@ import static org.assertj.core.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ReadingTypeRepositoryTest {
+
 	private final ReadingTypeRepository readingTypeRepository;
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/ReadingType/07";
+	private static final String PRESENT_SELF_LINK = "https://data.greenbuttonconnect" +
+													".org/DataCustodian/espi/1_1/resource" +
+													"/ReadingType/123456";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
+
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
@@ -139,10 +144,10 @@ public class ReadingTypeRepositoryTest {
 		List<ReadingType> readingTypes = Arrays.asList(
 			ReadingType.builder()
 				.description("Type of Meter Reading Data")
-				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.published(LocalDateTime.now())
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.updated(LocalDateTime.now())
 				.accumulationBehavior(AccumulationKind.DELTA_DATA)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
@@ -169,7 +174,7 @@ public class ReadingTypeRepositoryTest {
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -201,10 +206,11 @@ public class ReadingTypeRepositoryTest {
 				.meterReading(MeterReading.builder()
 					.description("Hourly Wh Received")
 					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
-					.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1" +
+								  "/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
 					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
 					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
-					.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
@@ -257,12 +263,13 @@ public class ReadingTypeRepositoryTest {
 
 				count.getAndIncrement();
 
-				UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+				TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-				UsagePointRepositoryTest.connectUsagePoint(up);
+				TestUtils.connectUsagePoint(up);
 
 			});
 		});
+
 		return readingTypes;
 	}
 }

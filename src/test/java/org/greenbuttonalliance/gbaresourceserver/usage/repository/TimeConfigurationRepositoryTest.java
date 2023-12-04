@@ -17,6 +17,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
 import org.junit.jupiter.api.Assertions;
@@ -130,7 +131,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(10L)
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						TestUtils.createUsagePoint()
 					)))
 				.build(),
 		TimeConfiguration.builder()
@@ -144,7 +145,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(20L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsagePoint()
+					TestUtils.createUsagePoint()
 				)))
 			.build(),
 		TimeConfiguration.builder()
@@ -158,7 +159,7 @@ public class TimeConfigurationRepositoryTest {
 			.tzOffset(30L)
 			.usagePoints(new HashSet<>(
 				Collections.singletonList(
-					UsagePointRepositoryTest.createUsagePoint()
+					TestUtils.createUsagePoint()
 				)))
 			.build()
 		);
@@ -173,9 +174,9 @@ public class TimeConfigurationRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 
 		});
 		return timeConfigurations;

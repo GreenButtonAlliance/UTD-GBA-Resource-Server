@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
@@ -139,7 +140,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						TestUtils.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -160,7 +161,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						TestUtils.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -181,7 +182,7 @@ public class ServiceDeliveryPointRepositoryTest {
 				.customerAgreement("customerAgreement")
 				.usagePoints(new HashSet<>(
 					Collections.singletonList(
-						UsagePointRepositoryTest.createUsagePoint()
+						TestUtils.createUsagePoint()
 					)))
 				.tariffRiderRefs(
 					new HashSet<>(
@@ -211,9 +212,9 @@ public class ServiceDeliveryPointRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 		});
 		return serviceDeliveryPoints;
 	}

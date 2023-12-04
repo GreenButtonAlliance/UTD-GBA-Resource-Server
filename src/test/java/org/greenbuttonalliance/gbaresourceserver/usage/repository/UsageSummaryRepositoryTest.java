@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
@@ -294,7 +295,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 
 			UsageSummary.builder()
@@ -448,7 +449,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 
 			UsageSummary.builder()
@@ -598,7 +599,7 @@ public class UsageSummaryRepositoryTest {
 				)
 				.billingChargeSource(new BillingChargeSource()
 					.setAgencyName("agencyName"))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build()
 		);
 
@@ -624,9 +625,9 @@ public class UsageSummaryRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 
 			});
 

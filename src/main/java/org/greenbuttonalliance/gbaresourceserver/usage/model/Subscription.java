@@ -25,6 +25,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -39,6 +40,7 @@ import java.time.LocalDateTime;
 @Setter
 @Accessors(chain = true)
 @SuperBuilder
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Subscription extends IdentifiedObject {
 

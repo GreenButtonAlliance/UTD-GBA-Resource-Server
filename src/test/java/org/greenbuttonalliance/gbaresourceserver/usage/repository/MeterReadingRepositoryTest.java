@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
@@ -191,7 +192,7 @@ public class MeterReadingRepositoryTest {
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.build())
 					.collect(Collectors.toSet()))
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
@@ -235,7 +236,7 @@ public class MeterReadingRepositoryTest {
 						.build())
 					.collect(Collectors.toSet()))
 
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
@@ -245,7 +246,7 @@ public class MeterReadingRepositoryTest {
 				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
-				.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+				.usagePoint(TestUtils.createUsagePoint())
 				.build()
 		);
 
@@ -274,9 +275,9 @@ public class MeterReadingRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 		});
 		return meterReadings;
 	}

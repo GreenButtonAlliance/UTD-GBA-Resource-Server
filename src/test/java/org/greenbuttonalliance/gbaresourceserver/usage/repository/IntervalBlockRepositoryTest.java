@@ -18,6 +18,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
+import org.greenbuttonalliance.gbaresourceserver.TestUtils;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalReading;
@@ -222,7 +223,7 @@ public class IntervalBlockRepositoryTest {
 			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
-			.usagePoint(UsagePointRepositoryTest.createUsagePoint())
+			.usagePoint(TestUtils.createUsagePoint())
 			.build();
 		testMeterReading.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, testMeterReading.getSelfLinkHref()));
 
@@ -243,9 +244,9 @@ public class IntervalBlockRepositoryTest {
 
 			count.getAndIncrement();
 
-			UsagePointRepositoryTest.hydrateConnectedUsagePointEntities(up, count.toString());
+			TestUtils.hydrateConnectedUsagePointEntities(up, count.toString());
 
-			UsagePointRepositoryTest.connectUsagePoint(up);
+			TestUtils.connectUsagePoint(up);
 
 			ib.getIntervalReadings().forEach(ir -> {
 				ir.setBlock(ib);
