@@ -19,6 +19,7 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.TestUtils;
+import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
@@ -184,12 +185,18 @@ public class MeterReadingRepositoryTest {
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 						.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
+						.interval(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
 						.build(),
 					IntervalBlock.builder()
 						.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
+						.interval(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
 						.build())
 					.collect(Collectors.toSet()))
 				.usagePoint(TestUtils.createUsagePoint())
@@ -233,6 +240,9 @@ public class MeterReadingRepositoryTest {
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
+						.interval(new DateTimeInterval()
+							.setDuration(10L)
+							.setStart(11L))
 						.build())
 					.collect(Collectors.toSet()))
 
