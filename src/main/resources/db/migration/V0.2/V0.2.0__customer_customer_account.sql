@@ -80,6 +80,11 @@ CREATE TABLE IF NOT EXISTS customer.organisation (
 
 CREATE TABLE IF NOT EXISTS customer.customer_account (
   uuid UUID PRIMARY KEY,
+  description    TEXT,
+  published      TIMESTAMP,
+  self_link_href TEXT,
+  up_link_href   TEXT,
+  updated        TIMESTAMP,
   type TEXT,
   author_name TEXT,
   created_date_time BIGINT,

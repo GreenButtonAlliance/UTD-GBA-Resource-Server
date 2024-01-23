@@ -81,6 +81,11 @@ CREATE TABLE IF NOT EXISTS customer.priority (
 
 CREATE TABLE IF NOT EXISTS customer.customer (
   uuid UUID PRIMARY KEY,
+  description    TEXT,
+  published      TIMESTAMP,
+  self_link_href TEXT,
+  up_link_href   TEXT,
+  updated        TIMESTAMP,
   organisation_id BIGINT REFERENCES customer.organisation ON DELETE SET NULL,
   kind customer.customer_kind,
   special_need TEXT,
@@ -94,6 +99,11 @@ CREATE TABLE IF NOT EXISTS customer.customer (
 
 CREATE TABLE IF NOT EXISTS customer.customer_agreement (
   uuid UUID PRIMARY KEY,
+  description    TEXT,
+  published      TIMESTAMP,
+  self_link_href TEXT,
+  up_link_href   TEXT,
+  updated        TIMESTAMP,
   type TEXT,
   author_name TEXT,
   created_date_time BIGINT,
@@ -154,6 +164,11 @@ CREATE TABLE IF NOT EXISTS customer.customer_agreement_future_status (
 
 CREATE TABLE IF NOT EXISTS customer.service_supplier (
   uuid UUID PRIMARY KEY,
+  description    TEXT,
+  published      TIMESTAMP,
+  self_link_href TEXT,
+  up_link_href   TEXT,
+  updated        TIMESTAMP,
   organisation_id BIGINT REFERENCES customer.organisation ON DELETE SET NULL,
   kind customer.supplier_kind,
   issuer_identification_number TEXT,
