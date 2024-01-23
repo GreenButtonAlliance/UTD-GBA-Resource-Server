@@ -21,16 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -116,6 +107,7 @@ public class AuthorizationRepositoryTest {
 		);
 	}
 
+	//TODO: Fix code in order to compile successfully
 //	@Test
 //	public void entityMappings_areNotNull() {
 //		Authorization fullyMappedAuthorization = authorizationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
