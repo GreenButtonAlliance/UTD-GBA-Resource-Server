@@ -25,21 +25,6 @@ ALTER TABLE customer.customer_account DROP CONSTRAINT customer_account_status_id
 ALTER TABLE customer.customer_account DROP CONSTRAINT customer_account_contact_info_id_fkey,
   ADD CONSTRAINT customer_account_contact_info_id_fkey FOREIGN KEY (contact_info_id) REFERENCES customer.organisation ON DELETE SET NULL;
 
-/*
- * Copyright (c) 2024 Green Button Alliance, Inc.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 -- add in one ON DELETE CASCADE that was missed
 ALTER TABLE customer.account_notification DROP CONSTRAINT account_notification_customer_account_id_fkey,
   ADD CONSTRAINT account_notification_customer_account_id_fkey FOREIGN KEY (customer_account_id) REFERENCES customer.customer_account ON DELETE CASCADE;
