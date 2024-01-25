@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
- *
+ * Copyright (c) 2022-2024 Green Button Alliance, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +16,10 @@
 package org.greenbuttonalliance.gbaresourceserver.usage.web.dto;
 
 
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

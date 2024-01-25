@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
- *
+ * Copyright (c) 2022-2024 Green Button Alliance, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +15,12 @@
 
 package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
- *
+ * Copyright (c) 2022-2024 Green Button Alliance, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +16,6 @@
 package org.greenbuttonalliance.gbaresourceserver.customer.service;
 
 import lombok.RequiredArgsConstructor;
-
 import org.greenbuttonalliance.gbaresourceserver.customer.model.ServiceLocation;
 import org.greenbuttonalliance.gbaresourceserver.customer.repository.ServiceLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

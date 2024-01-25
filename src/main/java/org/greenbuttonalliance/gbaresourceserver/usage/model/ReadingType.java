@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
- *
+ * Copyright (c) 2022-2024 Green Button Alliance, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,17 +28,17 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
+import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity

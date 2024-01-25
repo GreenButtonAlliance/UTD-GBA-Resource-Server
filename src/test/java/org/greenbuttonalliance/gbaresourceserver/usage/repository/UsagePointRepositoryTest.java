@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Green Button Alliance, Inc.
- *
+ * Copyright (c) 2022-2024 Green Button Alliance, Inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,34 +24,8 @@ import org.greenbuttonalliance.gbaresourceserver.common.model.enums.Currency;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.EnrollmentStatus;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitMultiplierKind;
 import org.greenbuttonalliance.gbaresourceserver.common.model.enums.UnitSymbolKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.AggregateNodeRef;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.BillingChargeSource;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ElectricPowerQualitySummary;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.IntervalBlock;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.LineItem;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.MeterReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.PnodeRef;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ReadingType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.ServiceDeliveryPoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.TariffRiderRef;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.TimeConfiguration;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.UsagePoint;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.UsageSummary;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AccumulationKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AnodeType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ApnodeType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.CommodityKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataQualifierKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.FlowDirectionKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.MeasurementKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TimeAttributeKind;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
