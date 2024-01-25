@@ -65,8 +65,42 @@ public class SubscriptionRepositoryTest {
 	private final SubscriptionRepository subscriptionRepository;
 
 	// for testing findById
-	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/Subscription";
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/Subscription/174";
+	private static final String AUTHORIZATION_1_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/123456";
+	private static final String AUTHORIZATION_2_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/234561";
+	private static final String AUTHORIZATION_3_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/345612";
+	private static final String AUTHORIZATION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization";
+
+	private static final String RETAILCUSTOMER_1_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/654321";
+	private static final String RETAILCUSTOMER_2_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/543216";
+	private static final String RETAILCUSTOMER_3_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/432165";
+	private static final String RETAILCUSTOMER_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer";
+
+	private static final String APPLICATIONINFORMATION_1_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/234567";
+	private static final String APPLICATIONINFORMATION_2_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/345672";
+	private static final String APPLICATIONINFORMATION_3_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/456723";
+	private static final String APPLICATIONINFORMATION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation";
+
+	private static final String SUBSCRIPTION_1_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription/234651";
+	private static final String SUBSCRIPTION_2_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription/346512";
+	private static final String SUBSCRIPTION_3_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription/465123";
+	private static final String SUBSCRIPTION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription";
+
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -77,7 +111,6 @@ public class SubscriptionRepositoryTest {
 	@BeforeEach
 	public void initTestData() {
 		subscriptionRepository.deleteAllInBatch();
-		// TODO finish buildTestData();
 		subscriptionRepository.saveAll(buildTestData());
 	}
 
@@ -89,7 +122,7 @@ public class SubscriptionRepositoryTest {
 
 	@Test
 	public void findByPresentId_returnsMatching() {
-		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK);
+		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SUBSCRIPTION_1_SELF_LINK);
 		UUID foundUuid = subscriptionRepository.findById(presentUuid).map(Subscription::getUuid).orElse(null);
 
 		Assertions.assertEquals(
@@ -124,7 +157,9 @@ public class SubscriptionRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		Subscription fullyMappedSubscription = subscriptionRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		String searchUUID = String.valueOf(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SUBSCRIPTION_1_SELF_LINK));
+		Subscription fullyMappedSubscription =
+			subscriptionRepository.findById(UUID.fromString(searchUUID)).orElse(null);
 		Assumptions.assumeTrue(fullyMappedSubscription != null);
 
 		Function<Subscription, Optional<ApplicationInformation>> subscriptionToApplicationInformation = sub -> Optional.ofNullable(sub.getApplicationInformation());
@@ -132,7 +167,7 @@ public class SubscriptionRepositoryTest {
 		Function<Subscription, Optional<RetailCustomer>> subscriptionToRetailCustomer = sub -> Optional.ofNullable(sub.getRetailCustomer());
 
 		Assertions.assertAll(
-			"Entity mapping failures for subscription " + fullyMappedSubscription.getUuid(),
+			STR."Entity mapping failures for subscription \{fullyMappedSubscription.getUuid()}",
 			Stream.of(subscriptionToApplicationInformation,
 					subscriptionToAuthorization,
 					subscriptionToRetailCustomer)
@@ -142,102 +177,99 @@ public class SubscriptionRepositoryTest {
 	}
 
 	private static List<Subscription> buildTestData() {
+		//TODO: Add TimeConfiguration and UsagePoint to Subscription
 		List<Subscription> subscriptions = Arrays.asList(
 			Subscription.builder()
-					.description("description")
-					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.selfLinkHref(PRESENT_SELF_LINK)
-					.upLinkHref(upLinkHref)
-					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.hashedId("hashedId")
-					.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.applicationInformation(ApplicationInformation.builder()
-						.description("Green Button Alliance Data Custodian Admin Application")
-						.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-						.selfLinkHref(PRESENT_SELF_LINK)
-						.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
-						.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-						.authorizationServerAuthorizationEndpoint("authorizationServerAuthorizationEndpoint")
-						.authorizationServerRegistrationEndpoint(null)
-						.authorizationServerTokenEndpoint("authorizationServerTokenEndpoint")
-						.authorizationServerUri(null)
-						.clientId("clientId")
-						.clientIdIssuedAt(1403190000L)
-						.clientName("clientName")
-						.clientSecret("clientSecret")
-						.clientSecretExpiresAt(0L)
-						.clientUri(null)
-						.contacts(new HashSet<>(Arrays.asList(
-							"Contact1",
-							"Contact2"
-						)))
-						.dataCustodianApplicationStatus(DataCustodianApplicationStatus.ON_HOLD)
-						.dataCustodianBulkRequestUri("dataCustodianBulkRequestUri")
-						.dataCustodianId("dataCustodianId")
-						.dataCustodianResourceEndpoint("dataCustodianResourceEndpoint")
-						.thirdPartyUserPortalScreenUri(null)
-						.logoUri(null)
-						.policyUri(null)
-						.thirdPartyApplicationDescription(null)
-						.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
-						.thirdPartyApplicationType(ThirdPartyApplicationType.DEVICE)
-						.thirdPartyApplicationUse(ThirdPartyApplicationUse.COMPARISONS)
-						.thirdPartyPhone(null)
-						.thirdPartyNotifyUri("thirdPartyNotifyUri")
-						.redirectUris(new HashSet<>(Arrays.asList(
-							"Redirect1"
-						)))
-						.tosUri(null)
-						.softwareId("softwareId")
-						.softwareVersion("softwareVersion")
-						.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
-						.responseType(ResponseType.CODE)
-						.registrationClientUri("registrationClientUri")
-						.registrationAccessToken("registrationAccessToken")
-						.grantTypes(new HashSet<>(Arrays.asList(
-							GrantType.AUTHORIZATION_CODE
-						)))
-						.scopes(new HashSet<>(Arrays.asList(
-							"Scope1",
-							"Scope2",
-							"Scope3"
-						)))
-						.build())
+				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SUBSCRIPTION_1_SELF_LINK))
+				.description("Subscription")
+				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.selfLinkHref(SUBSCRIPTION_1_SELF_LINK)
+				.upLinkHref(SUBSCRIPTION_UP_LINK)
+				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.hashedId("hashedId")
+				.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
+				.applicationInformation(ApplicationInformation.builder()
+					.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, APPLICATIONINFORMATION_1_SELF_LINK))
+					.description("Application Information")
+					.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
+					.selfLinkHref(APPLICATIONINFORMATION_1_SELF_LINK)
+					.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
+					.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
+					.authorizationServerAuthorizationEndpoint("authorizationServerAuthorizationEndpoint")
+					.authorizationServerRegistrationEndpoint(null)
+					.authorizationServerTokenEndpoint("authorizationServerTokenEndpoint")
+					.authorizationServerUri(null)
+					.clientId("clientId")
+					.clientIdIssuedAt(1403190000L)
+					.clientName("clientName")
+					.clientSecret("clientSecret")
+					.clientSecretExpiresAt(0L)
+					.clientUri(null)
+					.contacts(new HashSet<>(Arrays.asList(
+						"Contact1",
+						"Contact2"
+					)))
+					.dataCustodianApplicationStatus(DataCustodianApplicationStatus.ON_HOLD)
+					.dataCustodianBulkRequestUri("dataCustodianBulkRequestUri")
+					.dataCustodianId("dataCustodianId")
+					.dataCustodianResourceEndpoint("dataCustodianResourceEndpoint")
+					.thirdPartyUserPortalScreenUri(null)
+					.logoUri(null)
+					.policyUri(null)
+					.thirdPartyApplicationDescription(null)
+					.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
+					.thirdPartyApplicationType(ThirdPartyApplicationType.DEVICE)
+					.thirdPartyApplicationUse(ThirdPartyApplicationUse.COMPARISONS)
+					.thirdPartyPhone(null)
+					.thirdPartyNotifyUri("thirdPartyNotifyUri")
+					.redirectUris(new HashSet<>(Arrays.asList(
+						"Redirect1"
+					)))
+					.tosUri(null)
+					.softwareId("softwareId")
+					.softwareVersion("softwareVersion")
+					.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
+					.responseType(ResponseType.CODE)
+					.registrationClientUri("registrationClientUri")
+					.registrationAccessToken("registrationAccessToken")
+					.grantTypes(new HashSet<>(Arrays.asList(
+						GrantType.AUTHORIZATION_CODE
+					)))
+					.scopes(new HashSet<>(Arrays.asList(
+						"Scope1",
+						"Scope2",
+						"Scope3"
+					)))
+					.build())
 					.authorization(
 						Authorization.builder()
-							.uuid(UUID.randomUUID())
+							.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_1_SELF_LINK))
 							.description("Green Button Alliance Data Custodian Authorization")
 							.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-							.selfLinkHref(PRESENT_SELF_LINK)
-							.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+							.selfLinkHref(AUTHORIZATION_1_SELF_LINK)
+							.upLinkHref(AUTHORIZATION_UP_LINK)
 							.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 							.authorizedPeriod(new DateTimeInterval()
-									.setDuration(21L)
-									.setStart(654L))
+								.setDuration(21L)
+								.setStart(654L))
 							.publishedPeriod(new DateTimeInterval()
-									.setDuration(23123L)
-									.setStart(3241654L))
+								.setDuration(23123L)
+								.setStart(3241654L))
 							.authorizationUri(null)
 							.status(AuthorizationStatus.ACTIVE)
 							.expiresAt(32164L)
-//							.grantType(GrantType.AUTHORIZATION_CODE)
 							.tokenType(TokenType.BEARER)
-//							.error(OAuthError.INVALID_CLIENT)
-//							.errorDescription("errorDescription")
-//							.errorUri("errorUri")
 							.resourceUri("resourceUri")
 							.authorizationUri("authorizationUri")
 							.customerResourceUri("customerResourceUri")
-//							.applicationInformationId(UUID.randomUUID())
-//							.retailCustomerId(UUID.randomUUID())
-//							.subscription(Subscription.builder().build())
 							.build()
 					)
 					.retailCustomer(RetailCustomer.builder()
-						.description("Type of Meter Reading Data")
+						.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, RETAILCUSTOMER_1_SELF_LINK))
+						.description("Retail Customer Data")
 						.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-						.selfLinkHref(PRESENT_SELF_LINK)
-						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+						.selfLinkHref(RETAILCUSTOMER_1_SELF_LINK)
+						.upLinkHref(RETAILCUSTOMER_UP_LINK)
 						.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 						.enabled(Boolean.TRUE)
 						.firstName("hello")
@@ -250,18 +282,20 @@ public class SubscriptionRepositoryTest {
 					.build(),
 
 			Subscription.builder()
+				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SUBSCRIPTION_2_SELF_LINK))
 				.description("description")
 				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/Subscription/175")
-				.upLinkHref(upLinkHref)
+				.selfLinkHref(SUBSCRIPTION_2_SELF_LINK)
+				.upLinkHref(SUBSCRIPTION_UP_LINK)
 				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.hashedId("hashedId")
 				.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.applicationInformation(ApplicationInformation.builder()
-					.description("Green Button Alliance Data Custodian Admin Application")
+					.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, APPLICATIONINFORMATION_2_SELF_LINK))
+					.description("Application Information Data")
 					.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-					.selfLinkHref(PRESENT_SELF_LINK)
-					.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+					.selfLinkHref(APPLICATIONINFORMATION_2_SELF_LINK)
+					.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
 					.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 					.authorizationServerAuthorizationEndpoint("authorizationServerAuthorizationEndpoint")
 					.authorizationServerRegistrationEndpoint(null)
@@ -311,11 +345,11 @@ public class SubscriptionRepositoryTest {
 					.build())
 				.authorization(
 					Authorization.builder()
-						.uuid(UUID.randomUUID())
+						.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_2_SELF_LINK))
 						.description("Green Button Alliance Data Custodian Authorization")
 						.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-						.selfLinkHref(PRESENT_SELF_LINK)
-						.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+						.selfLinkHref(AUTHORIZATION_2_SELF_LINK)
+						.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
 						.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 						.authorizedPeriod(new DateTimeInterval()
 								.setDuration(21L)
@@ -325,25 +359,19 @@ public class SubscriptionRepositoryTest {
 								.setStart(3241654L))
 						.status(AuthorizationStatus.ACTIVE)
 						.expiresAt(32164L)
-//						.grantType(GrantType.AUTHORIZATION_CODE)
 						.scope("scope")
 						.tokenType(TokenType.BEARER)
-//						.error(OAuthError.INVALID_CLIENT)
-//						.errorDescription("errorDescription")
-//						.errorUri("errorUri")
 						.resourceUri("resourceUri")
 						.authorizationUri(null)
 						.customerResourceUri("customerResourceUri")
-//						.applicationInformationId(UUID.randomUUID())
-//						.retailCustomerId(UUID.randomUUID())
-//						.subscription(Subscription.builder().build())
 						.build()
 				)
 				.retailCustomer(RetailCustomer.builder()
+					.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, RETAILCUSTOMER_2_SELF_LINK))
 					.description("Type of Meter Reading Data")
 					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.selfLinkHref(PRESENT_SELF_LINK)
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+					.selfLinkHref(RETAILCUSTOMER_2_SELF_LINK)
+					.upLinkHref(RETAILCUSTOMER_UP_LINK)
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.enabled(Boolean.TRUE)
 					.firstName("hello")
@@ -356,18 +384,20 @@ public class SubscriptionRepositoryTest {
 				.build(),
 
 			Subscription.builder()
+				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, SUBSCRIPTION_3_SELF_LINK))
 				.description("description")
 				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/Subscription/176")
-				.upLinkHref(upLinkHref)
+				.selfLinkHref(SUBSCRIPTION_3_SELF_LINK)
+				.upLinkHref(SUBSCRIPTION_UP_LINK)
 				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.hashedId("hashedId")
 				.lastUpdate(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.applicationInformation(ApplicationInformation.builder()
-					.description("Green Button Alliance Data Custodian Admin Application")
+					.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, APPLICATIONINFORMATION_3_SELF_LINK))
+					.description("Application Information Data")
 					.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-					.selfLinkHref(PRESENT_SELF_LINK)
-					.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+					.selfLinkHref(APPLICATIONINFORMATION_3_SELF_LINK)
+					.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
 					.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 					.authorizationServerAuthorizationEndpoint("authorizationServerAuthorizationEndpoint")
 					.authorizationServerRegistrationEndpoint(null)
@@ -417,11 +447,11 @@ public class SubscriptionRepositoryTest {
 					.build())
 				.authorization(
 					Authorization.builder()
-						.uuid(UUID.randomUUID())
+						.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_3_SELF_LINK))
 						.description("Green Button Alliance Data Custodian Authorization")
 						.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-						.selfLinkHref(PRESENT_SELF_LINK)
-						.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+						.selfLinkHref(AUTHORIZATION_3_SELF_LINK)
+						.upLinkHref(AUTHORIZATION_UP_LINK)
 						.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 						.authorizedPeriod(new DateTimeInterval()
 								.setDuration(21L)
@@ -431,25 +461,19 @@ public class SubscriptionRepositoryTest {
 								.setStart(3241654L))
 						.status(AuthorizationStatus.ACTIVE)
 						.expiresAt(32164L)
-//						.grantType(GrantType.AUTHORIZATION_CODE)
 						.scope("scope")
 						.tokenType(TokenType.BEARER)
-//						.error(OAuthError.INVALID_CLIENT)
-//						.errorDescription("errorDescription")
-//						.errorUri("errorUri")
 						.resourceUri("resourceUri")
 						.authorizationUri(null)
 						.customerResourceUri("customerResourceUri")
-//						.applicationInformationId(UUID.randomUUID())
-//						.retailCustomerId(UUID.randomUUID())
-//						.subscription(Subscription.builder().build())
 						.build()
 				)
 				.retailCustomer(RetailCustomer.builder()
+					.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, RETAILCUSTOMER_3_SELF_LINK))
 					.description("Type of Meter Reading Data")
 					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-					.selfLinkHref(PRESENT_SELF_LINK)
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+					.selfLinkHref(RETAILCUSTOMER_3_SELF_LINK)
+					.upLinkHref(RETAILCUSTOMER_UP_LINK)
 					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.enabled(Boolean.TRUE)
 					.firstName("hello")
@@ -465,23 +489,24 @@ public class SubscriptionRepositoryTest {
 		// hydrate UUIDs and entity mappings
 
 		subscriptions.forEach(sub -> {
-			sub.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
+//			sub.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
 
 			ApplicationInformation ai =  sub.getApplicationInformation();
-			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
+//			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
 			ai.setSubscriptions(new HashSet<>(List.of(sub)));
 
 			Authorization auth = sub.getAuthorization();
-			auth.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
-//			auth.setSubscription(sub);
+//			auth.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
+			auth.setSubscription(sub);
+			auth.setApplicationInformation(ai);
+			auth.setRetailCustomer(sub.getRetailCustomer());
 
 			RetailCustomer rc = sub.getRetailCustomer();
-			rc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
+//			rc.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
 			rc.setSubscriptions(new HashSet<>(List.of(sub)));
 
 			// TODO hydrate connected entities reference when available
 		});
 		return subscriptions;
 	}
-
 }

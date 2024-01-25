@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
@@ -31,7 +33,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +55,32 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 
 @Testcontainers
-@DataJpaTest(showSql = true)
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthorizationRepositoryTest {
 	private final AuthorizationRepository authorizationRepository;
 
-	private static final String PRESENT_SELF_LINK =
+	private static final String AUTHORIZATION_SELF_LINK =
 		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/123456";
+	private static final String AUTHORIZATION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization";
+
+	private static final String RETAILCUSTOMER_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/654321";
+	private static final String RETAILCUSTOMER_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer";
+
+	private static final String APPLICATIONINFORMATION_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/234567";
+	private static final String APPLICATIONINFORMATION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation";
+
+	private static final String SUBSCRIPTION_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription/234651";
+	private static final String SUBSCRIPTION_UP_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription";
+
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final String DUMMY_STRING = "test1";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -84,7 +103,7 @@ public class AuthorizationRepositoryTest {
 
 	@Test
 	public void findByPresentId_returnsMatching() {
-		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK);
+		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_SELF_LINK);
 		UUID foundUuid = authorizationRepository.findById(presentUuid).map(Authorization::getUuid).orElse(null);
 
 		Assertions.assertEquals(
@@ -118,14 +137,14 @@ public class AuthorizationRepositoryTest {
 	}
 
 	//TODO: Fix code in order to compile successfully
-	@Test
-	public void entityMappings_areNotNull() {
-
-		// Extract fetching authorization logic into a method
-		Authorization fullyMappedAuthorization = authorizationRepository.
-			findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-		Assumptions.assumeTrue(fullyMappedAuthorization != null);
-
+//	@Test
+//	public void entityMappings_areNotNull() {
+//
+//		// Extract fetching authorization logic into a method
+//		Authorization fullyMappedAuthorization = authorizationRepository.
+//			findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_SELF_LINK)).orElse(null);
+//		Assumptions.assumeTrue(fullyMappedAuthorization != null);
+//
 //		Assertions.assertAll(
 //				STR."Entity mapping failures for customer account \{fullyMappedAuthorization.getUuid()}",
 //			Stream.of((Function<Authorization, Optional<Subscription>>) auth -> {
@@ -133,16 +152,42 @@ public class AuthorizationRepositoryTest {
 //					})
 //				.map(mappingFunc -> () -> Assertions.assertTrue(mappingFunc.apply(fullyMappedAuthorization).isPresent()))
 //		);
+//	}
+
+	@Test
+	public void entityMappings_areNotNull_Copilot_Test() {
+		// Fetch the first Authorization object from the test data
+		Authorization fullyMappedAuthorization = authorizationRepository.findAll().get(0);
+
+		// Assert that the Subscription object in the Authorization object is not null
+		Assertions.assertNotNull(fullyMappedAuthorization.getSubscription(),
+			"Subscription in Authorization is null");
 	}
 
 	private static List<Authorization> buildTestData() {
+		RetailCustomer rc = RetailCustomer.builder()
+			.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, RETAILCUSTOMER_SELF_LINK))
+			.description("Retail Customer Description")
+			.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
+			.selfLinkHref(RETAILCUSTOMER_SELF_LINK)
+			.upLinkHref(RETAILCUSTOMER_UP_LINK)
+			.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
+			.enabled(Boolean.TRUE)
+			.firstName("John")
+			.lastName("Doe")
+			.password("password")
+			.role("ROLE_USER")
+			.username("jdoe")
+			.build();
+
+
 		List<Authorization> authorizations = Collections.singletonList(
 			Authorization.builder()
-				.uuid(UUID.randomUUID())
+				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_SELF_LINK))
 				.description("Green Button Alliance Data Custodian Authorization")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization")
+				.selfLinkHref(AUTHORIZATION_SELF_LINK)
+				.upLinkHref(AUTHORIZATION_UP_LINK)
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.accessToken(DUMMY_STRING)
 				.authorizedPeriod(new DateTimeInterval()
@@ -158,25 +203,22 @@ public class AuthorizationRepositoryTest {
 				.resourceUri("resourceUri")
 				.authorizationUri("authorizationUri")
 				.customerResourceUri("customerResourceUri")
-//				.applicationInformationId(UUID.randomUUID())
-//				.retailCustomerId(UUID.randomUUID())
-//				.subscriptionId(UUID.randomUUID())
 				.build()
 		);
 
 		// hydrate UUIDs and entity mappings
 		authorizations.forEach(auth -> {
-			auth.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, auth.getSelfLinkHref()));
 
-//			Subscription sub = auth.getSubscription();
-//			sub.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, auth.getSelfLinkHref()));
-//			sub.setAuthorization(auth);
+			Subscription sub = auth.getSubscription();
+			sub.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, auth.getSelfLinkHref()));
+			sub.setAuthorization(auth);
 
 			ApplicationInformation ai = ApplicationInformation.builder()
+				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, APPLICATIONINFORMATION_SELF_LINK))
 				.description(DUMMY_STRING)
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/234567")
-				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation")
+				.selfLinkHref(APPLICATIONINFORMATION_SELF_LINK)
+				.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
 				.authorizationServerRegistrationEndpoint(null)
@@ -223,7 +265,6 @@ public class AuthorizationRepositoryTest {
 						"Scope4"
 				)))
 				.build();
-			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, auth.getSelfLinkHref()));
 			auth.setApplicationInformation(ai);
 //			sub.setRetailCustomer(RetailCustomer.builder().build());
 //			sub.getRetailCustomer().setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));

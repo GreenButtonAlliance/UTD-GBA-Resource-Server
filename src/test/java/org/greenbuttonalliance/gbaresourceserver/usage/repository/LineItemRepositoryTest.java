@@ -86,7 +86,7 @@ public class LineItemRepositoryTest {
 
 	@Test
 	public void findByPresentId_returnsMatching() {
-		Long presentId = PRESENT;
+		Long presentId = PRESENT + 1;
 		Long foundId = lineItemRepository.findById(presentId).map(LineItem::getId).orElse(null);
 
 		Assertions.assertEquals(
