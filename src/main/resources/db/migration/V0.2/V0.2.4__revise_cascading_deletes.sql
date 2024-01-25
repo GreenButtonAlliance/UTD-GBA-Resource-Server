@@ -1,4 +1,3 @@
-
 -- change some ON DELETE CASCADE clauses to ON DELETE SET NULL for relationships whose referenced objects might be needed elsewhere even when a related object is deleted
 ALTER TABLE usage.meter_reading DROP CONSTRAINT meter_reading_reading_type_uuid_fkey,
   ADD CONSTRAINT meter_reading_reading_type_uuid_fkey FOREIGN KEY (reading_type_uuid) REFERENCES usage.reading_type ON DELETE SET NULL;
