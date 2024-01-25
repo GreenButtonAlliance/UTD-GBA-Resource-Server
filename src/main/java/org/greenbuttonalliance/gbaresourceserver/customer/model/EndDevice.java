@@ -43,4 +43,6 @@ public class EndDevice extends AssetContainer{
 
 	@Column(name = "amr_system")
 	private String amrSystem;
+
+//TODO: Add @OneToOne for ServiceLocation
 }

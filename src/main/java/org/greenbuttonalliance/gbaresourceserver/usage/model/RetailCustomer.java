@@ -40,9 +40,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class RetailCustomer extends IdentifiedObject {
 
-	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
-	private Set<Subscription> subscriptions = new HashSet<>();
-
 	@Column
 	private Boolean enabled;
 
@@ -63,4 +60,11 @@ public class RetailCustomer extends IdentifiedObject {
 
 	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
 	private Set<UsagePoint> usagePoints = new HashSet<>();
+
+//	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
+//	private Set<ApplicationInformation> applicationInformations = new HashSet<>();
+
+	@OneToMany(mappedBy = "retailCustomer", cascade = CascadeType.ALL)
+	private Set<Subscription> subscriptions = new HashSet<>();
+
 }

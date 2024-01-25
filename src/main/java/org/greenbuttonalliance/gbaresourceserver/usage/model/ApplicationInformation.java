@@ -16,16 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -106,9 +97,9 @@ public class ApplicationInformation extends IdentifiedObject {
 	private String dataCustodianResourceEndpoint;
 
 	/**
-	 * @deprecated Since 3.3, for removal in 4.0. Use {@link #clientUri} instead.
+	 * @deprecated Since 3.3. Use {@link #clientUri} instead.
 	 */
-	@Deprecated(since = "3.3", forRemoval = true)
+	@Deprecated(since = "3.3")
 	@Column(name = "third_party_scope_selection_screen_uri")
 	private String thirdPartyScopeSelectionScreenUri;
 
@@ -188,12 +179,22 @@ public class ApplicationInformation extends IdentifiedObject {
 	private String registrationAccessToken;
 
 	/**
-	 * @deprecated Since 3.3, for removal in 4.0. No replacement.
+	 * @deprecated Since 3.3. No replacement.
 	 */
-	@Deprecated(since = "3.3", forRemoval=true)
+	@Deprecated(since = "3.3")
 	@Column(name = "data_custodian_scope_selection_screen_uri")
 	private String dataCustodianScopeSelectionScreenUri;
 
-	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
+		orphanRemoval = true)
 	private Set<Subscription> subscriptions = new HashSet<>();
+
+	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
+		orphanRemoval = true)
+	private Set<Authorization> authorizations = new HashSet<>();
+
+//	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
+//			orphanRemoval = true)
+//	private Set<RetailCustomer> retailCustomers = new HashSet<>();
+
 }

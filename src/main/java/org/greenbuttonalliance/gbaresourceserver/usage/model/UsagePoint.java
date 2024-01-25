@@ -16,30 +16,18 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
+import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AmiBillingReadyKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.PhaseCodeKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ServiceKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.UsagePointConnectedKind;
-import org.greenbuttonalliance.gbaresourceserver.common.model.SummaryMeasurement;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.util.HashSet;
@@ -181,4 +169,7 @@ public class UsagePoint extends IdentifiedObject {
 
 	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
 	private Set<UsageSummary> usageSummaries = new HashSet<>();
+
+	@OneToMany(mappedBy = "usagePoint", cascade = CascadeType.ALL)
+	private Set<Subscription> subscriptions = new HashSet<>();
 }

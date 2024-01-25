@@ -16,14 +16,7 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,8 +25,6 @@ import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.hibernate.annotations.ColumnTransformer;
 
@@ -49,17 +40,23 @@ public class Authorization extends IdentifiedObject {
 
 	@Embedded
 	@AttributeOverrides({
-			@AttributeOverride(name = "start", column = @Column(name = "authorized_period_start")),
-			@AttributeOverride(name = "duration", column = @Column(name = "authorized_period_duration")),
+		@AttributeOverride(name = "duration", column = @Column(name = "authorized_period_duration")),
+		@AttributeOverride(name = "start", column = @Column(name = "authorized_period_start"))
 	})
 	private DateTimeInterval authorizedPeriod;
 
 	@Embedded
 	@AttributeOverrides({
-			@AttributeOverride(name = "start", column = @Column(name = "published_period_start")),
-			@AttributeOverride(name = "duration", column = @Column(name = "published_period_duration")),
+		@AttributeOverride(name = "duration", column = @Column(name = "published_period_duration")),
+		@AttributeOverride(name = "start", column = @Column(name = "published_period_start"))
 	})
 	private DateTimeInterval	publishedPeriod;
+
+	@Column(name = "access_token", nullable = false)
+	private String accessToken;
+
+	@Column(name = "refresh_token")
+	private String refreshToken;
 
 	@Column(nullable = false)
 	private AuthorizationStatus status;
@@ -67,8 +64,8 @@ public class Authorization extends IdentifiedObject {
 	@Column(name = "expires_at", nullable = false)
 	private Long expiresAt;  // in epoch-seconds
 
-	@Column(name = "grant_type")
-	private GrantType grantType;
+//	@Column(name = "grant_type")
+//	private GrantType grantType;
 
 	@Column(nullable = false)
 	private String scope;
@@ -78,16 +75,16 @@ public class Authorization extends IdentifiedObject {
 	@ColumnTransformer(write = "CAST(? AS usage.token_type)", read = "token_type::TEXT")
 	private TokenType tokenType;
 
-	@Column
-	@Enumerated(EnumType.STRING)
-	@ColumnTransformer(write = "CAST(? AS usage.oauth_error)", read = "error::TEXT")
-	private OAuthError error;
+//	@Column
+//	@Enumerated(EnumType.STRING)
+//	@ColumnTransformer(write = "CAST(? AS usage.oauth_error)", read = "error::TEXT")
+//	private OAuthError error;
 
-	@Column(name = "error_description")
-	private String errorDescription;
+//	@Column(name = "error_description")
+//	private String errorDescription;
 
-	@Column(name = "error_uri")
-	private String errorUri;
+//	@Column(name = "error_uri")
+//	private String errorUri;
 
 	@Column(name = "resource_uri", nullable = false)
 	private String resourceUri;
@@ -97,4 +94,16 @@ public class Authorization extends IdentifiedObject {
 
 	@Column(name = "customer_resource_uri")
 	private String customerResourceUri;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "application_information_id", nullable = false)
+	private ApplicationInformation applicationInformation;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "retail_customer_id", nullable = false)
+	private RetailCustomer retailCustomer;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "subscription_id", nullable = false)
+	private Subscription subscription;
 }

@@ -62,8 +62,9 @@ public class IntervalBlockRepositoryTest {
 	private final IntervalBlockRepository intervalBlockRepository;
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://localhost:8080/espi/1_1/resource/RetailCustomer/9B6C7066" +
-		"/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173";
+	private static final String PRESENT_SELF_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource" +
+		"/RetailCustomer/9B6C7066" +
+		"/UsagePoint/5446AF3F/MeterReading/123456/IntervalBlock/654321";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -155,7 +156,8 @@ public class IntervalBlockRepositoryTest {
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330578000L)
@@ -186,8 +188,10 @@ public class IntervalBlockRepositoryTest {
 				.build(),
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
-				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/135790")
+				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330578800L)
@@ -206,8 +210,10 @@ public class IntervalBlockRepositoryTest {
 				.build(),
 			IntervalBlock.builder()
 				.published(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
-				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/135791")
+				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 				.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330987644L)
@@ -219,8 +225,10 @@ public class IntervalBlockRepositoryTest {
 		MeterReading testMeterReading = MeterReading.builder()
 			.description("Fifteen Minute Electricity Consumption")
 			.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
-			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+			.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+				"UsagePoint/5446AF3F/MeterReading/123456")
+			.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+				"UsagePoint/5446AF3F/MeterReading")
 			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
 			.usagePoint(TestUtils.createUsagePoint())

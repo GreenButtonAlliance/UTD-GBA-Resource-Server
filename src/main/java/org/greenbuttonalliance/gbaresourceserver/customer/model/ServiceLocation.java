@@ -16,7 +16,12 @@
 
 package org.greenbuttonalliance.gbaresourceserver.customer.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -48,4 +53,8 @@ public class ServiceLocation extends Location{
 
 	@Column(name="outage_block")
 	private String outageBlock;
+
+// TODO: Add OneToMany reference for EndDevice
+
+// TODO: Add OneToMany reference for Meter
 }

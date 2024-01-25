@@ -7,10 +7,11 @@ CREATE TABLE IF NOT EXISTS usage.subscription (
                                                 updated TIMESTAMP,
                                                 hashed_id TEXT,
                                                 last_update TIMESTAMP,
-                                                application_information_id UUID REFERENCES usage.application_information,
+                                                application_information_uuid UUID REFERENCES usage
+                                                  .application_information,
                                                 authorization_id UUID REFERENCES usage.authorization,
-                                                retail_customer_id UUID REFERENCES usage.retail_customer,
-                                                usage_point_id UUID --TODO
+                                                retail_customer_id           UUID REFERENCES usage.retail_customer
+--                                                 usage_point_uuid UUID REFERENCES usage.usage_points
 );
 
 DO $$

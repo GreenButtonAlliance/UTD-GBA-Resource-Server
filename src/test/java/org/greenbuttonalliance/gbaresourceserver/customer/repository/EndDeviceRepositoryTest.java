@@ -53,10 +53,12 @@ public class EndDeviceRepositoryTest {
 
 	@Autowired
 	private EndDeviceRepository endDeviceRepository;
-	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/EndDevice";
+	private static final String upLinkHref = "https://localhost:8080/DataCustodian/espi/1_1/resource/EndDevice";
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/EndDevice/174";
+	private static final String PRESENT_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/" +
+			"resource/EndDevice/174357";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -117,11 +119,12 @@ public class EndDeviceRepositoryTest {
 		Assumptions.assumeTrue(fullyMappedEndDevice != null);
 
 		// first-level mappings; directly from fullyMappedEndDevice
-		Function<EndDevice, Optional<ElectronicAddress>> endDeviceToElectronicAddress = ed -> Optional.ofNullable(ed.getElectronicAddress());
+		Function<EndDevice, Optional<ElectronicAddress>> endDeviceToElectronicAddress = ed ->
+			Optional.ofNullable(ed.getElectronicAddress());
 		Function<EndDevice, Optional<Status>> endDeviceToStatus = ed -> Optional.ofNullable(ed.getStatus());
 
 		Assertions.assertAll(
-			"Entity mapping failures for customer account " + fullyMappedEndDevice.getUuid(),
+			STR."Entity mapping failures for customer account \{fullyMappedEndDevice.getUuid()}",
 			Stream.of(endDeviceToElectronicAddress,
 					endDeviceToStatus)
 				.map(mappingFunc ->
@@ -130,6 +133,7 @@ public class EndDeviceRepositoryTest {
 	}
 
 	private static List<EndDevice> buildTestData() {
+		//TODO: Add ServiceLocation to test EndDevice to ServiceLocation mapping
 		List<EndDevice> endDevices = Arrays.asList(
 			EndDevice.builder()
 				.description("description")
@@ -168,7 +172,7 @@ public class EndDeviceRepositoryTest {
 			EndDevice.builder()
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/EndDevice/175")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/EndDevice/175358")
 				.upLinkHref(upLinkHref)
 				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.type("type")
@@ -202,7 +206,7 @@ public class EndDeviceRepositoryTest {
 			EndDevice.builder()
 				.description("description")
 				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://{domain}/espi/1_1/resource/EndDevice/176")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/EndDevice/176359")
 				.upLinkHref(upLinkHref)
 				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.type("type")

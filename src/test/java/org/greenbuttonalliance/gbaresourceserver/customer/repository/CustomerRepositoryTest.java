@@ -125,6 +125,9 @@ public class CustomerRepositoryTest {
 	}
 
 	private static List<Customer> buildTestData() {
+		//TODO: Add TimeConfiguration to test Customer to TimeConfiguration mapping
+		//TODO: Add CustomerAccount to test Customer to CustomerAccount mapping
+		//TODO: Add Statement to test Customer to Statement mapping
 		List<Customer> customers = Arrays.asList(
 			Customer.builder()
 				.organisation(Organisation.builder()

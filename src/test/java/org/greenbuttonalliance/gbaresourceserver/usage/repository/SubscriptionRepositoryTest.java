@@ -26,7 +26,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.OAuthError;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
@@ -221,11 +220,11 @@ public class SubscriptionRepositoryTest {
 							.authorizationUri(null)
 							.status(AuthorizationStatus.ACTIVE)
 							.expiresAt(32164L)
-							.grantType(GrantType.AUTHORIZATION_CODE)
+//							.grantType(GrantType.AUTHORIZATION_CODE)
 							.tokenType(TokenType.BEARER)
-							.error(OAuthError.INVALID_CLIENT)
-							.errorDescription("errorDescription")
-							.errorUri("errorUri")
+//							.error(OAuthError.INVALID_CLIENT)
+//							.errorDescription("errorDescription")
+//							.errorUri("errorUri")
 							.resourceUri("resourceUri")
 							.authorizationUri("authorizationUri")
 							.customerResourceUri("customerResourceUri")
@@ -326,12 +325,12 @@ public class SubscriptionRepositoryTest {
 								.setStart(3241654L))
 						.status(AuthorizationStatus.ACTIVE)
 						.expiresAt(32164L)
-						.grantType(GrantType.AUTHORIZATION_CODE)
+//						.grantType(GrantType.AUTHORIZATION_CODE)
 						.scope("scope")
 						.tokenType(TokenType.BEARER)
-						.error(OAuthError.INVALID_CLIENT)
-						.errorDescription("errorDescription")
-						.errorUri("errorUri")
+//						.error(OAuthError.INVALID_CLIENT)
+//						.errorDescription("errorDescription")
+//						.errorUri("errorUri")
 						.resourceUri("resourceUri")
 						.authorizationUri(null)
 						.customerResourceUri("customerResourceUri")
@@ -432,12 +431,12 @@ public class SubscriptionRepositoryTest {
 								.setStart(3241654L))
 						.status(AuthorizationStatus.ACTIVE)
 						.expiresAt(32164L)
-						.grantType(GrantType.AUTHORIZATION_CODE)
+//						.grantType(GrantType.AUTHORIZATION_CODE)
 						.scope("scope")
 						.tokenType(TokenType.BEARER)
-						.error(OAuthError.INVALID_CLIENT)
-						.errorDescription("errorDescription")
-						.errorUri("errorUri")
+//						.error(OAuthError.INVALID_CLIENT)
+//						.errorDescription("errorDescription")
+//						.errorUri("errorUri")
 						.resourceUri("resourceUri")
 						.authorizationUri(null)
 						.customerResourceUri("customerResourceUri")

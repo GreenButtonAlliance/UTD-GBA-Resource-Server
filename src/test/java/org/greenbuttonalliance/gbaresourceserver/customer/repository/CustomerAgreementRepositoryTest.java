@@ -147,6 +147,11 @@ public class CustomerAgreementRepositoryTest {
 	}
 
 	private static List<CustomerAgreement> buildTestData() {
+		//TODO: Add CustomerAccount to test CustomerAgreement to CustomerAccount mapping
+		//TODO: Add ServiceLocation to test CustomerAgreement to ServiceLocation mapping
+		//TODO: Add ServiceSupplier to test CustomerAgreement to ServiceSupplier mapping
+		//TODO: Add ProgramDateIdMappings to test CustomerAgreement to ProgramDateIdMappings mapping
+		//TODO: Add Statement to test CustomerAgreement to Statement mapping
 		List<CustomerAgreement> customerAgreements = Arrays.asList(
 			CustomerAgreement.builder()
 				.signDate(4000000L)

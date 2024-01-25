@@ -162,6 +162,10 @@ public class ServiceLocationRepositoryTest {
 		);
 	}
 	private static List<ServiceLocation> buildTestData() {
+		//TODO: Add EndDevice to test ServiceLocation to EndDevice mapping
+		//TODO: Add Meter to test ServiceLocation to Meter mapping
+		//TODO: Add TimeConfiguration to test ServiceLocation to TimeConfiguration mapping
+		//TODO: Add CustomerAgreement to test ServiceLocation to CustomerAgreement mapping
 		List<ServiceLocation> serviceLocations = Arrays.asList(
 			ServiceLocation.builder()
 				.description("test")

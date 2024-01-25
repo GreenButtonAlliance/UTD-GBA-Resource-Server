@@ -114,43 +114,52 @@ public class CustomerAccountRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		CustomerAccount fullyMappedCustomerAccount = customerAccountRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_TITLE)).orElse(null);
+		CustomerAccount fullyMappedCustomerAccount = customerAccountRepository.
+			findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_TITLE)).
+			orElse(null);
 		Assumptions.assumeTrue(fullyMappedCustomerAccount != null);
 
 		// first-level mappings; directly from fullyMappedCustomerAccount
-		Function<CustomerAccount, Optional<ElectronicAddress>> customerAccountToElectronicAddress = ca -> Optional.ofNullable(ca.getElectronicAddress());
-		Function<CustomerAccount, Optional<Status>> customerAccountToDocStatus = ca -> Optional.ofNullable(ca.getDocStatus());
-		Function<CustomerAccount, Optional<Status>> customerAccountToStatus = ca -> Optional.ofNullable(ca.getStatus());
-		Function<CustomerAccount, Optional<Organisation>> customerAccountToContactInfo = ca -> Optional.ofNullable(ca.getContactInfo());
-		Function<CustomerAccount, Optional<Set<AccountNotification>>> customerAccountToAccountNotifications = ca -> Optional.ofNullable(ca.getAccountNotifications());
+		Function<CustomerAccount, Optional<ElectronicAddress>> customerAccountToElectronicAddress = ca ->
+			Optional.ofNullable(ca.getElectronicAddress());
+
+		Function<CustomerAccount, Optional<Status>> customerAccountToDocStatus = ca ->
+			Optional.ofNullable(ca.getDocStatus());
+
+		Function<CustomerAccount, Optional<Status>> customerAccountToStatus = ca ->
+			Optional.ofNullable(ca.getStatus());
+
+		Function<CustomerAccount, Optional<Organisation>> customerAccountToContactInfo = ca ->
+			Optional.ofNullable(ca.getContactInfo());
+
+		Function<CustomerAccount, Optional<Set<AccountNotification>>> customerAccountToAccountNotifications = ca ->
+			Optional.ofNullable(ca.getAccountNotifications());
 
 		// second-level mappings; directly from fullyMappedCustomerAccount.contactInfo
-		Function<CustomerAccount, Optional<StreetAddress>> customerAccountToOrganisationStreetAddress = customerAccountToContactInfo.andThen(opt -> opt.map(
-			Organisation::getStreetAddress
-		));
-		Function<CustomerAccount, Optional<StreetAddress>> customerAccountToOrganisationPostalAddress = customerAccountToContactInfo.andThen(opt -> opt.map(
-			Organisation::getPostalAddress
-		));
-		Function<CustomerAccount, Optional<TelephoneNumber>> customerAccountToOrganisationPhone1 = customerAccountToContactInfo.andThen(opt -> opt.map(
-			Organisation::getPhone1
-		));
-		Function<CustomerAccount, Optional<TelephoneNumber>> customerAccountToOrganisationPhone2 = customerAccountToContactInfo.andThen(opt -> opt.map(
-			Organisation::getPhone2
-		));
-		Function<CustomerAccount, Optional<ElectronicAddress>> customerAccountToOrganisationElectronicAddress = customerAccountToContactInfo.andThen(opt -> opt.map(
-			Organisation::getElectronicAddress
-		));
+		Function<CustomerAccount, Optional<StreetAddress>> customerAccountToOrganisationStreetAddress =
+			customerAccountToContactInfo.andThen(opt -> opt.map(Organisation::getStreetAddress));
+
+		Function<CustomerAccount, Optional<StreetAddress>> customerAccountToOrganisationPostalAddress =
+			customerAccountToContactInfo.andThen(opt -> opt.map(Organisation::getPostalAddress));
+
+		Function<CustomerAccount, Optional<TelephoneNumber>> customerAccountToOrganisationPhone1 =
+			customerAccountToContactInfo.andThen(opt -> opt.map(Organisation::getPhone1));
+
+		Function<CustomerAccount, Optional<TelephoneNumber>> customerAccountToOrganisationPhone2 =
+			customerAccountToContactInfo.andThen(opt -> opt.map(Organisation::getPhone2));
+
+		Function<CustomerAccount, Optional<ElectronicAddress>> customerAccountToOrganisationElectronicAddress =
+			customerAccountToContactInfo.andThen(opt -> opt.map(Organisation::getElectronicAddress));
 
 		// third-level mappings; directly from fullyMappedCustomerAccount.contactInfo.streetAddress
-		Function<CustomerAccount, Optional<StreetDetail>> customerAccountToOrganisationStreetAddressStreetDetail = customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(
-			StreetAddress::getStreetDetail
-		));
-		Function<CustomerAccount, Optional<TownDetail>> customerAccountToOrganisationStreetAddressTownDetail = customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(
-			StreetAddress::getTownDetail
-		));
-		Function<CustomerAccount, Optional<Status>> customerAccountToOrganisationStreetAddressStatus = customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(
-			StreetAddress::getStatus
-		));
+		Function<CustomerAccount, Optional<StreetDetail>> customerAccountToOrganisationStreetAddressStreetDetail =
+			customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(StreetAddress::getStreetDetail));
+
+		Function<CustomerAccount, Optional<TownDetail>> customerAccountToOrganisationStreetAddressTownDetail =
+			customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(StreetAddress::getTownDetail));
+
+		Function<CustomerAccount, Optional<Status>> customerAccountToOrganisationStreetAddressStatus =
+			customerAccountToOrganisationStreetAddress.andThen(opt -> opt.map(StreetAddress::getStatus));
 
 		Assertions.assertAll(
 			"Entity mapping failures for customer account " + fullyMappedCustomerAccount.getUuid(),
@@ -173,6 +182,9 @@ public class CustomerAccountRepositoryTest {
 	}
 
 	private static List<CustomerAccount> buildTestData() {
+		//TODO: Add Customer to test CustomerAccount to Customer mapping
+		//TODO: Add CustomerAgreement to test CustomerAccount to CustomerAgreement mapping
+		//TODO: Add Statement to test CustomerAccount to Statement mapping
 		List<CustomerAccount> customerAccounts = Arrays.asList(
 			CustomerAccount.builder()
 				.type("foo")
@@ -232,9 +244,15 @@ public class CustomerAccountRepositoryTest {
 				.accountNotifications(Stream.of(
 					AccountNotification.builder()
 						.methodKind(NotificationMethodKind.EMAIL)
+						.time(1706148345L)
+						.note("foo")
+						.customerNotificationKind("Move Out")
 						.build(),
 					AccountNotification.builder()
 						.methodKind(NotificationMethodKind.LETTER)
+						.time(1672581930L)
+						.note("bar")
+						.customerNotificationKind("Move In")
 						.build())
 					.collect(Collectors.toSet()))
 				.build(),
@@ -271,6 +289,9 @@ public class CustomerAccountRepositoryTest {
 				.accountNotifications(Stream.of(
 						AccountNotification.builder()
 							.methodKind(NotificationMethodKind.EMAIL)
+							.time(1685628330L)
+							.note("Delinquency Notice")
+							.customerNotificationKind("Delinquency Notice")
 							.build())
 					.collect(Collectors.toSet()))
 				.build(),

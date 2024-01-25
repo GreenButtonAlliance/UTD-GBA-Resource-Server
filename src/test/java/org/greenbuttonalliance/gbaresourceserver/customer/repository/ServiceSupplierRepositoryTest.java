@@ -119,6 +119,7 @@ public class ServiceSupplierRepositoryTest {
 	}
 
 	private static List<ServiceSupplier> buildTestData() {
+		//TODO: Add CustomerAgreement to test ServiceSupplier to CustomerAgreement mapping
 		List<ServiceSupplier> serviceSuppliers = Arrays.asList(
 			ServiceSupplier.builder()
 				.organisation(Organisation.builder()

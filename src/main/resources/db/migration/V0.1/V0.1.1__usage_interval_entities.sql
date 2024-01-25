@@ -27,16 +27,16 @@ CREATE TABLE IF NOT EXISTS usage.interval_block (
   self_link_href TEXT,
   up_link_href TEXT,
   updated TIMESTAMP,
-  start BIGINT,
   duration BIGINT,
+  start BIGINT,
   meter_reading_uuid UUID NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS usage.interval_reading (
   id BIGSERIAL PRIMARY KEY,
   cost BIGINT,
-  start BIGINT,
   duration BIGINT,
+  start BIGINT,
   value BIGINT,
   consumption_tier SMALLINT,
   tou SMALLINT,

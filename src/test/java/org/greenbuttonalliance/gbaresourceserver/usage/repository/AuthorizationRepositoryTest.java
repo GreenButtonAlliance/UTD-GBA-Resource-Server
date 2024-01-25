@@ -21,8 +21,17 @@ import lombok.RequiredArgsConstructor;
 import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.*;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationStatus;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
+import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +54,14 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 
 @Testcontainers
-@DataJpaTest(showSql = false)
+@DataJpaTest(showSql = true)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthorizationRepositoryTest {
 	private final AuthorizationRepository authorizationRepository;
 
-	private static final String PRESENT_SELF_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/1";
+	private static final String PRESENT_SELF_LINK =
+		"https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/123456";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final String DUMMY_STRING = "test1";
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -108,20 +118,22 @@ public class AuthorizationRepositoryTest {
 	}
 
 	//TODO: Fix code in order to compile successfully
-//	@Test
-//	public void entityMappings_areNotNull() {
-//		Authorization fullyMappedAuthorization = authorizationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
-//		Assumptions.assumeTrue(fullyMappedAuthorization != null);
-//
-//		Function<Authorization, Optional<Subscription>> authorizationSubscriptionInfo = auth -> Optional.ofNullable(auth.getSubscription());
-//
-//		assertAll(
-//			"Entity mapping failures for customer account " + fullyMappedAuthorization.getUuid(),
-//			Stream.of(authorizationSubscriptionInfo)
-//				.map(mappingFunc ->
-//					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedAuthorization).isPresent()))
+	@Test
+	public void entityMappings_areNotNull() {
+
+		// Extract fetching authorization logic into a method
+		Authorization fullyMappedAuthorization = authorizationRepository.
+			findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		Assumptions.assumeTrue(fullyMappedAuthorization != null);
+
+//		Assertions.assertAll(
+//				STR."Entity mapping failures for customer account \{fullyMappedAuthorization.getUuid()}",
+//			Stream.of((Function<Authorization, Optional<Subscription>>) auth -> {
+//						return Optional.ofNullable(auth.getSubscription());
+//					})
+//				.map(mappingFunc -> () -> Assertions.assertTrue(mappingFunc.apply(fullyMappedAuthorization).isPresent()))
 //		);
-//	}
+	}
 
 	private static List<Authorization> buildTestData() {
 		List<Authorization> authorizations = Collections.singletonList(
@@ -130,8 +142,9 @@ public class AuthorizationRepositoryTest {
 				.description("Green Button Alliance Data Custodian Authorization")
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation")
+				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Authorization")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
+				.accessToken(DUMMY_STRING)
 				.authorizedPeriod(new DateTimeInterval()
 					.setDuration(21L)
 					.setStart(654L))
@@ -140,18 +153,14 @@ public class AuthorizationRepositoryTest {
 					.setStart(3241654L))
 				.status(AuthorizationStatus.ACTIVE)
 				.expiresAt(32164L)
-				.grantType(GrantType.AUTHORIZATION_CODE)
 				.scope(DUMMY_STRING)
 				.tokenType(TokenType.BEARER)
-				.error(OAuthError.INVALID_CLIENT)
-				.errorDescription(DUMMY_STRING)
-				.errorUri(DUMMY_STRING)
 				.resourceUri("resourceUri")
 				.authorizationUri("authorizationUri")
 				.customerResourceUri("customerResourceUri")
-//					.applicationInformationId(UUID.randomUUID())
-//					.retailCustomerId(UUID.randomUUID())
-//					.subscription(Subscription.builder().selfLinkHref("asdfasdf").build())
+//				.applicationInformationId(UUID.randomUUID())
+//				.retailCustomerId(UUID.randomUUID())
+//				.subscriptionId(UUID.randomUUID())
 				.build()
 		);
 
@@ -166,7 +175,7 @@ public class AuthorizationRepositoryTest {
 			ApplicationInformation ai = ApplicationInformation.builder()
 				.description(DUMMY_STRING)
 				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
-				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
+				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/234567")
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation")
 				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
@@ -178,7 +187,7 @@ public class AuthorizationRepositoryTest {
 				.clientName(DUMMY_STRING)
 				.clientSecret(DUMMY_STRING)
 				.clientSecretExpiresAt(0L)
-				.clientUri(null)
+				.clientUri(DUMMY_STRING)
 				.contacts(new HashSet<>(Arrays.asList(
 					"Contact1",
 					"Contact3"
@@ -215,7 +224,7 @@ public class AuthorizationRepositoryTest {
 				)))
 				.build();
 			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, auth.getSelfLinkHref()));
-//			sub.setApplicationInformation(ai);
+			auth.setApplicationInformation(ai);
 //			sub.setRetailCustomer(RetailCustomer.builder().build());
 //			sub.getRetailCustomer().setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
 			// TODO hydrate UsagePoint reference once entity is available

@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS usage.usage_point (
   service_delivery_point_uuid UUID REFERENCES usage.service_delivery_point ON DELETE CASCADE,
   time_configuration_uuid UUID REFERENCES usage.time_configuration ON DELETE CASCADE,
   retail_customer_uuid UUID REFERENCES usage.retail_customer ON DELETE CASCADE,
+  subscription_uuid UUID REFERENCES usage.subscription ON DELETE CASCADE,
   ami_billing_ready usage.ami_billing_ready_kind,
   check_billing BOOLEAN,
   connection_state usage.usage_point_connected_kind,
@@ -173,8 +174,18 @@ CREATE TABLE IF NOT EXISTS usage.usage_point_aggregate_node_ref (
     PRIMARY KEY (usage_point_uuid, aggregate_node_ref_id)
 );
 
-ALTER TABLE usage.meter_reading ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;
+ALTER TABLE usage.meter_reading
+  ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE
+    CASCADE;
 
-ALTER TABLE usage.electric_power_quality_summaries ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;
+ALTER TABLE usage.electric_power_quality_summaries
+  ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES
+    usage.usage_point ON DELETE CASCADE;
 
-ALTER TABLE usage.usage_summaries ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE CASCADE;
+ALTER TABLE usage.usage_summaries
+  ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE
+    CASCADE;
+
+ALTER TABLE usage.subscription
+  ADD COLUMN IF NOT EXISTS usage_point_uuid UUID REFERENCES usage.usage_point ON DELETE
+    CASCADE;

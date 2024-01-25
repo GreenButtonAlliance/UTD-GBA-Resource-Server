@@ -16,7 +16,6 @@
 
 package org.greenbuttonalliance.gbaresourceserver.usage.model;
 
-import com.sun.istack.NotNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +25,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -41,7 +39,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @SuperBuilder
 @NoArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class Subscription extends IdentifiedObject {
 
 	@Column(name = "hashed_id")
@@ -59,11 +57,14 @@ public class Subscription extends IdentifiedObject {
 	private Authorization authorization;
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@NotNull
 	@JoinColumn(name = "retail_customer_id", nullable = false)
 	private RetailCustomer retailCustomer;
 
-	// TODO add UsagePoint reference once entity is available
-//	@Column(name = "usage_point_id", nullable = false)
-//	private int usagePointId;
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "usage_point_id", nullable = false)
+	private UsagePoint usagePoint;
+
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "time_configuration_id", nullable = false)
+	private TimeConfiguration timeConfiguration;
 }
