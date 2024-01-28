@@ -37,7 +37,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -153,11 +152,9 @@ public class IntervalBlockRepositoryTest {
 	private static List<IntervalBlock> buildTestData() {
 		List<IntervalBlock> intervalBlocks = Arrays.asList(
 			IntervalBlock.builder()
-				.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-				.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330578000L)
 					.setDuration(1800L))
@@ -186,12 +183,10 @@ public class IntervalBlockRepositoryTest {
 					.collect(Collectors.toSet()))
 				.build(),
 			IntervalBlock.builder()
-				.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/135790")
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-				.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330578800L)
 					.setDuration(900L))
@@ -208,12 +203,10 @@ public class IntervalBlockRepositoryTest {
 					.collect(Collectors.toSet()))
 				.build(),
 			IntervalBlock.builder()
-				.published(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/135791")
 				.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 					"UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-				.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 				.interval(new DateTimeInterval()
 					.setStart(1330987644L)
 					.setDuration(900L))
@@ -223,12 +216,10 @@ public class IntervalBlockRepositoryTest {
 
 		MeterReading testMeterReading = MeterReading.builder()
 			.description("Fifteen Minute Electricity Consumption")
-			.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 				"UsagePoint/5446AF3F/MeterReading/123456")
 			.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
 				"UsagePoint/5446AF3F/MeterReading")
-			.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 			.intervalBlocks(new HashSet<>(intervalBlocks))
 			.usagePoint(TestUtils.createUsagePoint())
 			.build();
