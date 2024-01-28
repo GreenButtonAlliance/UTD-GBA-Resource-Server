@@ -24,6 +24,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -43,7 +45,7 @@ public abstract class IdentifiedObject {
 	@Column(insertable = false, updatable = false)
 	private String description;
 
-	@Column(nullable = false)
+	@CreationTimestamp
 	private LocalDateTime published;
 
 	@Column(name = "self_link_href", nullable = false)
@@ -52,7 +54,7 @@ public abstract class IdentifiedObject {
 	@Column(name = "up_link_href", nullable = false)
 	private String upLinkHref;
 
-	@Column(nullable = false)
+	@UpdateTimestamp
 	private LocalDateTime updated;
 
 	@Override

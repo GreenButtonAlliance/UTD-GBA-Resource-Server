@@ -43,7 +43,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -143,10 +142,8 @@ public class ReadingTypeRepositoryTest {
 		List<ReadingType> readingTypes = Arrays.asList(
 			ReadingType.builder()
 				.description("Type of Meter Reading Data")
-				.published(LocalDateTime.now())
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-				.updated(LocalDateTime.now())
 				.accumulationBehavior(AccumulationKind.DELTA_DATA)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
@@ -169,19 +166,15 @@ public class ReadingTypeRepositoryTest {
 				.argumentDenominator(2L)
 				.meterReading(MeterReading.builder()
 					.description("Fifteen Minute Electricity Consumption")
-					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Received")
-				.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/1")
 				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-				.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.accumulationBehavior(AccumulationKind.DELTA_DATA)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
@@ -204,20 +197,16 @@ public class ReadingTypeRepositoryTest {
 				.argumentDenominator(null)
 				.meterReading(MeterReading.builder()
 					.description("Hourly Wh Received")
-					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1" +
 								  "/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
 					.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
-					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Delivered")
-				.published(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/2")
 				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.accumulationBehavior(AccumulationKind.BULK_QUANTITY)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
