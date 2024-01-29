@@ -15,7 +15,7 @@ Sandbox application. The upgrade will include the following objectives:
 ## Data Schema Files used by the GBA Resource Server
 
 - [NAESB REQ.21 ESPI ver. 4.0 Energy Usage](https://www.naesb.org/espi_v4.xsd)
-- [NAESB REQ.21 ESPI ver. 4.0 Retail Customer](https://www.naesb.org/espi/customer_v4.xsd)
+- [NAESB REQ.21 ESPI ver. 4.0 Retail Customer](https://www.naesb.org/espi/retailcustomer_v4.xsd)
 - [GBA Atom Schema](https://www.greenbuttondata.org/xsd/4_0/atom.xsd)
 
 The original source code can be found in two GitHub repositories:
