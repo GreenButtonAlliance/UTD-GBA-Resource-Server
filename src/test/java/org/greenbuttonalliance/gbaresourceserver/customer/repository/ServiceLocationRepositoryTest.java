@@ -36,8 +36,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +55,6 @@ public class ServiceLocationRepositoryTest {
 	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";
 	private static final String NOT_PRESENT_TITLE = "bar";
 
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -168,10 +165,8 @@ public class ServiceLocationRepositoryTest {
 		List<ServiceLocation> serviceLocations = Arrays.asList(
 			ServiceLocation.builder()
 				.description("test")
-				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
-				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.type("Lorem")
 				.mainAddress(
 					StreetAddress.builder()
@@ -314,10 +309,8 @@ public class ServiceLocationRepositoryTest {
 				.build(),
 			ServiceLocation.builder()
 				.description("test")
-				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_2/resource/ApplicationInformation")
-				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.type("Lorem")
 				.mainAddress(
 					StreetAddress.builder()
