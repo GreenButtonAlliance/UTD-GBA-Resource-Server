@@ -34,7 +34,10 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ItemKind;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.QualityOfReading;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -58,7 +61,8 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class LineItemRepositoryTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class LineItemRepositoryTest {
 
 	private final LineItemRepository lineItemRepository;
 	private static final Long PRESENT = 100000L;
@@ -81,6 +85,7 @@ public class LineItemRepositoryTest {
 	}
 
 	@Test
+	@Order(1)
 	public void findByPresentId_returnsMatching() {
 		Long presentId = PRESENT + 1;
 		Long foundId = lineItemRepository.findById(presentId).map(LineItem::getId).orElse(null);
