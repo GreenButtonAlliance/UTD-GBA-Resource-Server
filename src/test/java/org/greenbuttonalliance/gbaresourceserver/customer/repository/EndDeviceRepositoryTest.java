@@ -34,8 +34,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +57,6 @@ public class EndDeviceRepositoryTest {
 		"https://localhost:8080/DataCustodian/espi/1_1/" +
 			"resource/EndDevice/174357";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -136,10 +133,8 @@ public class EndDeviceRepositoryTest {
 		List<EndDevice> endDevices = Arrays.asList(
 			EndDevice.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")
 				.serialNumber("serialNumber")
@@ -170,10 +165,8 @@ public class EndDeviceRepositoryTest {
 
 			EndDevice.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/EndDevice/175358")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")
 				.serialNumber("serialNumber")
@@ -204,10 +197,8 @@ public class EndDeviceRepositoryTest {
 
 			EndDevice.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/EndDevice/176359")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.type("type")
 				.utcNumber("utcNumber")
 				.serialNumber("serialNumber")

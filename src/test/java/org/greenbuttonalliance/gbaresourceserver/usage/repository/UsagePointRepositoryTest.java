@@ -39,8 +39,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -69,7 +67,6 @@ public class UsagePointRepositoryTest {
 													"/DataCustodian/espi/1_1/resource" +
 													"/UsagePoint/123456";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -163,10 +160,8 @@ public class UsagePointRepositoryTest {
 		List<UsagePoint> usagePoints = Arrays.asList(
 			UsagePoint.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
 				.serviceCategory(ServiceKind.ELECTRICITY)
 				.status((short) 1)
@@ -187,10 +182,8 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -198,10 +191,8 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
-					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -213,16 +204,12 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
-							.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-							.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
-								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref(PRESENT_SELF_LINK)
 								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -247,7 +234,6 @@ public class UsagePointRepositoryTest {
 							.intervalBlocks(Stream.of(
 									IntervalBlock.builder()
 										.description("UsagePoint Repository Test IntervalBlock 1")
-										.published(LocalDateTime.now())
 										.selfLinkHref("https://data.greenbuttonconnect" +
 													  ".org/DataCustodian/espi/1_1/resource" +
 													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
@@ -255,21 +241,18 @@ public class UsagePointRepositoryTest {
 													".org/DataCustodian/espi/1_1/resource" +
 													"/RetailCustomer" +
 													"/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.now())
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
 										.build(),
 									IntervalBlock.builder()
 										.description("UsagePoint Repository Test IntervalBlock 2")
-										.published(LocalDateTime.now())
 										.selfLinkHref("https://data.greenbuttonconnect" +
 													  ".org/DataCustodian/espi/1_1/resource" +
 													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 										.upLinkHref("https://data.greenbuttonconnect" +
 													".org/DataCustodian/espi/1_1/resource" +
 													"/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.now())
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
@@ -281,10 +264,8 @@ public class UsagePointRepositoryTest {
 				.electricPowerQualitySummaries(new HashSet<>(
 					Collections.singletonList(
 						ElectricPowerQualitySummary.builder()
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.flickerPlt(1L)
 							.flickerPst(2L)
 							.harmonicVoltage(3L)
@@ -308,10 +289,8 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						UsageSummary.builder()
 							.description("description")
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.billingPeriod(new DateTimeInterval()
 								.setDuration(10L)
 								.setStart(11L))
@@ -482,10 +461,8 @@ public class UsagePointRepositoryTest {
 
 			UsagePoint.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/175")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
 				.serviceCategory(ServiceKind.WATER)
 				.status((short) 1)
@@ -506,10 +483,8 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -517,10 +492,8 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
-					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -532,16 +505,12 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
-							.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-							.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
-								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref(PRESENT_SELF_LINK)
 								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -565,19 +534,15 @@ public class UsagePointRepositoryTest {
 								.build())
 							.intervalBlocks(Stream.of(
 									IntervalBlock.builder()
-										.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
 										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
 										.build(),
 									IntervalBlock.builder()
-										.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
@@ -589,10 +554,8 @@ public class UsagePointRepositoryTest {
 				.electricPowerQualitySummaries(new HashSet<>(
 					Collections.singletonList(
 						ElectricPowerQualitySummary.builder()
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.flickerPlt(1L)
 							.flickerPst(2L)
 							.harmonicVoltage(3L)
@@ -616,10 +579,8 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						UsageSummary.builder()
 							.description("description")
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.billingPeriod(new DateTimeInterval()
 								.setDuration(10L)
 								.setStart(11L))
@@ -790,10 +751,8 @@ public class UsagePointRepositoryTest {
 
 			UsagePoint.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/176")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.roleFlags(new byte[1])
 				.serviceCategory(ServiceKind.ELECTRICITY)
 				.status((short) 1)
@@ -814,10 +773,8 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/186")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-					.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -825,10 +782,8 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
 					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
-					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -840,16 +795,12 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
-							.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-							.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
-								.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.selfLinkHref(PRESENT_SELF_LINK)
 								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-								.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -873,19 +824,15 @@ public class UsagePointRepositoryTest {
 								.build())
 							.intervalBlocks(Stream.of(
 									IntervalBlock.builder()
-										.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
 										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
 										.build(),
 									IntervalBlock.builder()
-										.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-										.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
@@ -897,10 +844,8 @@ public class UsagePointRepositoryTest {
 				.electricPowerQualitySummaries(new HashSet<>(
 					Collections.singletonList(
 						ElectricPowerQualitySummary.builder()
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.flickerPlt(1L)
 							.flickerPst(2L)
 							.harmonicVoltage(3L)
@@ -924,10 +869,8 @@ public class UsagePointRepositoryTest {
 					Collections.singletonList(
 						UsageSummary.builder()
 							.description("description")
-							.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.selfLinkHref(PRESENT_SELF_LINK)
 							.upLinkHref(upLinkHref)
-							.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 							.billingPeriod(new DateTimeInterval()
 								.setDuration(10L)
 								.setStart(11L))

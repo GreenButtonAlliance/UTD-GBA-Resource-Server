@@ -32,8 +32,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -54,7 +52,6 @@ public class TimeConfigurationRepositoryTest {
 	private final TimeConfigurationRepository timeConfigurationRepository;
 	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -120,10 +117,8 @@ public class TimeConfigurationRepositoryTest {
 	private static List<TimeConfiguration> buildTestData() {
 		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
 		List<TimeConfiguration> timeConfigurations =  Arrays.asList(TimeConfiguration.builder()
-			.published(LocalDateTime.parse("2011-07-03 12:09:38", SQL_FORMATTER))
 			.selfLinkHref(SELF_LINK)
 			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-			.updated(LocalDateTime.parse("2015-06-22 12:11:04", SQL_FORMATTER))
 			.dstEndRule(deadbeefs)
 			.dstOffset(100L)
 			.dstStartRule(deadbeefs)
@@ -134,10 +129,8 @@ public class TimeConfigurationRepositoryTest {
 					)))
 				.build(),
 		TimeConfiguration.builder()
-			.published(LocalDateTime.parse("2014-11-18 12:20:45", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
 			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-			.updated(LocalDateTime.parse("2015-10-15 12:21:30", SQL_FORMATTER))
 			.dstEndRule(deadbeefs)
 			.dstOffset(200L)
 			.dstStartRule(deadbeefs)
@@ -148,10 +141,8 @@ public class TimeConfigurationRepositoryTest {
 				)))
 			.build(),
 		TimeConfiguration.builder()
-			.published(LocalDateTime.parse("2017-10-15 12:23:04", SQL_FORMATTER))
 			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
 			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
-			.updated(LocalDateTime.parse("2017-10-15 12:23:17", SQL_FORMATTER))
 			.dstEndRule(deadbeefs)
 			.dstOffset(300L)
 			.dstStartRule(deadbeefs)

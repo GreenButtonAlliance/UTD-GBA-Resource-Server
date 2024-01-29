@@ -44,8 +44,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -71,7 +69,6 @@ public class UsageSummaryRepositoryTest {
 	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/UsageSummary";
 	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/UsageSummary/174";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -145,10 +142,8 @@ public class UsageSummaryRepositoryTest {
 		List<UsageSummary> usageSummaries = Arrays.asList(
 			UsageSummary.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
 					.setStart(11L))
@@ -299,10 +294,8 @@ public class UsageSummaryRepositoryTest {
 
 			UsageSummary.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/175")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
 					.setStart(11L))
@@ -453,10 +446,8 @@ public class UsageSummaryRepositoryTest {
 
 			UsageSummary.builder()
 				.description("description")
-				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/176")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
 					.setStart(11L))

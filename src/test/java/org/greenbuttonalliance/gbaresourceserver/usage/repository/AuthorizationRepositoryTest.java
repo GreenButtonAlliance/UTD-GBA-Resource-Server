@@ -42,8 +42,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -82,7 +80,6 @@ public class AuthorizationRepositoryTest {
 
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 	private static final String DUMMY_STRING = "test1";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -167,10 +164,8 @@ public class AuthorizationRepositoryTest {
 		RetailCustomer rc = RetailCustomer.builder()
 			.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, RETAILCUSTOMER_SELF_LINK))
 			.description("Retail Customer Description")
-			.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 			.selfLinkHref(RETAILCUSTOMER_SELF_LINK)
 			.upLinkHref(RETAILCUSTOMER_UP_LINK)
-			.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 			.enabled(Boolean.TRUE)
 			.firstName("John")
 			.lastName("Doe")
@@ -184,10 +179,8 @@ public class AuthorizationRepositoryTest {
 			Authorization.builder()
 				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AUTHORIZATION_SELF_LINK))
 				.description("Green Button Alliance Data Custodian Authorization")
-				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(AUTHORIZATION_SELF_LINK)
 				.upLinkHref(AUTHORIZATION_UP_LINK)
-				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.accessToken(DUMMY_STRING)
 				.authorizedPeriod(new DateTimeInterval()
 					.setDuration(21L)
@@ -215,10 +208,8 @@ public class AuthorizationRepositoryTest {
 			ApplicationInformation ai = ApplicationInformation.builder()
 				.uuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, APPLICATIONINFORMATION_SELF_LINK))
 				.description(DUMMY_STRING)
-				.published(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(APPLICATIONINFORMATION_SELF_LINK)
 				.upLinkHref(APPLICATIONINFORMATION_UP_LINK)
-				.updated(LocalDateTime.parse("2014-01-02 05:00:00", SQL_FORMATTER))
 				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
 				.authorizationServerRegistrationEndpoint(null)
 				.authorizationServerTokenEndpoint(DUMMY_STRING)

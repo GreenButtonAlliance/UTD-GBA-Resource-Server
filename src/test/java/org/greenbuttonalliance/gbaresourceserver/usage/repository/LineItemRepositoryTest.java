@@ -43,7 +43,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -64,7 +63,6 @@ public class LineItemRepositoryTest {
 	private final LineItemRepository lineItemRepository;
 	private static final Long PRESENT = 100000L;
 	private static final Long NOT_PRESENT = 9999999L;
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection

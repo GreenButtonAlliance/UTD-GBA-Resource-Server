@@ -45,8 +45,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -71,7 +69,6 @@ public class MeterReadingRepositoryTest {
 	// for testing findById
 	private static final String PRESENT_SELF_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -151,16 +148,12 @@ public class MeterReadingRepositoryTest {
 		List<MeterReading> meterReadings = Arrays.asList(
 			MeterReading.builder()
 				.description("Fifteen Minute Electricity Consumption")
-				.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-				.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 				.readingType(ReadingType.builder()
 					.description("Type of Meter Reading Data")
-					.published(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.selfLinkHref(PRESENT_SELF_LINK)
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-					.updated(LocalDateTime.parse("2012-10-24 04:00:00", SQL_FORMATTER))
 					.accumulationBehavior(AccumulationKind.DELTA_DATA)
 					.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 					.consumptionTier(null)
@@ -184,19 +177,15 @@ public class MeterReadingRepositoryTest {
 					.build())
 				.intervalBlocks(Stream.of(
 					IntervalBlock.builder()
-						.published(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.updated(LocalDateTime.parse("2012-03-02 05:00:00", SQL_FORMATTER))
 						.interval(new DateTimeInterval()
 							.setDuration(10L)
 							.setStart(11L))
 						.build(),
 					IntervalBlock.builder()
-						.published(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.updated(LocalDateTime.parse("2012-03-03 05:00:00", SQL_FORMATTER))
 						.interval(new DateTimeInterval()
 							.setDuration(10L)
 							.setStart(11L))
@@ -206,16 +195,12 @@ public class MeterReadingRepositoryTest {
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Received")
-				.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/1")
 				.upLinkHref("DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
-				.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 				.readingType(ReadingType.builder()
 					.description("Hourly Wh Received")
-					.published(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/1")
 					.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
-					.updated(LocalDateTime.parse("2014-01-31 05:00:00", SQL_FORMATTER))
 					.accumulationBehavior(AccumulationKind.DELTA_DATA)
 					.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 					.consumptionTier(null)
@@ -239,10 +224,8 @@ public class MeterReadingRepositoryTest {
 					.build())
 				.intervalBlocks(Stream.of(
 					IntervalBlock.builder()
-						.published(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/175")
 						.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
-						.updated(LocalDateTime.parse("2012-03-04 05:00:00", SQL_FORMATTER))
 						.interval(new DateTimeInterval()
 							.setDuration(10L)
 							.setStart(11L))
@@ -253,10 +236,8 @@ public class MeterReadingRepositoryTest {
 				.build(),
 			MeterReading.builder()
 				.description("Hourly Wh Delivered")
-				.published(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading/2")
 				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/RetailCustomer/1/UsagePoint/1/MeterReading")
-				.updated(LocalDateTime.parse("2013-05-28 07:00:00", SQL_FORMATTER))
 				.readingType(null)
 				.intervalBlocks(Collections.emptySet())
 				.usagePoint(TestUtils.createUsagePoint())

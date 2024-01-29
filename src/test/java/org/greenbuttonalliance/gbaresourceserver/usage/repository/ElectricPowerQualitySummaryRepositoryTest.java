@@ -34,8 +34,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -61,7 +59,6 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 	// for testing findById
 	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/174";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Container
 	@ServiceConnection
@@ -132,10 +129,8 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 	private static List<ElectricPowerQualitySummary> buildTestData() {
 		List<ElectricPowerQualitySummary> electricPowerQualitySummaries = Arrays.asList(
 			ElectricPowerQualitySummary.builder()
-				.published(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.selfLinkHref(PRESENT_SELF_LINK)
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-01 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)
 				.harmonicVoltage(3L)
@@ -155,10 +150,8 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
-				.published(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/175")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-02 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)
 				.harmonicVoltage(3L)
@@ -178,10 +171,8 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
-				.published(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/176")
 				.upLinkHref(upLinkHref)
-				.updated(LocalDateTime.parse("2022-03-03 05:00:00", SQL_FORMATTER))
 				.flickerPlt(1L)
 				.flickerPst(2L)
 				.harmonicVoltage(3L)

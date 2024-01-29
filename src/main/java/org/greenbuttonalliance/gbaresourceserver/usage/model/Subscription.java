@@ -29,8 +29,6 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.greenbuttonalliance.gbaresourceserver.common.model.IdentifiedObject;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "subscription", schema = "usage") // the table name is plural?
 @Getter
@@ -44,8 +42,8 @@ public class Subscription extends IdentifiedObject {
 	@Column(name = "hashed_id")
 	private String hashedId;
 
-	@Column(name = "last_update")
-	private LocalDateTime lastUpdate;
+//	@Column(name = "last_update")
+//	private LocalDateTime lastUpdate;
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "application_information_id", nullable = false)
