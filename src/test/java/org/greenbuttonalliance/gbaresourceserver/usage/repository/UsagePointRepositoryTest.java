@@ -61,11 +61,10 @@ public class UsagePointRepositoryTest {
 	private final UsagePointRepository usagePointRepository;
 
 	// for testing findById
-	private static final String upLinkHref = "https://data.greenbuttonconnect.org" +
-											 "/DataCustodian/espi/1_1/resource/UsagePoint";
-	private static final String PRESENT_SELF_LINK = "https://data.greenbuttonconnect.org" +
-													"/DataCustodian/espi/1_1/resource" +
-													"/UsagePoint/123456";
+	private static final String upLinkHref =
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/UsagePoint";
+	private static final String PRESENT_SELF_LINK =
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/UsagePoint/123456";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	@Container
@@ -182,8 +181,10 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -191,8 +192,9 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/1")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/RetailCustomer")
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -205,11 +207,13 @@ public class UsagePointRepositoryTest {
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
 							.selfLinkHref(PRESENT_SELF_LINK)
-							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+							.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+								"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
 								.selfLinkHref(PRESENT_SELF_LINK)
-								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+								.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+									"ReadingType")
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -236,7 +240,8 @@ public class UsagePointRepositoryTest {
 										.description("UsagePoint Repository Test IntervalBlock 1")
 										.selfLinkHref("https://data.greenbuttonconnect" +
 													  ".org/DataCustodian/espi/1_1/resource" +
-													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
+													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/" +
+											"MeterReading/01/IntervalBlock/173")
 										.upLinkHref("https://data.greenbuttonconnect" +
 													".org/DataCustodian/espi/1_1/resource" +
 													"/RetailCustomer" +
@@ -249,10 +254,12 @@ public class UsagePointRepositoryTest {
 										.description("UsagePoint Repository Test IntervalBlock 2")
 										.selfLinkHref("https://data.greenbuttonconnect" +
 													  ".org/DataCustodian/espi/1_1/resource" +
-													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
+													  "/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/" +
+											"MeterReading/01/IntervalBlock/174")
 										.upLinkHref("https://data.greenbuttonconnect" +
 													".org/DataCustodian/espi/1_1/resource" +
-													"/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+													"/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/" +
+											"MeterReading/01/IntervalBlock")
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
@@ -461,7 +468,8 @@ public class UsagePointRepositoryTest {
 
 			UsagePoint.builder()
 				.description("description")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/175")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+					"UsagePoint/175")
 				.upLinkHref(upLinkHref)
 				.roleFlags(new byte[1])
 				.serviceCategory(ServiceKind.WATER)
@@ -483,8 +491,10 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -492,8 +502,9 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/1")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/RetailCustomer")
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -506,11 +517,13 @@ public class UsagePointRepositoryTest {
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
 							.selfLinkHref(PRESENT_SELF_LINK)
-							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+							.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+								"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
 								.selfLinkHref(PRESENT_SELF_LINK)
-								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+								.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+									"ReadingType")
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -534,15 +547,21 @@ public class UsagePointRepositoryTest {
 								.build())
 							.intervalBlocks(Stream.of(
 									IntervalBlock.builder()
-										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
-										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+										.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
+										.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/" +
+											"IntervalBlock")
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
 										.build(),
 									IntervalBlock.builder()
-										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
-										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+										.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
+										.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/" +
+											"IntervalBlock")
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
@@ -751,7 +770,7 @@ public class UsagePointRepositoryTest {
 
 			UsagePoint.builder()
 				.description("description")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/UsagePoint/176")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/UsagePoint/176")
 				.upLinkHref(upLinkHref)
 				.roleFlags(new byte[1])
 				.serviceCategory(ServiceKind.ELECTRICITY)
@@ -773,8 +792,10 @@ public class UsagePointRepositoryTest {
 					)
 					.build())
 				.timeConfiguration(TimeConfiguration.builder()
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/186")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/186")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 					.dstEndRule(deadbeefs)
 					.dstOffset(200L)
 					.dstStartRule(deadbeefs)
@@ -782,8 +803,9 @@ public class UsagePointRepositoryTest {
 					.build())
 				.retailCustomer(RetailCustomer.builder()
 					.description("Hourly Wh Received")
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/1")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/1")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/RetailCustomer")
 					.enabled(Boolean.FALSE)
 					.firstName("First")
 					.lastName("last")
@@ -796,11 +818,13 @@ public class UsagePointRepositoryTest {
 						MeterReading.builder()
 							.description("Fifteen Minute Electricity Consumption")
 							.selfLinkHref(PRESENT_SELF_LINK)
-							.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+							.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+								"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 							.readingType(ReadingType.builder()
 								.description("Type of Meter Reading Data")
 								.selfLinkHref(PRESENT_SELF_LINK)
-								.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+								.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+									"ReadingType")
 								.accumulationBehavior(AccumulationKind.DELTA_DATA)
 								.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 								.consumptionTier(null)
@@ -824,15 +848,20 @@ public class UsagePointRepositoryTest {
 								.build())
 							.intervalBlocks(Stream.of(
 									IntervalBlock.builder()
-										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
-										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+										.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/173")
+										.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))
 										.build(),
 									IntervalBlock.builder()
-										.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
-										.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock")
+										.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/IntervalBlock/174")
+										.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+											"resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/" +
+											"IntervalBlock")
 										.interval(new DateTimeInterval()
 											.setDuration(10L)
 											.setStart(11L))

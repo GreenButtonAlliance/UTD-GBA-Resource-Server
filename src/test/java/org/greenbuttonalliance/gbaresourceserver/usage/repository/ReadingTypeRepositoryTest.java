@@ -65,9 +65,8 @@ public class ReadingTypeRepositoryTest {
 	private final ReadingTypeRepository readingTypeRepository;
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://data.greenbuttonconnect" +
-													".org/DataCustodian/espi/1_1/resource" +
-													"/ReadingType/123456";
+	private static final String PRESENT_SELF_LINK =
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType/123456";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	private static final DateTimeFormatter SQL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -143,7 +142,7 @@ public class ReadingTypeRepositoryTest {
 			ReadingType.builder()
 				.description("Type of Meter Reading Data")
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+				.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType")
 				.accumulationBehavior(AccumulationKind.DELTA_DATA)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
@@ -166,15 +165,17 @@ public class ReadingTypeRepositoryTest {
 				.argumentDenominator(2L)
 				.meterReading(MeterReading.builder()
 					.description("Fifteen Minute Electricity Consumption")
-					.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
-					.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+					.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
+					.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+						"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01")
 					.usagePoint(TestUtils.createUsagePoint())
 					.build())
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Received")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/1")
-				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType/1")
+				.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType")
 				.accumulationBehavior(AccumulationKind.DELTA_DATA)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)
@@ -205,8 +206,8 @@ public class ReadingTypeRepositoryTest {
 				.build(),
 			ReadingType.builder()
 				.description("Hourly Wh Delivered")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/ReadingType/2")
-				.upLinkHref("https://{domain}/espi/1_1/resource/ReadingType")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType/2")
+				.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ReadingType")
 				.accumulationBehavior(AccumulationKind.BULK_QUANTITY)
 				.commodity(CommodityKind.ELECTRICITY_SECONDARY_METERED)
 				.consumptionTier(null)

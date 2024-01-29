@@ -50,7 +50,9 @@ import static org.assertj.core.api.Assertions.*;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TimeConfigurationRepositoryTest {
 	private final TimeConfigurationRepository timeConfigurationRepository;
-	private static final String SELF_LINK= "https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
+	private static final String SELF_LINK=
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/RetailCustomer/9B6C7066/" +
+			"UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/183";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	@Container
@@ -118,7 +120,8 @@ public class TimeConfigurationRepositoryTest {
 		byte[] deadbeefs = BigInteger.valueOf(Long.parseLong("DEADBEEF", 16)).toByteArray();
 		List<TimeConfiguration> timeConfigurations =  Arrays.asList(TimeConfiguration.builder()
 			.selfLinkHref(SELF_LINK)
-			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+			.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+				"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 			.dstEndRule(deadbeefs)
 			.dstOffset(100L)
 			.dstStartRule(deadbeefs)
@@ -129,8 +132,10 @@ public class TimeConfigurationRepositoryTest {
 					)))
 				.build(),
 		TimeConfiguration.builder()
-			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
-			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+			.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+				"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/184")
+			.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+				"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 			.dstEndRule(deadbeefs)
 			.dstOffset(200L)
 			.dstStartRule(deadbeefs)
@@ -141,8 +146,10 @@ public class TimeConfigurationRepositoryTest {
 				)))
 			.build(),
 		TimeConfiguration.builder()
-			.selfLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
-			.upLinkHref("https://{domain}/espi/1_1/resource/RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
+			.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+				"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration/185")
+			.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+				"RetailCustomer/9B6C7066/UsagePoint/5446AF3F/MeterReading/01/TimeConfiguration")
 			.dstEndRule(deadbeefs)
 			.dstOffset(300L)
 			.dstStartRule(deadbeefs)

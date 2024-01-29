@@ -54,10 +54,12 @@ import static org.assertj.core.api.Assertions.*;
 public class ElectricPowerQualitySummaryRepositoryTest {
 
 	private final ElectricPowerQualitySummaryRepository electricPowerQualitySummaryRepository;
-	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary";
+	private static final String upLinkHref =
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ElectricPowerQualitySummary";
 
 	// for testing findById
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/174";
+	private static final String PRESENT_SELF_LINK =
+		"https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/ElectricPowerQualitySummary/174";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	@Container
@@ -150,7 +152,8 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
-				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/175")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+					"ElectricPowerQualitySummary/175")
 				.upLinkHref(upLinkHref)
 				.flickerPlt(1L)
 				.flickerPst(2L)
@@ -171,7 +174,8 @@ public class ElectricPowerQualitySummaryRepositoryTest {
 				.usagePoint(TestUtils.createUsagePoint())
 				.build(),
 			ElectricPowerQualitySummary.builder()
-				.selfLinkHref("https://{domain}/espi/1_1/resource/ElectricPowerQualitySummary/176")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+					"ElectricPowerQualitySummary/176")
 				.upLinkHref(upLinkHref)
 				.flickerPlt(1L)
 				.flickerPst(2L)

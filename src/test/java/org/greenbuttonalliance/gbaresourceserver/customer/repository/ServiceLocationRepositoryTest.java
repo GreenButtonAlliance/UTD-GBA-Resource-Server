@@ -52,7 +52,8 @@ import static org.assertj.core.api.Assertions.*;
 public class ServiceLocationRepositoryTest {
 	@Autowired
 	private ServiceLocationRepository serviceLocationRepository;
-	private static final String PRESENT_SELF_LINK = "https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/1";
+	private static final String PRESENT_SELF_LINK =
+		"https://data.greenbuttonconnect.org/DataCustodian/DataCustodian/espi/1_1/resource/ApplicationInformation/1";
 	private static final String NOT_PRESENT_TITLE = "bar";
 
 
@@ -166,7 +167,8 @@ public class ServiceLocationRepositoryTest {
 			ServiceLocation.builder()
 				.description("test")
 				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation")
+				.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/DataCustodian/espi/1_1/resource/" +
+					"ApplicationInformation")
 				.type("Lorem")
 				.mainAddress(
 					StreetAddress.builder()
@@ -309,8 +311,10 @@ public class ServiceLocationRepositoryTest {
 				.build(),
 			ServiceLocation.builder()
 				.description("test")
-				.selfLinkHref("https://{domain}/DataCustodian/espi/1_1/resource/ApplicationInformation/2")
-				.upLinkHref("https://{domain}/DataCustodian/espi/1_2/resource/ApplicationInformation")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/DataCustodian/espi/1_1/resource/" +
+					"ApplicationInformation/2")
+				.upLinkHref("https://data.greenbuttonconnect.org/DataCustodian/DataCustodian/espi/1_2/resource/" +
+					"ApplicationInformation")
 				.type("Lorem")
 				.mainAddress(
 					StreetAddress.builder()

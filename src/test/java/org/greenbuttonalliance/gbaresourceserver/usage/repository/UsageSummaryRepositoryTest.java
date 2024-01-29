@@ -66,8 +66,10 @@ public class UsageSummaryRepositoryTest {
 	private final UsageSummaryRepository usageSummaryRepository;
 
 	// for testing findById
-	private static final String upLinkHref = "https://{domain}/espi/1_1/resource/UsageSummary";
-	private static final String PRESENT_SELF_LINK = "https://{domain}/espi/1_1/resource/UsageSummary/174";
+	private static final String upLinkHref = "https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+		"UsageSummary";
+	private static final String PRESENT_SELF_LINK = "https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+		"resource/UsageSummary/174";
 	private static final String NOT_PRESENT_SELF_LINK = "foobar";
 
 	@Container
@@ -294,7 +296,7 @@ public class UsageSummaryRepositoryTest {
 
 			UsageSummary.builder()
 				.description("description")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/175")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/UsageSummary/175")
 				.upLinkHref(upLinkHref)
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
@@ -446,7 +448,7 @@ public class UsageSummaryRepositoryTest {
 
 			UsageSummary.builder()
 				.description("description")
-				.selfLinkHref("https://{domain}/espi/1_1/resource/UsageSummary/176")
+				.selfLinkHref("https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/UsageSummary/176")
 				.upLinkHref(upLinkHref)
 				.billingPeriod(new DateTimeInterval()
 					.setDuration(10L)
