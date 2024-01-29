@@ -6,11 +6,17 @@ The GBA Resource Server is a project to replace and upgrade the existing Green B
 Sandbox application. The upgrade will include the following objectives:
 
 - Separate the Sandbox Authorization and Resource Server Functionality
-- Add support for the Retail Customer schema feature of the "NAESB REQ.21 ESPI ver. 3.3" standard
+- Add support for the Retail Customer schema feature of the "NAESB REQ.21 ESPI ver. 4.0" standard
 - Simplify the GBA Resource Server CRUD interface by only supporting GET requests
 - Remap the current Energy Usage database to improve performance
 - Provide JUnit and Integration tests scripts
 - Provide support for Docker and test containers
+
+## Data Schema Files used by the GBA Resource Server
+
+- [NAESB REQ.21 ESPI ver. 4.0 Energy Usage](https://www.naesb.org/espi_v4.xsd)
+- [NAESB REQ.21 ESPI ver. 4.0 Retail Customer](https://www.naesb.org/espi/customer-v4.xsd)
+- [GBA Atom Schema](https://www.greenbuttondata.org/xsd/4_0/atom.xsd)
 
 The original source code can be found in two GitHub repositories:
 
