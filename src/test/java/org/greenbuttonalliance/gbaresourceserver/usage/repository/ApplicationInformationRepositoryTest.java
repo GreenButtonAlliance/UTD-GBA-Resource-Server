@@ -17,12 +17,8 @@ package org.greenbuttonalliance.gbaresourceserver.usage.repository;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.RequiredArgsConstructor;
-import org.greenbuttonalliance.gbaresourceserver.common.model.DateTimeInterval;
+import org.greenbuttonalliance.gbaresourceserver.testutils.ApplicationInformationCreator;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformation;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.Authorization;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.RetailCustomer;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.Subscription;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.AuthorizationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.DataCustodianApplicationStatus;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.GrantType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ResponseType;
@@ -30,7 +26,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationType;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
-import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,14 +39,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -62,12 +53,28 @@ import static org.assertj.core.api.Assertions.*;
 public class ApplicationInformationRepositoryTest {
 	private final ApplicationInformationRepository applicationInformationRepository;
 
-	private static final String PRESENT_SELF_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource" +
-			"/ApplicationInformation/135497";
-	private static final String UP_LINK = "https://localhost:8080/DataCustodian/espi/1_1/resource" +
-			"/ApplicationInformation";
-	private static final String NOT_PRESENT_SELF_LINK = "foobar";
-	private static final String DUMMY_STRING = "test1";
+	private static final String AI_SELF_LINK_HREF = "https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/" +
+		"resource/ApplicationInformation/135497";
+	private static final String AI_UP_LINK_HREF = "https://data.greenbuttonconnect.org/DataCustodian/espi/1_1/resource/" +
+			"ApplicationInformation";
+	private static final String AUTH_SERVER_URI = "https://data.greenbuttonconnect.org";
+	private static final String AUTH_SERVER_AUTHORIZATION_ENDPOINT =
+		"https://data.greenbuttonconnect.org/oauth/authorize";
+	private static final String AUTH_SERVER_REGISTRATION_ENDPOINT = "https://data.greenbuttonconnect.org/oauth/register";
+	private static final String AUTH_SERVER_TOKEN_ENDPOINT = "https://data.greenbuttonconnect.org/oauth/token";
+	private static final String DATA_CUSTODIAN_BATCH_BULK_ENDPOINT = "https://data.greenbuttonconnect.org/" +
+		"DataCustodian/espi/1_1/resource/Batch/Bulk";
+	private static final String DATA_CUSTODIAN_RESOURCE_ENDPOINT = "https://data.greenbuttonconnect.org/DataCustodian/" +
+		"espi/1_1/resource";
+	private static final String OAUTH_SCOPE_REDIRECT_URI = "https://data.greenbuttonconnect.org/ThirdParty/espi/1_1/" +
+		"OAuthCallBack";
+	private static final String THIRD_PARTY_NOTIFY_URI = "https://data.greenbuttonconnect.org/ThirdParty/espi/1_1/" +
+		"Notification";
+	private static final String THIRD_PARTY_USER_PORTAL_SCREEN_URI = "https://data.greenbuttonconnect.org/ThirdParty";
+	private static final String CLIENT_SECRET = "331b4eea-c2e5-45cb-b5f8-631c096895b1";
+	private static final String REGISTRATION_ACCESS_TOKEN = "Kgv7tXvwHbg2ahL6CgVuTmHuwbnmibs27jAD9cu-CI0";
+	private static final String FOOBAR_SELF_LINK = "foobar";
+	private static final String NULL_ENTRY = null;
 
 	@Container
 	@ServiceConnection
@@ -87,7 +94,7 @@ public class ApplicationInformationRepositoryTest {
 
 	@Test
 	public void findByPresentId_returnsMatching() {
-		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK);
+		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AI_SELF_LINK_HREF);
 		UUID foundUuid = applicationInformationRepository.findById(presentUuid).map(ApplicationInformation::getUuid).orElse(null);
 
 		Assertions.assertEquals(
@@ -99,7 +106,7 @@ public class ApplicationInformationRepositoryTest {
 
 	@Test
 	public void findByNotPresentId_returnsEmpty() {
-		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, NOT_PRESENT_SELF_LINK);
+		UUID notPresentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, FOOBAR_SELF_LINK);
 		Optional<ApplicationInformation> applicationInformation = applicationInformationRepository.findById(notPresentUuid);
 
 		Assertions.assertTrue(
@@ -122,231 +129,65 @@ public class ApplicationInformationRepositoryTest {
 
 	@Test
 	public void entityMappings_areNotNull() {
-		ApplicationInformation fullyMappedApplicationInformation = applicationInformationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, PRESENT_SELF_LINK)).orElse(null);
+		ApplicationInformation fullyMappedApplicationInformation =
+			applicationInformationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,
+				AI_SELF_LINK_HREF)).orElse(null);
 		Assumptions.assumeTrue(fullyMappedApplicationInformation != null);
 
-		Function<ApplicationInformation, Optional<Set<Subscription>>> applicationInformationToSubscription = ai -> Optional.ofNullable(ai.getSubscriptions());
-		// TODO test mapping to UsagePoint once entity is available
-
-		Assertions.assertAll(
-			"Entity mapping failures for applicationInformation " + fullyMappedApplicationInformation.getUuid(),
-			Stream.of(applicationInformationToSubscription)
-				.map(mappingFunc ->
-					() -> Assertions.assertTrue(mappingFunc.apply(fullyMappedApplicationInformation).isPresent()))
-		);
 	}
 
 
 	private static List<ApplicationInformation> buildTestData() {
+
+		UUID uuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AI_SELF_LINK_HREF);
+
 		List<ApplicationInformation> applicationInformations = Arrays.asList(
-			ApplicationInformation.builder()
-				.description("Green Button Alliance Data Custodian Admin Application")
-				.selfLinkHref(PRESENT_SELF_LINK)
-				.upLinkHref("UP_LINK")
-				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
-				.authorizationServerRegistrationEndpoint(null)
-				.authorizationServerTokenEndpoint(DUMMY_STRING)
-				.authorizationServerUri(null)
-				.clientId(DUMMY_STRING)
-				.clientIdIssuedAt(1403190000L)
-				.clientName(DUMMY_STRING)
-				.clientSecret(DUMMY_STRING)
-				.clientSecretExpiresAt(0L)
-				.clientUri(null)
-				.contacts(new HashSet<>(Arrays.asList(
-					"Contact1",
-					"Contact2"
-				)))
-				.dataCustodianApplicationStatus(DataCustodianApplicationStatus.ON_HOLD)
-				.dataCustodianBulkRequestUri(DUMMY_STRING)
-				.dataCustodianId(DUMMY_STRING)
-				.dataCustodianResourceEndpoint(DUMMY_STRING)
-				.thirdPartyUserPortalScreenUri(null)
-				.logoUri(null)
-				.policyUri(null)
-				.thirdPartyApplicationDescription(null)
-				.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
-				.thirdPartyApplicationType(ThirdPartyApplicationType.DEVICE)
-				.thirdPartyApplicationUse(ThirdPartyApplicationUse.COMPARISONS)
-				.thirdPartyPhone(null)
-				.thirdPartyNotifyUri(DUMMY_STRING)
-				.redirectUris(new HashSet<>(List.of(
-						"Redirect1"
-				)))
-				.tosUri(null)
-				.softwareId(DUMMY_STRING)
-				.softwareVersion(DUMMY_STRING)
-				.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
-				.responseType(ResponseType.CODE)
-				.registrationClientUri(DUMMY_STRING)
-				.registrationAccessToken(DUMMY_STRING)
-				.grantTypes(new HashSet<>(List.of(
-						GrantType.AUTHORIZATION_CODE
-				)))
-				.scopes(new HashSet<>(Arrays.asList(
-					"Scope1",
-					"Scope2",
-					"Scope3"
-				)))
-				.subscriptions(new HashSet<>(
-					Collections.singletonList(
-						Subscription.builder()
-							.description("description")
-							.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/100001")
-							.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
-							.hashedId("hashedId")
-							.authorization(
-								Authorization.builder()
-									.uuid(UUID.randomUUID())
-									.description("Green Button Alliance Data Custodian Authorization")
-									.selfLinkHref(PRESENT_SELF_LINK)
-									.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
-											"/Authorization")
-										.authorizedPeriod(new DateTimeInterval()
-												.setDuration(21L)
-												.setStart(654L)
-												.setDuration(23123L)
-												.setStart(3241654L))
-										.status(AuthorizationStatus.ACTIVE)
-										.expiresAt(32164L)
-										.scope("scope")
-										.tokenType(TokenType.BEARER)
-										.resourceUri("resourceUri")
-										.authorizationUri("authorizationUri")
-										.customerResourceUri("customerResourceUri")
-//									.applicationInformationId(UUID.randomUUID())
-//									.retailCustomerId(UUID.randomUUID())
-//									.subscription(Subscription.builder().build())
-									.build()
-							)
-							.retailCustomer(RetailCustomer.builder()
-								.description("Type of Meter Reading Data")
-								.selfLinkHref(PRESENT_SELF_LINK)
-								.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
-								.enabled(Boolean.TRUE)
-								.firstName("hello")
-								.lastName("last")
-								.password("password")
-								.role("whatever")
-								.username("Username")
-								.build())
-//				.usagePointId(1)
-							.build()
-					))
-				)
-				.build(),
-			ApplicationInformation.builder()
-				.description(DUMMY_STRING)
-				.selfLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/ApplicationInformation/284915")
-				.upLinkHref(UP_LINK)
-				.authorizationServerAuthorizationEndpoint(DUMMY_STRING)
-				.authorizationServerRegistrationEndpoint(null)
-				.authorizationServerTokenEndpoint(DUMMY_STRING)
-				.authorizationServerUri(null)
-				.clientId(DUMMY_STRING)
-				.clientIdIssuedAt(1403190000L)
-				.clientName(DUMMY_STRING)
-				.clientSecret(DUMMY_STRING)
-				.clientSecretExpiresAt(0L)
-				.clientUri(null)
-				.contacts(new HashSet<>(Arrays.asList(
-					"Contact1",
-					"Contact3"
-				)))
-				.dataCustodianApplicationStatus(DataCustodianApplicationStatus.ON_HOLD)
-				.dataCustodianBulkRequestUri(DUMMY_STRING)
-				.dataCustodianId(DUMMY_STRING)
-				.dataCustodianResourceEndpoint(DUMMY_STRING)
-				.thirdPartyUserPortalScreenUri(null)
-				.logoUri(null)
-				.policyUri(null)
-				.thirdPartyApplicationDescription(null)
-				.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
-				.thirdPartyApplicationType(ThirdPartyApplicationType.DEVICE)
-				.thirdPartyApplicationUse(ThirdPartyApplicationUse.COMPARISONS)
-				.thirdPartyPhone(null)
-				.thirdPartyNotifyUri(DUMMY_STRING)
-				.redirectUris(new HashSet<>(Arrays.asList(
-					"Redirect2",
-					"Redirect3"
-				)))
-				.tosUri(null)
-				.softwareId(DUMMY_STRING)
-				.softwareVersion(DUMMY_STRING)
-				.tokenEndpointAuthMethod(TokenEndpointMethod.BASIC)
-				.responseType(ResponseType.CODE)
-				.registrationClientUri(DUMMY_STRING)
-				.registrationAccessToken(DUMMY_STRING)
-				.grantTypes(new HashSet<>(List.of(
-						GrantType.AUTHORIZATION_CODE
-				)))
-				.scopes(new HashSet<>(List.of(
-						"Scope4"
-				)))
-				.subscriptions(new HashSet<>(
-						Collections.singletonList(
-							Subscription.builder()
-								.description("description")
-								.selfLinkHref("https://localhost:8080/espi/1_1/resource/Subscription/176")
-								.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource/Subscription")
-								.hashedId("hashedId")
-								.authorization(
-									Authorization.builder()
-										.uuid(UUID.randomUUID())
-										.description("Green Button Alliance Data Custodian Authorization")
-										.selfLinkHref(PRESENT_SELF_LINK)
-										.upLinkHref("https://localhost:8080/DataCustodian/espi/1_1/resource" +
-												"/Authorization")
-										.authorizedPeriod(new DateTimeInterval()
-											.setDuration(21L)
-											.setStart(654L)
-											.setDuration(23123L)
-											.setStart(3241654L))
-										.status(AuthorizationStatus.ACTIVE)
-										.expiresAt(32164L)
-										.scope("scope")
-										.tokenType(TokenType.BEARER)
-										.resourceUri("resourceUri")
-										.authorizationUri("authorizationUri")
-										.customerResourceUri("customerResourceUri")
-//										.applicationInformationId(UUID.randomUUID())
-//										.retailCustomerId(UUID.randomUUID())
-//										.subscription(Subscription.builder().build())
-										.build()
-								)
-								.retailCustomer(RetailCustomer.builder()
-									.description("Type of Meter Reading Data")
-									.selfLinkHref(PRESENT_SELF_LINK)
-									.upLinkHref("https://localhost:8080/espi/1_1/resource/RetailCustomer")
-									.enabled(Boolean.TRUE)
-									.firstName("hello")
-									.lastName("last")
-									.password("password")
-									.role("whatever")
-									.username("Username")
-									.build())
-//				.usagePointId(1)
-								.build()
-						))
-				)
-				.build()
+			ApplicationInformationCreator.create(
+				uuid,
+				"Application Information Record",
+				AI_SELF_LINK_HREF,
+				AI_UP_LINK_HREF,
+				"GBA_DataCustodian_1_1",
+				DataCustodianApplicationStatus.PRODUCTION,
+				"GBA_Example_Third_Party_Application",
+				ThirdPartyApplicationStatus.PRODUCTION,
+				ThirdPartyApplicationType.WEB,
+				ThirdPartyApplicationUse.ENERGY_MANAGEMENT,
+				"(909) 123-4567",
+				AUTH_SERVER_URI,
+				THIRD_PARTY_NOTIFY_URI,
+				AUTH_SERVER_AUTHORIZATION_ENDPOINT,
+				AUTH_SERVER_REGISTRATION_ENDPOINT,
+				AUTH_SERVER_TOKEN_ENDPOINT,
+				DATA_CUSTODIAN_BATCH_BULK_ENDPOINT,
+				DATA_CUSTODIAN_RESOURCE_ENDPOINT,
+				NULL_ENTRY,
+				THIRD_PARTY_USER_PORTAL_SCREEN_URI,
+				CLIENT_SECRET,
+				NULL_ENTRY,
+				"Green Button Alliance, Inc.",
+				THIRD_PARTY_USER_PORTAL_SCREEN_URI,
+				new HashSet<>(List.of(OAUTH_SCOPE_REDIRECT_URI)),
+				"GBA_GB_Client",
+				NULL_ENTRY,
+				NULL_ENTRY,
+				"GBA_GB_Client",
+				"1.0",
+				1706715921L,
+				0L,
+				new HashSet<>(Arrays.asList("dfcoffin@greenbuttonalliance.org", "greg.l.turnquist@gmail.com")),
+				TokenEndpointMethod.BASIC,
+				new HashSet<>(Arrays.asList("Scope1", "Scope2", "Scope3")),
+				new HashSet<>(List.of(GrantType.AUTHORIZATION_CODE, GrantType.CLIENT_CREDENTIALS,
+					GrantType.REFRESH_TOKEN)),
+				ResponseType.CODE,
+				AUTH_SERVER_REGISTRATION_ENDPOINT,
+				REGISTRATION_ACCESS_TOKEN,
+				NULL_ENTRY
+			)
+			// Add more ApplicationInformation instances here...
 		);
 
-		// hydrate UUIDs and entity mappings
-		applicationInformations.forEach(ai -> {
-			ai.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, ai.getSelfLinkHref()));
-
-			ai.getSubscriptions().forEach(sub -> {
-				sub.setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
-				sub.setApplicationInformation(ai);
-				sub.setAuthorization(Authorization.builder().build());
-				sub.getAuthorization().setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
-				sub.setRetailCustomer(RetailCustomer.builder().build());
-				sub.getRetailCustomer().setUuid(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, sub.getSelfLinkHref()));
-			});
-
-			// TODO hydrate UsagePoint reference once entity is available
-		});
 		return applicationInformations;
 	}
 }
