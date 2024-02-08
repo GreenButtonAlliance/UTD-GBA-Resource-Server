@@ -184,16 +184,15 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Column(name = "data_custodian_scope_selection_screen_uri")
 	private String dataCustodianScopeSelectionScreenUri;
 
+	//TODO: Remove after reviewing Subscription and Athorization Test Classes
 	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
 		orphanRemoval = true)
 	private Set<Subscription> subscriptions = new HashSet<>();
 
-	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
-		orphanRemoval = true)
-	private Set<Authorization> authorizations = new HashSet<>();
-
+	//TODO: Remove after reviewing Subscription and Athorization Test Classes
 //	@OneToMany(mappedBy = "applicationInformation", cascade = CascadeType.ALL,
-//			orphanRemoval = true)
-//	private Set<RetailCustomer> retailCustomers = new HashSet<>();
+//		orphanRemoval = true)
+//	private Set<Authorization> authorizations = new HashSet<>();
+
 
 }
