@@ -27,7 +27,6 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApp
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.ThirdPartyApplicationUse;
 import org.greenbuttonalliance.gbaresourceserver.usage.model.enums.TokenEndpointMethod;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.*;
 
 @Testcontainers
 @DataJpaTest(showSql = false)
@@ -87,12 +84,6 @@ public class ApplicationInformationRepositoryTest {
 	}
 
 	@Test
-	void connectionEstablished() {
-		assertThat(postgres.isCreated()).isTrue();
-		assertThat(postgres.isRunning()).isTrue();
-	}
-
-	@Test
 	public void findByPresentId_returnsMatching() {
 		UUID presentUuid = UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL, AI_SELF_LINK_HREF);
 		UUID foundUuid = applicationInformationRepository.findById(presentUuid).map(ApplicationInformation::getUuid).orElse(null);
@@ -132,8 +123,8 @@ public class ApplicationInformationRepositoryTest {
 		ApplicationInformation fullyMappedApplicationInformation =
 			applicationInformationRepository.findById(UuidCreator.getNameBasedSha1(UuidCreator.NAMESPACE_URL,
 				AI_SELF_LINK_HREF)).orElse(null);
-		Assumptions.assumeTrue(fullyMappedApplicationInformation != null);
-
+		Assertions.assertNotNull(fullyMappedApplicationInformation, "fullyMappedApplicationInformation should " +
+			"not be null");
 	}
 
 
@@ -166,7 +157,7 @@ public class ApplicationInformationRepositoryTest {
 				CLIENT_SECRET,
 				NULL_ENTRY,
 				"Green Button Alliance, Inc.",
-				THIRD_PARTY_USER_PORTAL_SCREEN_URI,
+				THIRD_PARTY_USER_PORTAL_SCREEN_URI,	// clientUri and thirdPartyUserPortalScreenUri are the same
 				new HashSet<>(List.of(OAUTH_SCOPE_REDIRECT_URI)),
 				"GBA_GB_Client",
 				NULL_ENTRY,
@@ -185,7 +176,6 @@ public class ApplicationInformationRepositoryTest {
 				REGISTRATION_ACCESS_TOKEN,
 				NULL_ENTRY
 			)
-			// Add more ApplicationInformation instances here...
 		);
 
 		return applicationInformations;

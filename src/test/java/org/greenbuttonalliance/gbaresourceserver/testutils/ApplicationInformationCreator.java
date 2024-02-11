@@ -31,47 +31,49 @@ import java.util.UUID;
  * @author Donald F. Coffin, Green Button Alliance, Inc.
  */
 public class ApplicationInformationCreator {
-	public static ApplicationInformation create(UUID uuid,
-												String description,
-												String selfLinkHref,
-												String upLinkHref,
-												String dataCustodianId,
-												DataCustodianApplicationStatus dataCustodianApplicationStatus,
-												String thirdPartyApplicationDescription,
-												ThirdPartyApplicationStatus thirdPartyApplicationStatus,
-												ThirdPartyApplicationType thirdPartyApplicationType,
-												ThirdPartyApplicationUse thirdPartyApplicationUse,
-												String thirdPartyPhone,
-												String authorizationServerUri,
-												String thirdPartyNotifyUri,
-												String authorizationServerAuthorizationEndpoint,
-												String authorizationServerRegistrationEndpoint,
-												String authorizationServerTokenEndpoint,
-												String dataCustodianBulkRequestUri,
-												String dataCustodianResourceEndpoint,
-												String thirdPartyScopeSelectionScreenUri,  /* DEPRECATED */
-												String thirdPartyUserPortalScreenUri,
-												String clientSecret,
-												String logoUri,
-												String clientName,
-												String clientUri,
-												Set<String> redirectUris,
-												String clientId,
-												String tosUri,
-												String policyUri,
-												String softwareId,
-												String softwareVersion,
-												long clientIdIssuedAt,
-												long clientSecretExpiresAt,
-												Set<String> contacts,
-												TokenEndpointMethod tokenEndpointAuthMethod,
-												Set<String> scopes,
-												Set<GrantType> grantTypes,
-												ResponseType responseType,
-												String registrationClientUri,
-												String registrationAccessToken,
-												String dataCustodianScopeSelectionScreenUri)
-												{
+	public static ApplicationInformation create(
+		UUID uuid,
+		String description,
+		String selfLinkHref,
+		String upLinkHref,
+		String dataCustodianId,
+		DataCustodianApplicationStatus dataCustodianApplicationStatus,
+		String thirdPartyApplicationDescription,
+		ThirdPartyApplicationStatus thirdPartyApplicationStatus,
+		ThirdPartyApplicationType thirdPartyApplicationType,
+		ThirdPartyApplicationUse thirdPartyApplicationUse,
+		String thirdPartyPhone,
+		String authorizationServerUri,
+		String thirdPartyNotifyUri,
+		String authorizationServerAuthorizationEndpoint,
+		String authorizationServerRegistrationEndpoint,
+		String authorizationServerTokenEndpoint,
+		String dataCustodianBulkRequestUri,
+		String dataCustodianResourceEndpoint,
+		String thirdPartyScopeSelectionScreenUri,  /* DEPRECATED */
+		String thirdPartyUserPortalScreenUri,
+		String clientSecret,
+		String logoUri,
+		String clientName,
+		String clientUri,
+		Set<String> redirectUris,
+		String clientId,
+		String tosUri,
+		String policyUri,
+		String softwareId,
+		String softwareVersion,
+		long clientIdIssuedAt,
+		long clientSecretExpiresAt,
+		Set<String> contacts,
+		TokenEndpointMethod tokenEndpointAuthMethod,
+		Set<String> scopes,
+		Set<GrantType> grantTypes,
+		ResponseType responseType,
+		String registrationClientUri,
+		String registrationAccessToken,
+		String dataCustodianScopeSelectionScreenUri
+	)
+	{
 		return ApplicationInformation.builder()
 			.uuid(uuid)
 			.description("Application Information Record")
@@ -92,6 +94,7 @@ public class ApplicationInformationCreator {
 			.dataCustodianBulkRequestUri(dataCustodianBulkRequestUri)
 			.dataCustodianResourceEndpoint(dataCustodianResourceEndpoint)
 			.thirdPartyScopeSelectionScreenUri(thirdPartyScopeSelectionScreenUri)
+			.thirdPartyUserPortalScreenUri(thirdPartyUserPortalScreenUri)
 			.clientSecret(clientSecret)
 			.logoUri(logoUri)
 			.clientName(clientName)
