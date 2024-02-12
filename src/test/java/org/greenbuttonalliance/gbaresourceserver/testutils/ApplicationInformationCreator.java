@@ -31,47 +31,31 @@ import java.util.UUID;
  * @author Donald F. Coffin, Green Button Alliance, Inc.
  */
 public class ApplicationInformationCreator {
+
+	private static final String AUTH_SERVER_URI = "https://data.greenbuttonconnect.org";
+	private static final String AUTH_SERVER_AUTHORIZATION_ENDPOINT =
+		"https://data.greenbuttonconnect.org/oauth/authorize";
+	private static final String AUTH_SERVER_REGISTRATION_ENDPOINT = "https://data.greenbuttonconnect.org/oauth/register";
+	private static final String AUTH_SERVER_TOKEN_ENDPOINT = "https://data.greenbuttonconnect.org/oauth/token";
+	private static final String DATA_CUSTODIAN_BATCH_BULK_ENDPOINT = "https://data.greenbuttonconnect.org/" +
+		"DataCustodian/espi/1_1/resource/Batch/Bulk";
+	private static final String DATA_CUSTODIAN_RESOURCE_ENDPOINT = "https://data.greenbuttonconnect.org/DataCustodian/" +
+		"espi/1_1/resource";
+	private static final String THIRD_PARTY_NOTIFY_URI = "https://data.greenbuttonconnect.org/ThirdParty/espi/1_1/" +
+		"Notification";
+	private static final String THIRD_PARTY_USER_PORTAL_SCREEN_URI = "https://data.greenbuttonconnect.org/ThirdParty";
+	private static final String REGISTRATION_ACCESS_TOKEN = "Kgv7tXvwHbg2ahL6CgVuTmHuwbnmibs27jAD9cu-CI0";
+
 	public static ApplicationInformation create(
 		UUID uuid,
-		String description,
 		String selfLinkHref,
 		String upLinkHref,
-		String dataCustodianId,
-		DataCustodianApplicationStatus dataCustodianApplicationStatus,
-		String thirdPartyApplicationDescription,
-		ThirdPartyApplicationStatus thirdPartyApplicationStatus,
-		ThirdPartyApplicationType thirdPartyApplicationType,
-		ThirdPartyApplicationUse thirdPartyApplicationUse,
-		String thirdPartyPhone,
-		String authorizationServerUri,
-		String thirdPartyNotifyUri,
-		String authorizationServerAuthorizationEndpoint,
-		String authorizationServerRegistrationEndpoint,
-		String authorizationServerTokenEndpoint,
-		String dataCustodianBulkRequestUri,
-		String dataCustodianResourceEndpoint,
-		String thirdPartyScopeSelectionScreenUri,  /* DEPRECATED */
-		String thirdPartyUserPortalScreenUri,
 		String clientSecret,
-		String logoUri,
-		String clientName,
-		String clientUri,
 		Set<String> redirectUris,
-		String clientId,
-		String tosUri,
-		String policyUri,
-		String softwareId,
-		String softwareVersion,
-		long clientIdIssuedAt,
-		long clientSecretExpiresAt,
 		Set<String> contacts,
 		TokenEndpointMethod tokenEndpointAuthMethod,
 		Set<String> scopes,
-		Set<GrantType> grantTypes,
-		ResponseType responseType,
-		String registrationClientUri,
-		String registrationAccessToken,
-		String dataCustodianScopeSelectionScreenUri
+		Set<GrantType> grantTypes
 	)
 	{
 		return ApplicationInformation.builder()
@@ -79,42 +63,40 @@ public class ApplicationInformationCreator {
 			.description("Application Information Record")
 			.selfLinkHref(selfLinkHref)
 			.upLinkHref(upLinkHref)
-			.dataCustodianId(dataCustodianId)
-			.dataCustodianApplicationStatus(dataCustodianApplicationStatus)
-			.thirdPartyApplicationDescription(thirdPartyApplicationDescription)
-			.thirdPartyApplicationStatus(thirdPartyApplicationStatus)
-			.thirdPartyApplicationType(thirdPartyApplicationType)
-			.thirdPartyApplicationUse(thirdPartyApplicationUse)
-			.thirdPartyPhone(thirdPartyPhone)
-			.authorizationServerUri(authorizationServerUri)
-			.thirdPartyNotifyUri(thirdPartyNotifyUri)
-			.authorizationServerAuthorizationEndpoint(authorizationServerAuthorizationEndpoint)
-			.authorizationServerRegistrationEndpoint(authorizationServerRegistrationEndpoint)
-			.authorizationServerTokenEndpoint(authorizationServerTokenEndpoint)
-			.dataCustodianBulkRequestUri(dataCustodianBulkRequestUri)
-			.dataCustodianResourceEndpoint(dataCustodianResourceEndpoint)
-			.thirdPartyScopeSelectionScreenUri(thirdPartyScopeSelectionScreenUri)
-			.thirdPartyUserPortalScreenUri(thirdPartyUserPortalScreenUri)
+			.dataCustodianId("GBA_DataCustodian_1_1")
+			.dataCustodianApplicationStatus(DataCustodianApplicationStatus.PRODUCTION)
+			.thirdPartyApplicationDescription("GBA_Example_Third_Party_Application")
+			.thirdPartyApplicationStatus(ThirdPartyApplicationStatus.PRODUCTION)
+			.thirdPartyApplicationType(ThirdPartyApplicationType.WEB)
+			.thirdPartyApplicationUse(ThirdPartyApplicationUse.ENERGY_MANAGEMENT)
+			.thirdPartyPhone("(909) 123-4567")
+			.authorizationServerUri(AUTH_SERVER_URI)
+			.thirdPartyNotifyUri(THIRD_PARTY_NOTIFY_URI)
+			.authorizationServerAuthorizationEndpoint(AUTH_SERVER_AUTHORIZATION_ENDPOINT)
+			.authorizationServerRegistrationEndpoint(AUTH_SERVER_REGISTRATION_ENDPOINT)
+			.authorizationServerTokenEndpoint(AUTH_SERVER_TOKEN_ENDPOINT)
+			.dataCustodianBulkRequestUri(DATA_CUSTODIAN_BATCH_BULK_ENDPOINT)
+			.dataCustodianResourceEndpoint(DATA_CUSTODIAN_RESOURCE_ENDPOINT)
+			.thirdPartyUserPortalScreenUri(THIRD_PARTY_USER_PORTAL_SCREEN_URI)
 			.clientSecret(clientSecret)
-			.logoUri(logoUri)
-			.clientName(clientName)
-			.clientUri(clientUri)
+			.logoUri(null)
+			.clientName("Green Button Alliance, Inc.")
+			.clientUri(THIRD_PARTY_USER_PORTAL_SCREEN_URI)
 			.redirectUris(redirectUris)
-			.clientId(clientId)
-			.tosUri(tosUri)
-			.policyUri(policyUri)
-			.softwareId(softwareId)
-			.softwareVersion(softwareVersion)
-			.clientIdIssuedAt(clientIdIssuedAt)
-			.clientSecretExpiresAt(clientSecretExpiresAt)
+			.clientId("GBA_GB_Client")
+			.tosUri(null)
+			.policyUri(null)
+			.softwareId("GBA_GB_Client")
+			.softwareVersion("1.0")
+			.clientIdIssuedAt(1706715921L)
+			.clientSecretExpiresAt(0L)
 			.contacts(contacts)
 			.tokenEndpointAuthMethod(tokenEndpointAuthMethod)
 			.scopes(scopes)
 			.grantTypes(grantTypes)
-			.responseType(responseType)
-			.registrationClientUri(registrationClientUri)
-			.registrationAccessToken(registrationAccessToken)
-			.dataCustodianScopeSelectionScreenUri(dataCustodianScopeSelectionScreenUri)
+			.responseType(ResponseType.CODE)
+			.registrationClientUri(AUTH_SERVER_REGISTRATION_ENDPOINT)
+			.registrationAccessToken(REGISTRATION_ACCESS_TOKEN)
 			.build();
 	}
 }
