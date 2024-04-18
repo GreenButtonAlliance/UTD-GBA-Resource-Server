@@ -33,7 +33,7 @@ public class EntityNotFoundByIdException extends RuntimeException implements Gba
 
 	@Override
 	public String getInternalErrorMessage() {
-		return String.format("Cannot find %s with ID %s", this.entity, this.entityIdentifier);
+		return "Cannot find %s with ID %s".formatted(this.entity, this.entityIdentifier);
 	}
 
 	@Override

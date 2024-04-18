@@ -93,7 +93,7 @@ class LineItemRepositoryTest {
 		Assertions.assertEquals(
 			presentId,
 			foundId,
-			() -> String.format("findById with %s returns entity with ID %s", presentId, foundId)
+			() -> "findById with %s returns entity with ID %s".formatted(presentId, foundId)
 		);
 	}
 
@@ -103,7 +103,7 @@ class LineItemRepositoryTest {
 
 		Assertions.assertTrue(
 			lineItem.isEmpty(),
-			() -> String.format("findById with %s returns entity with ID %s", NOT_PRESENT,
+			() -> "findById with %s returns entity with ID %s".formatted(NOT_PRESENT,
 				lineItem.map(LineItem::getId).orElse(null))
 		);
 	}
@@ -116,7 +116,7 @@ class LineItemRepositoryTest {
 		Assertions.assertEquals(
 			findByAllSize,
 			testDataSize,
-			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
+			() -> "findByAll size of %s does not match test data size of %s".formatted(findByAllSize, testDataSize)
 		);
 	}
 

@@ -91,7 +91,7 @@ public class UsagePointRepositoryTest {
 		Assertions.assertEquals(
 			presentUuid,
 			foundUuid,
-			() -> String.format("findById with %s returns entity with ID %s", presentUuid, foundUuid)
+			() -> "findById with %s returns entity with ID %s".formatted(presentUuid, foundUuid)
 		);
 	}
 
@@ -102,7 +102,7 @@ public class UsagePointRepositoryTest {
 
 		Assertions.assertTrue(
 			usagePoint.isEmpty(),
-			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, usagePoint.map(UsagePoint::getUuid).orElse(null))
+			() -> "findById with %s returns entity with ID %s".formatted(notPresentUuid, usagePoint.map(UsagePoint::getUuid).orElse(null))
 		);
 	}
 
@@ -114,7 +114,7 @@ public class UsagePointRepositoryTest {
 		Assertions.assertEquals(
 			findByAllSize,
 			testDataSize,
-			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
+			() -> "findByAll size of %s does not match test data size of %s".formatted(findByAllSize, testDataSize)
 		);
 	}
 

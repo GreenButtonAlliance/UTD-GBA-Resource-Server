@@ -18,12 +18,10 @@ package org.greenbuttonalliance.gbaresourceserver.usage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenbuttonalliance.gbaresourceserver.usage.service.IntervalBlockService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -42,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Testcontainers
 @WebMvcTest(controllers = IntervalBlockController.class)
-@ExtendWith(SpringExtension.class)
 class IntervalBlockControllerTest {
 
 	@Container

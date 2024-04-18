@@ -94,7 +94,7 @@ public class RetailCustomerRepositoryTest {
 		Assertions.assertEquals(
 			presentUuid,
 			foundUuid,
-			() -> String.format("findById with %s returns entity with ID %s", presentUuid, foundUuid)
+			() -> "findById with %s returns entity with ID %s".formatted(presentUuid, foundUuid)
 		);
 	}
 
@@ -105,7 +105,7 @@ public class RetailCustomerRepositoryTest {
 
 		Assertions.assertTrue(
 			readingType.isEmpty(),
-			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, readingType.map(RetailCustomer::getUuid).orElse(null))
+			() -> "findById with %s returns entity with ID %s".formatted(notPresentUuid, readingType.map(RetailCustomer::getUuid).orElse(null))
 		);
 	}
 
@@ -117,7 +117,7 @@ public class RetailCustomerRepositoryTest {
 		Assertions.assertEquals(
 			findByAllSize,
 			testDataSize,
-			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
+			() -> "findByAll size of %s does not match test data size of %s".formatted(findByAllSize, testDataSize)
 		);
 	}
 

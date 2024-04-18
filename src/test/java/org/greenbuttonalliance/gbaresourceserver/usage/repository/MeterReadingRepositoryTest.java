@@ -95,7 +95,7 @@ public class MeterReadingRepositoryTest {
 		Assertions.assertEquals(
 			presentUuid,
 			foundUuid,
-			() -> String.format("findById with %s returns entity with ID %s", presentUuid, foundUuid)
+			() -> "findById with %s returns entity with ID %s".formatted(presentUuid, foundUuid)
 		);
 	}
 
@@ -106,7 +106,7 @@ public class MeterReadingRepositoryTest {
 
 		Assertions.assertTrue(
 			meterReading.isEmpty(),
-			() -> String.format("findById with %s returns entity with ID %s", notPresentUuid, meterReading.map(MeterReading::getUuid).orElse(null))
+			() -> "findById with %s returns entity with ID %s".formatted(notPresentUuid, meterReading.map(MeterReading::getUuid).orElse(null))
 		);
 	}
 
@@ -118,7 +118,7 @@ public class MeterReadingRepositoryTest {
 		Assertions.assertEquals(
 			findByAllSize,
 			testDataSize,
-			() -> String.format("findByAll size of %s does not match test data size of %s", findByAllSize, testDataSize)
+			() -> "findByAll size of %s does not match test data size of %s".formatted(findByAllSize, testDataSize)
 		);
 	}
 
