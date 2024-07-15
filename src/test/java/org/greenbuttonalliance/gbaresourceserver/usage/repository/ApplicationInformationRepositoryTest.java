@@ -90,7 +90,7 @@ public class ApplicationInformationRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("ApplicationInformation Id non-existing returns empty Optional")
+	@DisplayName("ApplicationInformation Id not present returns empty Optional")
 	void findByNotPresentId_returnsEmpty() {
 		// Generate a UUID that is guaranteed not to exist in the database
 		UUID nonExistingUuid = UUID.randomUUID();
