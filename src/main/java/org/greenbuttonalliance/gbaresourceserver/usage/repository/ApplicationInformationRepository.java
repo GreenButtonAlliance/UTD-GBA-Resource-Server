@@ -19,9 +19,14 @@ import org.greenbuttonalliance.gbaresourceserver.usage.model.ApplicationInformat
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ApplicationInformationRepository extends
 	JpaRepository<ApplicationInformation, UUID> {
+
+	Optional<ApplicationInformation> findByClientId(String clientId);
+
+	Optional<ApplicationInformation> findByDataCustodianId(String dataCustodianId);
 }
