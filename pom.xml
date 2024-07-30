@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.2</version>
+    <version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -56,6 +56,7 @@
 	</issueManagement>
 
 	<properties>
+    <jackson.dataformat.xml.version>2.17.2</jackson.dataformat.xml.version>
     <java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.targetEncoding>UTF-8</project.build.targetEncoding>
@@ -81,6 +82,10 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -132,12 +137,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <scope>${uuid-creator.version}</scope>
+      <version>${jackson.dataformat.xml.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.f4b6a3</groupId>
       <artifactId>uuid-creator</artifactId>
-      <version>5.2.0</version>
+      <version>${uuid-creator.version}</version>
     </dependency>
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
@@ -171,8 +176,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
           <compilerArgs>--enable-preview</compilerArgs>
           <annotationProcessorPaths>
             <path>
@@ -186,6 +189,7 @@
               <version>${lombok.version}</version>
             </path>
           </annotationProcessorPaths>
+          <release>${java.version}</release>
         </configuration>
       </plugin>
     </plugins>
