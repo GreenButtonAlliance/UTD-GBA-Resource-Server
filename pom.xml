@@ -63,7 +63,7 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-    <uuid-creator.version>5.3.2</uuid-creator.version>
+    <uuid-creator.version>5.3.7</uuid-creator.version>
 	</properties>
 
   <dependencies>
