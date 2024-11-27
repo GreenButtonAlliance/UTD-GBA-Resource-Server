@@ -56,7 +56,7 @@
 	</issueManagement>
 
 	<properties>
-    <jackson.dataformat.xml.version>2.17.2</jackson.dataformat.xml.version>
+    <jackson.dataformat.xml.version>2.18.1</jackson.dataformat.xml.version>
     <java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.targetEncoding>UTF-8</project.build.targetEncoding>
