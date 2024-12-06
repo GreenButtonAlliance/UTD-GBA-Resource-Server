@@ -62,7 +62,7 @@
 		<project.build.targetEncoding>UTF-8</project.build.targetEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+    <org.mapstruct.version>1.6.3</org.mapstruct.version>
     <uuid-creator.version>5.3.2</uuid-creator.version>
 	</properties>
 
